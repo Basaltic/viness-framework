@@ -1,2 +1,1 @@
-export { Button, type ButtonProps } from "./Button";
-export * from "./main";
+export * from './app'
