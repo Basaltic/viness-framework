@@ -1,6 +1,6 @@
 # Viness
 
-An out-of-box react application framework focused on business logic and easy to use. It's especially suitable for single page applications.
+An out-of-box application framework focused on business logic and easy to use. It's especially suitable for single page applications.
 
 # Get Start
 
@@ -28,5 +28,6 @@ npm install --save @viness/core
 
 - [ ] support authentication
 - [ ] plugin system
-- [ ] expose customizable abilities
-- [ ] expose more container abilities
+- [ ] expose more customizable abilities
+
+
