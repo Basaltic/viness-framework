@@ -18,7 +18,7 @@ const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) 
 }
 
 /**
- * extend this class to create ui state
+ * extend this class to create ui store
  */
 export class UIStore<S extends object> {
     protected store: UseBoundStore<StoreApi<S>>
@@ -38,6 +38,9 @@ export class UIStore<S extends object> {
         return createSelectors(this.store)
     }
 
+    /**
+     * directly access the store instance
+     */
     get useStore() {
         return this.store
     }

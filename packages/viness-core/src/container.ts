@@ -11,4 +11,7 @@ function createIdentifier(id: string) {
     return () => inject(idSymbol)
 }
 
+export const service = injectable
+export const store = injectable
+
 export { createIdentifier, injectable, Container }
