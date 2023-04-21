@@ -1,31 +1,44 @@
 import { ReactNode } from 'react'
 import { RouteObject, generatePath, matchPath, useNavigate, useLocation, useParams } from 'react-router-dom'
 
-type IRouteObject = Pick<RouteObject, 'id' | 'path' | 'element'>
-
 export { useNavigate, useLocation, useParams }
 
-export interface IRoute {}
+export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
+    children?: VinessRoute[]
+}
 
 /**
- *
+ * Encapsulate the 'RouteObject' in 'react-route-dom'
+ * - Support Param & Query Defination
  */
-export class SuperRoute<
+export class VinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
-> {
+> implements VinessRouteObject
+{
     id?: string
     path: string
     element: ReactNode
-    children?: SuperRoute[]
+    children?: VinessRoute[]
+    errorElement?: React.ReactNode | null
+    Component?: React.ComponentType | null
+    ErrorBoundary?: React.ComponentType | null
+    hasErrorBoundary?: boolean
+    caseSensitive?: boolean
 
-    constructor(params: { id?: string; path: string; element: any; children?: SuperRoute[] }) {
-        const { id, path, element, children } = params
+    constructor(params: VinessRouteObject) {
+        const { id, path, element, children, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } =
+            params
 
         this.id = id
-        this.path = path
+        this.path = path || ''
         this.element = element
         this.children = children
+        this.errorElement = errorElement
+        this.Component = Component
+        this.ErrorBoundary = ErrorBoundary
+        this.hasErrorBoundary = hasErrorBoundary
+        this.caseSensitive = caseSensitive
     }
 
     /**
@@ -70,7 +83,6 @@ export class SuperRoute<
 export function createRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | number | boolean> = {}
->(routeObject: IRouteObject) {
-    const { id, path = '', element } = routeObject
-    return new SuperRoute({ id, path, element })
+>(routeObject: VinessRouteObject) {
+    return new VinessRoute(routeObject)
 }

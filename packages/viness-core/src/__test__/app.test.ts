@@ -2,10 +2,10 @@ import { inject } from 'inversify'
 import { test } from 'vitest'
 import { VinessApp } from '../app'
 import { injectable } from '../container'
-import { SuperRoute } from '../router'
+import { VinessRoute } from '../router'
 
 @injectable()
-class RouteA extends SuperRoute {
+class RouteA extends VinessRoute {
     constructor() {
         super({ id: '', path: '/test', element: null })
     }

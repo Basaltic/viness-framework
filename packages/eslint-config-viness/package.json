@@ -1,6 +1,6 @@
 {
     "name": "@viness/eslint-config",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
@@ -9,6 +9,7 @@
         "eslint-config-turbo": "latest"
     },
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
     }
 }

@@ -1,39 +1,40 @@
-import { interfaces } from 'inversify'
-import { Container } from './container'
+import { InstantiationService, ServiceRegistry } from '@viness/di'
+import { ComponentType } from 'react'
+import { FallbackProps } from 'react-error-boundary'
+import { createHashRouter } from 'react-router-dom'
 import { initI18n, InitOptions } from './i18n'
-import { SuperRoute } from './router'
-import { UIStore } from './ui-store'
+import { renderApp } from './react'
 
 export interface VinessAppConfig {
-    i18nConfig: InitOptions
+    SuspenseFallbackComponent: ComponentType
+    ErrorFallbackComponent: ComponentType<FallbackProps>
+    i18nConfig?: InitOptions
 }
 
 /**
  *
  */
 export class VinessApp {
-    private baseContainer: Container
-    private mainContainer: Container
+    readonly serviceRegistry: ServiceRegistry
+    readonly instantiationService: InstantiationService
+
+    private config?: VinessAppConfig
 
     constructor(config?: VinessAppConfig) {
-        initI18n({})
+        initI18n(config?.i18nConfig || {})
 
-        this.baseContainer = new Container({ skipBaseClassChecks: true })
+        const serviceRegistry = new ServiceRegistry()
+        const instantiationService = new InstantiationService(serviceRegistry.toServiceCollection(), true)
 
-        this.mainContainer = new Container()
+        // TODO: Pre-registered buildin service
 
-        this.mainContainer.parent = this.baseContainer
+        this.serviceRegistry = serviceRegistry
+        this.instantiationService = instantiationService
+
+        this.config = config
     }
 
-    register<T>(identifier: interfaces.ServiceIdentifier<T>, constructor: new (...args: never[]) => T) {
-        this.mainContainer.bind(identifier).to(constructor)
-    }
-
-    registerRoute<T extends interfaces.Newable<SuperRoute>>(identifier: T) {
-        this.baseContainer.bind(identifier).toSelf().inSingletonScope()
-    }
-
-    registerStore<S extends object, T extends interfaces.Newable<UIStore<S>>>(identifier: T) {
-        this.baseContainer.bind(identifier).toSelf().inSingletonScope()
+    get regiser() {
+        return this.serviceRegistry.register.bind(this)
     }
 }

@@ -1,12 +1,10 @@
-import './App.css'
-import { VinessApp, AppProvider } from '@viness/core'
+import { AppProvider } from '@viness/core'
+import { app } from './app'
 
 const ErrorFallbackComponent = () => <div>error</div>
 const SuspenseFallbackComponent = () => <div></div>
 
-function AppEntry() {
-    const app = new VinessApp()
-
+export function App() {
     return (
         <AppProvider
             app={app}
@@ -15,5 +13,3 @@ function AppEntry() {
         ></AppProvider>
     )
 }
-
-export default AppEntry

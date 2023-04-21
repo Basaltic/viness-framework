@@ -12,4 +12,4 @@ server/dist
 public/dist
 storybook-static/
 
-packages/viness-di
+# packages/viness-di

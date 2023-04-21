@@ -1,26 +1,22 @@
-import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
-
-export interface IServiceResponse<T> extends AxiosResponse<T> {
-    $data: T
-    $error: null | {
-        code: string | number
-        message: string
-    }
-    $success: boolean
-}
+import axios, { AxiosRequestConfig, AxiosInstance } from 'axios'
+import { createDecorator } from './container'
 
 /**
- * 接口返回类型
+ * Promise with cancel
  */
-export interface IServicePromise<T = any> extends Promise<IServiceResponse<T>> {
+export interface IServicePromise<T = any> extends Promise<T> {
     /**
-     * 接口发送取消
+     * cancel the request
      */
     cancel: () => void
 }
 
+export const IHttpClient = createDecorator('IHttpClient')
+
+export interface IHttpClient {}
+
 /**
- * Http Client
+ * Http Client based in axios
  */
 export class HttpClient {
     private instance: AxiosInstance

@@ -113,6 +113,9 @@ importers:
 
   packages/viness-core:
     dependencies:
+      '@viness/di':
+        specifier: workspace:*
+        version: link:../viness-di
       axios:
         specifier: ^1.3.5
         version: 1.3.5
@@ -122,9 +125,6 @@ importers:
       immer:
         specifier: ^9.0.21
         version: 9.0.21
-      inversify:
-        specifier: ^6.0.1
-        version: 6.0.1
       react-error-boundary:
         specifier: ^4.0.3
         version: 4.0.3(react@18.2.0)
@@ -137,9 +137,6 @@ importers:
       react-router-dom:
         specifier: ^6.10.0
         version: 6.10.0(react-dom@18.2.0)(react@18.2.0)
-      reflect-metadata:
-        specifier: ^0.1.13
-        version: 0.1.13
       zustand:
         specifier: ^4.3.7
         version: 4.3.7(immer@9.0.21)(react@18.2.0)
@@ -153,9 +150,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.4
         version: 18.0.9
-      '@viness/di':
-        specifier: workspace:*
-        version: link:../viness-di
       '@viness/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config-viness
@@ -9194,10 +9188,6 @@ packages:
       loose-envify: 1.4.0
     dev: false
 
-  /inversify@6.0.1:
-    resolution: {integrity: sha512-B3ex30927698TJENHR++8FfEaJGqoWOgI6ZY5Ht/nLUsFCwHn6akbwtnUAPCgUepAnTpe2qHxhDNjoKLyz6rgQ==}
-    dev: false
-
   /ip@2.0.0:
     resolution: {integrity: sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==}
     dev: true
@@ -11863,10 +11853,6 @@ packages:
       indent-string: 4.0.0
       strip-indent: 3.0.0
     dev: true
-
-  /reflect-metadata@0.1.13:
-    resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
-    dev: false
 
   /regenerate-unicode-properties@10.1.0:
     resolution: {integrity: sha512-d1VudCLoIGitcU/hEg2QqvyGZQmdC0Lf8BqdOMXGFSvJP4bNV1+XqbPQeHHLD51Jh4QJJ225dlIFvY4Ly6MXmQ==}
