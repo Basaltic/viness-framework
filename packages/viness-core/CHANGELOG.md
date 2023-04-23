@@ -1,5 +1,13 @@
 # @viness/core
 
+## 0.0.3
+
+### Patch Changes
+
+- Redesign the api
+- Updated dependencies
+  - @viness/di@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

@@ -1,9 +1,6 @@
-import { VinessRoute } from '@viness/core'
+import { VinessRoute, createRouterElement } from '@viness/core'
 
-export const test1 = new VinessRoute({ id: '', path: '/test1', element: <div></div> })
+// Define the routes
+const routes: VinessRoute[] = []
 
-export class TestRoute extends VinessRoute {
-    constructor() {
-        super({ id: '', path: '/test1', element: <div></div> })
-    }
-}
+export const router = createRouterElement(routes)

@@ -11,7 +11,7 @@ export interface IServicePromise<T = any> extends Promise<T> {
     cancel: () => void
 }
 
-export const IHttpClient = createDecorator('IHttpClient')
+export const IHttpClient = createDecorator<IHttpClient>('IHttpClient')
 
 export interface IHttpClient {}
 

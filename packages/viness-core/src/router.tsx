@@ -1,5 +1,15 @@
 import { ReactNode } from 'react'
-import { RouteObject, generatePath, matchPath, useNavigate, useLocation, useParams } from 'react-router-dom'
+import {
+    RouteObject,
+    generatePath,
+    matchPath,
+    useNavigate,
+    useLocation,
+    useParams,
+    RouterProvider,
+    createHashRouter,
+    createBrowserRouter
+} from 'react-router-dom'
 
 export { useNavigate, useLocation, useParams }
 
@@ -85,4 +95,9 @@ export function createRoute<
     Queries extends Record<string, string | number | boolean> = {}
 >(routeObject: VinessRouteObject) {
     return new VinessRoute(routeObject)
+}
+
+export function createRouterElement(routes: VinessRoute[]) {
+    const router = createHashRouter(routes)
+    return <RouterProvider router={router} />
 }

@@ -1,6 +1,7 @@
-import { ServiceIdentifier } from './instantiation'
+import { SyncDescriptor } from './descriptors'
+import { BrandedService, ServiceIdentifier } from './instantiation'
 import { InstantiationService } from './instantiation-service'
-import { ServiceRegistry } from './service-registry'
+import { InstantiationType, ServiceRegistry } from './service-registry'
 
 export class Container {
     private registory: ServiceRegistry
@@ -9,9 +10,6 @@ export class Container {
     constructor() {
         const registory = new ServiceRegistry()
 
-        // registory.register(IApple, Apple)
-        // registory.register(IPerson, Person)
-
         const serviceCollection = registory.toServiceCollection()
         const instantiationService = new InstantiationService(serviceCollection, true)
 
@@ -19,7 +17,13 @@ export class Container {
         this.instantiationService = instantiationService
     }
 
-    register<T>(sid: ServiceIdentifier<T>) {}
+    register<T, Services extends BrandedService[]>(
+        id: ServiceIdentifier<T>,
+        ctorOrDescriptor: SyncDescriptor<any> | (new (...services: Services) => T),
+        supportsDelayedInstantiation?: InstantiationType
+    ): void {
+        this.registory.register(id, ctorOrDescriptor, supportsDelayedInstantiation)
+    }
 
     get<T>(sid: ServiceIdentifier<T>) {
         return this.instantiationService.invokeFunction((accessor) => accessor.get(sid))
