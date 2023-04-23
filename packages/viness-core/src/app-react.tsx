@@ -1,19 +1,8 @@
-import { ServiceIdentifier } from '@viness/di'
-import { Suspense, ComponentType, createContext, useContext } from 'react'
+import { Suspense, ComponentType } from 'react'
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
 import { HelmetProvider } from 'react-helmet-async'
 import { VinessApp } from './app'
-
-const AppContext = createContext<VinessApp | null>(null)
-export const AppContextProvider = AppContext.Provider
-
-/**
- * Get app instance from context
- */
-export const useAppContext = () => {
-    const app = useContext(AppContext)
-    return app
-}
+import { AppContextProvider } from './app-react-context'
 
 export interface VinessReactAppProps {
     app: VinessApp
@@ -34,17 +23,4 @@ export function VinessReactApp(props: VinessReactAppProps) {
             </ErrorBoundary>
         </Suspense>
     )
-}
-
-export function renderApp(props: VinessReactAppProps) {
-    return <VinessReactApp {...props} />
-}
-
-/**
- * Get Service and auto inject service
- */
-export function useService<T>(id: ServiceIdentifier<T>) {
-    const app = useAppContext()
-    const container = app?.container
-    return container?.get(id) as T
 }

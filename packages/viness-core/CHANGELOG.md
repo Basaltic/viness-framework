@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.0.4
+
+### Patch Changes
+
+- add hooks: useServices, useApp
+
 ## 0.0.3
 
 ### Patch Changes
