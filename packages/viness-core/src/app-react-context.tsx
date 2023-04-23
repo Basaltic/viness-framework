@@ -9,5 +9,5 @@ export const AppContextProvider = AppContext.Provider
  */
 export const useAppContext = () => {
     const app = useContext(AppContext)
-    return app
+    return app as VinessApp
 }

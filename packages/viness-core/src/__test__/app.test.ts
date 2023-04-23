@@ -1,33 +1,17 @@
-import { inject } from 'inversify'
+import { generatePath } from 'react-router-dom'
 import { test } from 'vitest'
-import { VinessApp } from '../app'
-import { injectable } from '../container'
-import { VinessRoute } from '../router'
+import { createVinessApp } from '../app'
 
-@injectable()
-class RouteA extends VinessRoute {
-    constructor() {
-        super({ id: '', path: '/test', element: null })
-    }
-}
+test('app router', () => {
+    const app = createVinessApp({ i18nConfig: { debug: true } })
 
-@injectable()
-class TestA {
-    private route: RouteA
-    constructor(@inject(RouteA) route: RouteA) {
-        this.route = route
-    }
+    const LandingRoute = app.addRoute({ path: '/:test' })
 
-    toString() {
-        console.log('Hello World, Test!')
-        return 'test'
-    }
+    const AppRoute = app.addRoute({ path: '/app' })
+    const AppSubRoute = app.addChildRoute(AppRoute, { path: 'sub' })
 
-    toPathString() {
-        const path = this.route.toString({})
-        console.log(path)
-        return path
-    }
-}
+    const landingRoute = app.getRoute(LandingRoute)
 
-test('app', () => {})
+    console.log(landingRoute.getFullPath())
+    console.log(landingRoute.generatePath({ params: { test: '10' } }))
+})

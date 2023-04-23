@@ -1,3 +1,3 @@
-import { VinessApp } from '@viness/core'
+import { createVinessApp } from '@viness/core'
 
-export const app = new VinessApp()
+export const app = createVinessApp()

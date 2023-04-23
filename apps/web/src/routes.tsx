@@ -1,9 +1,9 @@
-import { VinessRoute, createRoute, createRouterElement } from '@viness/core'
+import { VinessRoute, createRouterElement } from '@viness/core'
 import LandingPage from './features/auth/pages/landing'
 
-const landing = createRoute({ path: '/', element: <LandingPage /> })
+export const landingRoute = { path: '/', element: <LandingPage /> }
 
 // Define the routes
-const routes: VinessRoute[] = [landing]
+const routes: VinessRoute[] = []
 
 export const router = createRouterElement(routes)

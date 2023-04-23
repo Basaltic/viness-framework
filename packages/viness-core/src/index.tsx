@@ -1,6 +1,6 @@
 export * from './app'
 export * from './app-react'
 export * from './app-react-hooks'
-export * from './router'
+export * from './route'
 export * from './container'
 export * from './ui-store'

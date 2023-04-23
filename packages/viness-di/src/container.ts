@@ -20,12 +20,12 @@ export class Container {
     register<T, Services extends BrandedService[]>(
         id: ServiceIdentifier<T>,
         ctorOrDescriptor: SyncDescriptor<any> | (new (...services: Services) => T),
-        supportsDelayedInstantiation?: InstantiationType
+        supportsDelayedInstantiation: InstantiationType = InstantiationType.Delayed
     ): void {
         this.registory.register(id, ctorOrDescriptor, supportsDelayedInstantiation)
     }
 
-    get<T>(sid: ServiceIdentifier<T>) {
-        return this.instantiationService.invokeFunction((accessor) => accessor.get(sid))
+    get<T>(id: ServiceIdentifier<T>) {
+        return this.instantiationService.invokeFunction((accessor) => accessor.get(id))
     }
 }

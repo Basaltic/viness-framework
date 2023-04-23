@@ -9,11 +9,20 @@ npm install --save @viness/core
 
 ```
 
+
+# Develop
+
+1. add changeset
+2. do chagneset version
+3. commit changes
+4. release
+
+
 # Roadmap
 
 ### basic
 
-- [ ] di framework
+- [x] di framework
 - [ ] api management
 - [ ] route management
 - [ ] state store management
