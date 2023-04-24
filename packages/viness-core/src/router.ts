@@ -23,6 +23,7 @@ export class VinessRouter implements IVinessRouter {
     private router?: IRouter
     private routeIdentifiers: ServiceIdentifier<VinessRoute>[] = []
     private parentToChildren = new Map<ServiceIdentifier<VinessRoute>, ServiceIdentifier<VinessRoute>[]>()
+    private childToParent = new Map<ServiceIdentifier<VinessRoute>, ServiceIdentifier<VinessRoute>>()
 
     constructor(
         @IInstantiationService private instantiationService: InstantiationService,
@@ -36,6 +37,8 @@ export class VinessRouter implements IVinessRouter {
     _getInnerRouter() {
         if (!this.router) {
             const routes = this.getRouteObjects()
+            console.log(routes)
+            console.log(this.parentToChildren)
             switch (this.config.router?.routerType) {
                 case 'memory':
                     this.router = createMemoryRouter(routes)
@@ -52,8 +55,27 @@ export class VinessRouter implements IVinessRouter {
         return this.router
     }
 
+    getParentRoute(routeId: ServiceIdentifier<VinessRoute>) {
+        const parentRouteId = this.childToParent.get(routeId)
+        if (parentRouteId) {
+            return this.instantiationService.invokeFunction((a) => a.get(parentRouteId))
+        }
+    }
+
     addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>) {
-        this.routeIdentifiers.push(routeId)
+        if (parentRouteId) {
+            const children = this.parentToChildren.get(parentRouteId)
+            if (children) {
+                children.push(routeId)
+            } else {
+                this.parentToChildren.set(parentRouteId, [routeId])
+            }
+
+            this.childToParent.set(routeId, parentRouteId)
+        } else {
+            this.parentToChildren.set(routeId, [])
+            this.routeIdentifiers.push(routeId)
+        }
     }
 
     navigate(to: string, option: NavigateOptions) {
@@ -61,9 +83,22 @@ export class VinessRouter implements IVinessRouter {
     }
 
     private getRouteObjects() {
-        const routes = this.routeIdentifiers.map((id) =>
-            this.instantiationService.invokeFunction((accessor) => accessor.get(id)._toRouteObj())
-        )
+        const routes = this.toRouteObjects(this.routeIdentifiers)
+        return routes
+    }
+
+    private toRouteObjects(ids: ServiceIdentifier<VinessRoute>[]) {
+        const routes = ids.map((id) => {
+            const childrenIds = this.parentToChildren.get(id)
+            const route = this.instantiationService.invokeFunction((accessor) => accessor.get(id))
+            const routeObj = route._toRouteObj()
+
+            if (childrenIds) {
+                routeObj.children = this.toRouteObjects(childrenIds)
+            }
+
+            return routeObj
+        })
         return routes
     }
 }

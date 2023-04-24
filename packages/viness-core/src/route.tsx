@@ -2,12 +2,10 @@ import { createDecorator, ServiceIdentifier } from '@viness/di'
 import { ReactNode } from 'react'
 import { RouteObject, generatePath, matchPath, useParams } from 'react-router-dom'
 import joinPath from './utils'
-import { IVinessRouter } from './router'
 import { generateId } from './id'
+import { IVinessRouter, VinessRouter } from './router'
 
-export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
-    children?: VinessRoute[]
-}
+export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
 
 /**
  * Encapsulate the 'RouteObject' in 'react-route-dom'
@@ -27,38 +25,23 @@ export class VinessRoute<
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
 
-    children?: VinessRoute[]
-    parent?: VinessRoute
+    router: VinessRouter
+    identifier: ServiceIdentifier<VinessRoute>
 
-    constructor(params: VinessRouteObject) {
-        const { id, path, element, children, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } =
-            params
+    constructor(params: VinessRouteObject, identifier: ServiceIdentifier<VinessRoute>, router: VinessRouter) {
+        const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params
 
-        this.id = id || generateId()
+        this.id = id || identifier.toString()
         this.path = path || ''
         this.element = element
-        this.children = children
         this.errorElement = errorElement
         this.Component = Component
         this.ErrorBoundary = ErrorBoundary
         this.hasErrorBoundary = hasErrorBoundary
         this.caseSensitive = caseSensitive
 
-        if (children) this.addChildren(...children)
-    }
-
-    /**
-     * Add child routes to this route.
-     *
-     * @param {...VinessRoute[]} children
-     */
-    addChildren(...children: VinessRoute[]) {
-        if (children) {
-            this.children = children
-            for (const child of children) {
-                child.parent = this
-            }
-        }
+        this.router = router
+        this.identifier = identifier
     }
 
     /**
@@ -106,11 +89,11 @@ export class VinessRoute<
      * Get the full path recurse to the parent
      */
     getFullPath(): string {
-        const pathList = []
-        let current: VinessRoute | undefined = this
-        while (current) {
-            pathList.unshift(current.path)
-            current = current.parent
+        const pathList = [this.path]
+        let parentRoute = this.router.getParentRoute(this.identifier)
+        while (parentRoute) {
+            pathList.unshift(parentRoute.path)
+            parentRoute = this.router.getParentRoute(parentRoute.identifier)
         }
 
         return joinPath(...pathList)
@@ -128,8 +111,7 @@ export class VinessRoute<
             Component: this.Component,
             ErrorBoundary: this.ErrorBoundary,
             hasErrorBoundary: this.hasErrorBoundary,
-            caseSensitive: this.caseSensitive,
-            children: this.children?.map((c) => c._toRouteObj())
+            caseSensitive: this.caseSensitive
         }
     }
 }
@@ -141,13 +123,14 @@ export class VinessRoute<
  * @returns
  */
 export function createRoute(routeObject: VinessRouteObject) {
+    const id = `VinessRoute_${routeObject.id || generateId()}`
+    const IRouteDecorator = createDecorator<Route>(id)
+
     class Route extends VinessRoute {
-        constructor(@IVinessRouter router: IVinessRouter) {
-            super(routeObject)
+        constructor(@IVinessRouter router: VinessRouter) {
+            super(routeObject, IRouteDecorator, router)
         }
     }
 
-    const id = `VinessRoute_${routeObject.id || generateId()}`
-    const IRouteDecorator = createDecorator<Route>(id)
     return [IRouteDecorator, Route] as [ServiceIdentifier<Route>, typeof Route]
 }

@@ -1,11 +1,10 @@
 import { useNavigate } from '@viness/core'
-import React from 'react'
 
 export default function LandingPage() {
     const navigate = useNavigate()
 
     const toPage = () => {
-        navigate('/dashboard/test')
+        navigate('/dashboard/page1')
     }
 
     return (

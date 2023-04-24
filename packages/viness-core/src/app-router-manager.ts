@@ -13,24 +13,20 @@ export class RouterManager {
         return this.container.get(parentRouteId)
     }
 
-    addRoute(routeObj: VinessRouteObject) {
+    /**
+     * add new route
+     *
+     * @param routeObj added route
+     * @param parentRouteId parent route of this added route
+     * @returns
+     */
+    addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<VinessRoute>) {
         const vinessRouter = this.container.get(IVinessRouter)
 
         const [id, Route] = createRoute(routeObj)
         this.container.register(id, Route)
 
-        vinessRouter.addRoute(id)
-        return id
-    }
-
-    addChildRoute(parentRouteId: ServiceIdentifier<VinessRoute>, childRouteObj: VinessRouteObject) {
-        const parentRoute = this.container.get(parentRouteId)
-
-        const [id, Route] = createRoute(childRouteObj)
-        this.container.register(id, Route)
-        const childRoute = this.container.get(id)
-
-        parentRoute.addChildren(childRoute)
+        vinessRouter.addRoute(id, parentRouteId)
         return id
     }
 }

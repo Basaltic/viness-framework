@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.0.6
+
+### Patch Changes
+
+- feat: combine addChildRoute to addRoute api, make the api more concise.
+
 ## 0.0.5
 
 ### Patch Changes
