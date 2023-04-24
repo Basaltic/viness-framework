@@ -10,7 +10,10 @@
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "changeset": "changeset",
         "version": "changeset version",
-        "release": "turbo run build --filter=docs^... && changeset publish"
+        "release": "turbo run build --filter=docs^... && changeset publish",
+        "docs:dev": "turbo run docs:dev",
+        "docs:build": "turbo run docs:build",
+        "docs:preview": "turbo run docs:preview"
     },
     "devDependencies": {
         "@changesets/cli": "^2.26.1",

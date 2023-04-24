@@ -11,12 +11,15 @@
             "cache": false
         },
         "lint": {},
+        "clean": {
+            "cache": false
+        },
         "dev": {
             "cache": false,
             "persistent": true
         },
-        "clean": {
-            "cache": false
-        }
+        "docs:dev": {},
+        "docs:build": {},
+        "docs:preview": {}
     }
 }

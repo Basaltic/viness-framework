@@ -1,30 +1,16 @@
 {
     "name": "@viness/docs",
     "version": "0.0.0",
-    "private": true,
+    "license": "MIT",
     "scripts": {
-        "dev": "",
-        "build": "",
-        "preview-storybook": "serve storybook-static",
-        "clean": "rm -rf .turbo && rm -rf node_modules"
+        "clean": "rm -rf .turbo && rm -rf node_modules",
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs"
     },
-    "dependencies": {
-        "@viness/core": "workspace:*",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
-    },
+    "dependencies": {},
     "devDependencies": {
-        "@viness/tsconfig": "workspace:*",
-        "@storybook/addon-actions": "^6.5.14",
-        "@storybook/addon-docs": "^6.5.14",
-        "@storybook/addon-essentials": "^6.5.14",
-        "@storybook/addon-links": "^6.5.14",
-        "@storybook/builder-vite": "^0.1.41",
-        "@storybook/react": "^6.5.14",
-        "@vitejs/plugin-react": "^1.3.2",
-        "@viness/eslint-config": "workspace:*",
-        "serve": "^13.0.4",
-        "typescript": "^4.9.3",
-        "vite": "^2.9.15"
+        "@types/node": "^18.15.13",
+        "vitepress": "1.0.0-alpha.73"
     }
 }
