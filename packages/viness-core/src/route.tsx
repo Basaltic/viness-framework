@@ -1,9 +1,8 @@
-import { createDecorator, ServiceIdentifier } from '@viness/di'
+import { ServiceIdentifier } from '@viness/di'
 import { ReactNode } from 'react'
 import { RouteObject, generatePath, matchPath, useParams } from 'react-router-dom'
-import joinPath from './utils'
-import { generateId } from './id'
-import { IVinessRouter, VinessRouter } from './router'
+import { VinessRouter } from './router'
+import { joinPath } from './utils'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
 
@@ -25,10 +24,11 @@ export class VinessRoute<
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
 
-    router: VinessRouter
-    identifier: ServiceIdentifier<VinessRoute>
-
-    constructor(params: VinessRouteObject, identifier: ServiceIdentifier<VinessRoute>, router: VinessRouter) {
+    constructor(
+        params: VinessRouteObject,
+        private identifier: ServiceIdentifier<VinessRoute>,
+        private router: VinessRouter
+    ) {
         const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params
 
         this.id = id || identifier.toString()
@@ -114,25 +114,4 @@ export class VinessRoute<
             caseSensitive: this.caseSensitive
         }
     }
-}
-
-type PublicConstructor<T> = new () => T
-
-/**
- * Create Route Identifier & Route Class
- *
- * @param routeObject
- * @returns
- */
-export function createRoute(routeObject: VinessRouteObject) {
-    const id = `VinessRoute_${routeObject.id || generateId()}`
-    const IRouteDecorator = createDecorator<VinessRoute>(id)
-
-    class Route extends VinessRoute {
-        constructor(@IVinessRouter router: VinessRouter) {
-            super(routeObject, IRouteDecorator, router)
-        }
-    }
-
-    return [IRouteDecorator, Route] as [ServiceIdentifier<VinessRoute>, PublicConstructor<VinessRoute>]
 }

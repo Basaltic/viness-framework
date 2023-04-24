@@ -1,1 +1,1 @@
-import { interfaces } from 'inversify'
+export type PublicConstructor<T> = new () => T

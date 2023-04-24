@@ -1,6 +1,7 @@
-import { ServiceIdentifier, Container } from '@viness/di'
-import { VinessRoute, VinessRouteObject, createRoute } from './route'
-import { IVinessRouter } from './router'
+import { ServiceIdentifier, Container, createDecorator } from '@viness/di'
+import { generateId } from './id'
+import { VinessRoute, VinessRouteObject } from './route'
+import { IVinessRouter, VinessRouter } from './router'
 
 export class RouterManager {
     readonly container: Container
@@ -23,10 +24,18 @@ export class RouterManager {
     addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<VinessRoute>) {
         const vinessRouter = this.container.get(IVinessRouter)
 
-        const [id, Route] = createRoute(routeObj)
-        this.container.register(id, Route)
+        const id = `VinessRoute_${routeObj.id || generateId()}`
+        const IRouteDecorator = createDecorator<VinessRoute>(id)
 
-        vinessRouter.addRoute(id, parentRouteId)
-        return id
+        class Route extends VinessRoute {
+            constructor(@IVinessRouter router: VinessRouter) {
+                super(routeObj, IRouteDecorator, router)
+            }
+        }
+
+        this.container.register(IRouteDecorator, Route)
+        vinessRouter.addRoute(IRouteDecorator, parentRouteId)
+
+        return IRouteDecorator
     }
 }

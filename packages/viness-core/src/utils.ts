@@ -19,7 +19,7 @@ export function toQueryString(obj: Record<string, string | number | boolean>) {
  * @param  {...string} segments
  * @return {string}
  */
-export default function joinPath(...segments: string[]) {
+export function joinPath(...segments: string[]) {
     const parts = segments.reduce((parts: string[], segment: string) => {
         // Remove leading slashes from non-first part.
         if (parts.length > 0) {
