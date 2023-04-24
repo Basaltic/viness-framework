@@ -16,7 +16,12 @@ export class Container {
         this.registory = registory
         this.instantiationService = instantiationService
     }
-
+    /**
+     * Register new Service to the container
+     * @param id
+     * @param ctorOrDescriptor
+     * @param supportsDelayedInstantiation
+     */
     register<T, Services extends BrandedService[]>(
         id: ServiceIdentifier<T>,
         ctorOrDescriptor: SyncDescriptor<any> | (new (...services: Services) => T),
@@ -25,6 +30,12 @@ export class Container {
         this.registory.register(id, ctorOrDescriptor, supportsDelayedInstantiation)
     }
 
+    /**
+     * Get service instance by identifier
+     *
+     * @param id
+     * @returns
+     */
     get<T>(id: ServiceIdentifier<T>) {
         return this.instantiationService.invokeFunction((accessor) => accessor.get(id))
     }

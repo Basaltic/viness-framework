@@ -2,6 +2,8 @@ import i18n, { InitOptions } from 'i18next'
 
 import { initReactI18next } from 'react-i18next'
 
+export type VinessI18nConfig<T = object> = InitOptions<T>
+
 export function initI18n<T>(option: InitOptions<T>) {
     i18n.use(initReactI18next).init({
         debug: false,

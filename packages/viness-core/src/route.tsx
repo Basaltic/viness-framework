@@ -1,11 +1,9 @@
 import { createDecorator, ServiceIdentifier } from '@viness/di'
 import { ReactNode } from 'react'
-import { RouteObject, generatePath, matchPath, useNavigate, useLocation, useParams, Outlet } from 'react-router-dom'
+import { RouteObject, generatePath, matchPath, useParams } from 'react-router-dom'
 import joinPath from './utils'
-import { nanoid } from 'nanoid'
 import { IVinessRouter } from './router'
-
-export { useNavigate, useLocation, useParams, Outlet }
+import { generateId } from './id'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
     children?: VinessRoute[]
@@ -32,13 +30,11 @@ export class VinessRoute<
     children?: VinessRoute[]
     parent?: VinessRoute
 
-    router
-
-    constructor(params: VinessRouteObject, router: IVinessRouter) {
+    constructor(params: VinessRouteObject) {
         const { id, path, element, children, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } =
             params
 
-        this.id = id
+        this.id = id || generateId()
         this.path = path || ''
         this.element = element
         this.children = children
@@ -47,8 +43,6 @@ export class VinessRoute<
         this.ErrorBoundary = ErrorBoundary
         this.hasErrorBoundary = hasErrorBoundary
         this.caseSensitive = caseSensitive
-
-        this.router = router
 
         if (children) this.addChildren(...children)
     }
@@ -68,7 +62,48 @@ export class VinessRoute<
     }
 
     /**
-     * Get the full path recurse to the top
+     * Get tha path string
+     *
+     * @param option
+     * @returns
+     */
+    generatePath(option?: { params?: Params; queries?: Queries }): string {
+        const { params = {}, queries } = option || {}
+
+        const fullPath = this.getFullPath()
+        const path = generatePath(fullPath, params)
+
+        if (queries) {
+            const searchParams = new URLSearchParams()
+            return `${path}?${searchParams.toString()}`
+        }
+
+        return path
+    }
+
+    /**
+     *
+     * @param {string} path
+     * @returns
+     */
+    matchPath(path: string) {
+        return matchPath({ path: this.path }, path)
+    }
+
+    /**
+     * Check if current path is matched to this route's path
+     */
+    isMatch(path: string): boolean {
+        const isMatch = Boolean(matchPath({ path: this.path }, path))
+        return isMatch
+    }
+
+    useParams() {
+        return useParams() as Params
+    }
+
+    /**
+     * Get the full path recurse to the parent
      */
     getFullPath(): string {
         const pathList = []
@@ -82,41 +117,20 @@ export class VinessRoute<
     }
 
     /**
-     * Get tha path string
-     *
-     * @param option
-     * @returns
+     * Convert to React-Router Object
      */
-    generatePath(option?: { params?: Params; queries?: Queries }): string {
-        const { params = {}, queries } = option || {}
-
-        let fullPath = this.getFullPath()
-        console.log('full path ===> ', fullPath)
-
-        const path = generatePath(fullPath, params)
-
-        if (queries) {
-            const searchParams = new URLSearchParams()
-            return `${path}?${searchParams.toString()}`
+    _toRouteObj(): RouteObject {
+        return {
+            id: this.id,
+            path: this.path,
+            element: this.element,
+            errorElement: this.errorElement,
+            Component: this.Component,
+            ErrorBoundary: this.ErrorBoundary,
+            hasErrorBoundary: this.hasErrorBoundary,
+            caseSensitive: this.caseSensitive,
+            children: this.children?.map((c) => c._toRouteObj())
         }
-
-        return path
-    }
-
-    matchPath(path: string) {
-        return matchPath({ path: this.path }, path)
-    }
-
-    /**
-     *
-     */
-    isMatch(path: string): boolean {
-        const isMatch = Boolean(matchPath({ path: this.path }, path))
-        return isMatch
-    }
-
-    useParams() {
-        return useParams() as Params
     }
 }
 
@@ -129,11 +143,11 @@ export class VinessRoute<
 export function createRoute(routeObject: VinessRouteObject) {
     class Route extends VinessRoute {
         constructor(@IVinessRouter router: IVinessRouter) {
-            super(routeObject, router)
+            super(routeObject)
         }
     }
 
-    const id = `VinessRoute_${routeObject.id || nanoid(8)}`
+    const id = `VinessRoute_${routeObject.id || generateId()}`
     const IRouteDecorator = createDecorator<Route>(id)
     return [IRouteDecorator, Route] as [ServiceIdentifier<Route>, typeof Route]
 }

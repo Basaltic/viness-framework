@@ -1,3 +1,11 @@
-import { nanoid } from 'nanoid'
+let id = 1
 
-export const generateRandomId = nanoid
+export const generateId = (prefix?: string) => {
+    const strId = String(id++)
+
+    if (prefix) {
+        return `prefix_${strId}`
+    }
+
+    return strId
+}

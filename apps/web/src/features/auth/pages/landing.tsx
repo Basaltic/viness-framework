@@ -1,5 +1,17 @@
+import { useNavigate } from '@viness/core'
 import React from 'react'
 
 export default function LandingPage() {
-    return <div>LandingPage</div>
+    const navigate = useNavigate()
+
+    const toPage = () => {
+        navigate('/dashboard/test')
+    }
+
+    return (
+        <div>
+            LandingPage
+            <button onClick={toPage}>test</button>
+        </div>
+    )
 }

@@ -8,13 +8,11 @@ import { IVinessRouter } from './router'
 export const AppRouter = () => {
     const app = useAppContext()
 
-    const vinessRouter = app?.container.get(IVinessRouter)
+    const vinessRouter = app?.getService(IVinessRouter)
     if (!vinessRouter) throw new Error('AppRouter is not wrapped b VinessApp')
 
-    if (vinessRouter.getRoutes().length <= 0) throw new Error('No Route is defined')
-
-    let router = vinessRouter?._getRouter()
-    if (!router) throw new Error('AppRouter is not wrapped b VinessApp')
+    let router = vinessRouter?._getInnerRouter()
+    if (!router) throw new Error('Router is not initialized')
 
     return <RouterProvider router={router} />
 }

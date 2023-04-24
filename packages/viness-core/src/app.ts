@@ -1,11 +1,8 @@
 import { Container, ServiceIdentifier } from '@viness/di'
-import { initI18n, InitOptions } from './i18n'
-import { createRoute, VinessRoute, VinessRouteObject } from './route'
+import { IVinessAppConfig, VinessAppConfig } from './app-config'
+import { RouterManager } from './app-router-manager'
+import { initI18n } from './i18n'
 import { IVinessRouter, VinessRouter } from './router'
-
-export interface VinessAppConfig {
-    i18nConfig?: InitOptions
-}
 
 /**
  *
@@ -13,50 +10,49 @@ export interface VinessAppConfig {
 export class VinessApp {
     readonly container: Container
 
-    private config?: VinessAppConfig
+    readonly router: RouterManager
 
-    constructor(container: Container, config?: VinessAppConfig) {
-        if (config?.i18nConfig) {
-            initI18n(config?.i18nConfig)
+    constructor(container: Container, config?: IVinessAppConfig) {
+        if (config?.i18n) {
+            initI18n(config?.i18n)
         }
 
-        this.config = config
         this.container = container
+        this.router = new RouterManager(container)
     }
 
-    getRoute(parentRouteId: ServiceIdentifier<VinessRoute>) {
-        return this.container.get(parentRouteId)
+    /**
+     * add new service to app
+     */
+    addService<T, Services extends {}[]>(
+        id: ServiceIdentifier<T>,
+        service: new (...services: Services) => T,
+        isLazyInit: boolean = true
+    ) {
+        const supportType = isLazyInit ? 1 : 0
+        this.container.register(id, service, supportType)
     }
 
-    addRoute(routeObj: VinessRouteObject) {
-        const vinessRouter = this.container.get(IVinessRouter)
-
-        const [id, Route] = createRoute(routeObj)
-        this.container.register(id, Route)
-        const route = this.container.get(id)
-
-        vinessRouter.addRoute(id, route)
-        return id
-    }
-
-    addChildRoute(parentRouteId: ServiceIdentifier<VinessRoute>, childRouteObj: VinessRouteObject) {
-        const parentRoute = this.container.get(parentRouteId)
-
-        const [id, Route] = createRoute(childRouteObj)
-        this.container.register(id, Route)
-        const childRoute = this.container.get(id)
-
-        parentRoute.addChildren(childRoute)
-        return id
+    /**
+     * get service instance by id
+     *
+     * @param {ServiceIdentifier<T>} service identifier
+     * @returns {T} service instance
+     */
+    getService<T>(id: ServiceIdentifier<T>) {
+        return this.container.get(id)
     }
 }
 
-export function createVinessApp(config?: VinessAppConfig) {
+export function createVinessApp(config?: IVinessAppConfig) {
     // Initialize the container
     const container = new Container()
 
     // Register the builtin features
     container.register(IVinessRouter, VinessRouter)
+    container.register(IVinessAppConfig, VinessAppConfig)
+
+    container.get(IVinessAppConfig).setConfig(config)
 
     // Initialize the app
     const app = new VinessApp(container, config)

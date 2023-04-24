@@ -1,6 +1,6 @@
 {
     "name": "@viness/core",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -10,8 +10,8 @@
         "dist/**"
     ],
     "scripts": {
-        "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
-        "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+        "build": "tsup src/index.tsx",
+        "dev": "tsup src/index.tsx --watch",
         "lint": "eslint \"src/**/*.ts*\"",
         "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
         "test": "vitest run --passWithNoTests"

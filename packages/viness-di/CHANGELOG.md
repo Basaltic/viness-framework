@@ -1,5 +1,12 @@
 # @viness/di
 
+## 0.0.4
+
+### Patch Changes
+
+- chore: add more comments
+- Add Container Class
+
 ## 0.0.3
 
 ### Patch Changes

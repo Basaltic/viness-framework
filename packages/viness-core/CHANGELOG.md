@@ -1,5 +1,15 @@
 # @viness/core
 
+## 0.0.5
+
+### Patch Changes
+
+- New Router Implementation
+- redesign the route creation api
+- Updated dependencies
+- Updated dependencies
+  - @viness/di@0.0.4
+
 ## 0.0.4
 
 ### Patch Changes
