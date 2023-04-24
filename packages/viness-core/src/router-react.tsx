@@ -1,6 +1,6 @@
 import { RouterProvider } from 'react-router-dom'
 import { useAppContext } from './app-react-context'
-import { IVinessRouter } from './router'
+import { IVinessRouter, VinessRouter } from './router'
 
 /**
  * A React Component to create Routes
@@ -8,7 +8,7 @@ import { IVinessRouter } from './router'
 export const AppRouter = () => {
     const app = useAppContext()
 
-    const vinessRouter = app?.getService(IVinessRouter)
+    const vinessRouter = app?.getService(IVinessRouter) as VinessRouter
     if (!vinessRouter) throw new Error('AppRouter is not wrapped b VinessApp')
 
     let router = vinessRouter?._getInnerRouter()

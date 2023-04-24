@@ -1,5 +1,5 @@
 import { createDecorator, IInstantiationService, InstantiationService, ServiceIdentifier } from '@viness/di'
-import { createMemoryRouter, NavigateOptions, UNSAFE_NavigationContext } from 'react-router'
+import { createMemoryRouter, NavigateOptions } from 'react-router'
 import { createBrowserRouter, createHashRouter } from 'react-router-dom'
 import { IVinessAppConfig } from './app-config'
 import { VinessRoute } from './route'
@@ -9,8 +9,6 @@ type IRouter = ReturnType<typeof createHashRouter>
 export const IVinessRouter = createDecorator<IVinessRouter>('IVinessRouter')
 
 export interface IVinessRouter {
-    _setInnerRouter(router: IRouter): void
-    _getInnerRouter(): IRouter | undefined
     addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>): void
     navigate(to: string, option: NavigateOptions): Promise<void> | undefined
 }
@@ -29,31 +27,6 @@ export class VinessRouter implements IVinessRouter {
         @IInstantiationService private instantiationService: InstantiationService,
         @IVinessAppConfig private config: IVinessAppConfig
     ) {}
-
-    _setInnerRouter(router: IRouter) {
-        this.router = router
-    }
-
-    _getInnerRouter() {
-        if (!this.router) {
-            const routes = this.getRouteObjects()
-            console.log(routes)
-            console.log(this.parentToChildren)
-            switch (this.config.router?.routerType) {
-                case 'memory':
-                    this.router = createMemoryRouter(routes)
-                    break
-                case 'hash':
-                    this.router = createHashRouter(routes)
-                    break
-                case 'browser':
-                default:
-                    this.router = createBrowserRouter(routes)
-            }
-        }
-
-        return this.router
-    }
 
     getParentRoute(routeId: ServiceIdentifier<VinessRoute>) {
         const parentRouteId = this.childToParent.get(routeId)
@@ -80,6 +53,27 @@ export class VinessRouter implements IVinessRouter {
 
     navigate(to: string, option: NavigateOptions) {
         return this.router?.navigate(to, option)
+    }
+
+    _getInnerRouter() {
+        if (!this.router) {
+            const routes = this.getRouteObjects()
+            console.log(routes)
+            console.log(this.parentToChildren)
+            switch (this.config.router?.routerType) {
+                case 'memory':
+                    this.router = createMemoryRouter(routes)
+                    break
+                case 'hash':
+                    this.router = createHashRouter(routes)
+                    break
+                case 'browser':
+                default:
+                    this.router = createBrowserRouter(routes)
+            }
+        }
+
+        return this.router
     }
 
     private getRouteObjects() {

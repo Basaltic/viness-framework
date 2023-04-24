@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.0.7
+
+### Patch Changes
+
+- fix the type error of addRoute method returned value
+
 ## 0.0.6
 
 ### Patch Changes

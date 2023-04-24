@@ -116,6 +116,8 @@ export class VinessRoute<
     }
 }
 
+type PublicConstructor<T> = new () => T
+
 /**
  * Create Route Identifier & Route Class
  *
@@ -124,7 +126,7 @@ export class VinessRoute<
  */
 export function createRoute(routeObject: VinessRouteObject) {
     const id = `VinessRoute_${routeObject.id || generateId()}`
-    const IRouteDecorator = createDecorator<Route>(id)
+    const IRouteDecorator = createDecorator<VinessRoute>(id)
 
     class Route extends VinessRoute {
         constructor(@IVinessRouter router: VinessRouter) {
@@ -132,5 +134,5 @@ export function createRoute(routeObject: VinessRouteObject) {
         }
     }
 
-    return [IRouteDecorator, Route] as [ServiceIdentifier<Route>, typeof Route]
+    return [IRouteDecorator, Route] as [ServiceIdentifier<VinessRoute>, PublicConstructor<VinessRoute>]
 }
