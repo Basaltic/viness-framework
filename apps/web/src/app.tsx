@@ -6,8 +6,8 @@ import { DashboardPage2 } from './features/dashboard/pages/dashboard-page2'
 
 export const app = createVinessApp({ router: { routerType: 'browser' } })
 
-export const LandingPageRouteId = app.router.addRoute({ path: '/', element: <LandingPage /> })
+export const LandingPageRouteId = app.addRoute({ path: '/', element: <LandingPage /> })
 
-export const DashboardRouteId = app.router.addRoute({ path: '/dashboard', element: <DashboardLayout /> })
-export const DashboardPage1RouteId = app.router.addRoute({ path: 'page1', Component: DashboardPage1 }, DashboardRouteId)
-export const DashboardPage2RouteId = app.router.addRoute({ path: 'page2', Component: DashboardPage2 }, DashboardRouteId)
+export const DashboardRouteId = app.addRoute({ path: '/dashboard', element: <DashboardLayout /> })
+export const DashboardPage1RouteId = app.addRoute({ path: 'page1', Component: DashboardPage1 }, DashboardRouteId)
+export const DashboardPage2RouteId = app.addRoute({ path: 'page2', Component: DashboardPage2 }, DashboardRouteId)

@@ -12,5 +12,9 @@
     "devDependencies": {
         "@types/node": "^18.15.13",
         "vitepress": "1.0.0-alpha.73"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
     }
 }

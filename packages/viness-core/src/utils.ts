@@ -45,3 +45,20 @@ export function joinPath(...segments: string[]) {
 
     return resultParts.join('/')
 }
+
+let id = 1
+/**
+ * Generate a auto-increment id
+ *
+ * @param prefix
+ * @returns
+ */
+export const generateId = (prefix?: string) => {
+    const strId = String(id++)
+
+    if (prefix) {
+        return `prefix_${strId}`
+    }
+
+    return strId
+}

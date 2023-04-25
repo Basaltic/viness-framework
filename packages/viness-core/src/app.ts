@@ -1,24 +1,18 @@
-import { Container, ServiceIdentifier } from '@viness/di'
+import { Container, createDecorator, IInstantiationService, ServiceIdentifier } from '@viness/di'
 import { IVinessAppConfig, VinessAppConfig } from './app-config'
-import { RouterManager } from './app-router-manager'
 import { initI18n } from './i18n'
+import { VinessRouteObject, VinessRoute } from './route'
 import { IVinessRouter, VinessRouter } from './router'
+import { generateId } from './utils'
 
 /**
- *
+ * Manage all the instances
  */
 export class VinessApp {
     readonly container: Container
 
-    readonly router: RouterManager
-
-    constructor(container: Container, config?: IVinessAppConfig) {
-        if (config?.i18n) {
-            initI18n(config?.i18n)
-        }
-
+    constructor(container: Container) {
         this.container = container
-        this.router = new RouterManager(container)
     }
 
     /**
@@ -42,6 +36,31 @@ export class VinessApp {
     getService<T>(id: ServiceIdentifier<T>) {
         return this.container.get(id)
     }
+
+    /**
+     * add new route
+     *
+     * @param routeObj added route
+     * @param parentRouteId parent route of this added route
+     * @returns
+     */
+    addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<VinessRoute>) {
+        const vinessRouter = this.container.get(IVinessRouter)
+
+        const id = `VinessRoute_${routeObj.id || generateId()}`
+        const IRouteDecorator = createDecorator<VinessRoute>(id)
+
+        class Route extends VinessRoute {
+            constructor(@IInstantiationService instantiationService: IInstantiationService) {
+                super(routeObj, IRouteDecorator, instantiationService)
+            }
+        }
+
+        this.container.register(IRouteDecorator, Route)
+        vinessRouter.addRoute(IRouteDecorator, parentRouteId)
+
+        return IRouteDecorator
+    }
 }
 
 export function createVinessApp(config?: IVinessAppConfig) {
@@ -49,12 +68,19 @@ export function createVinessApp(config?: IVinessAppConfig) {
     const container = new Container()
 
     // Register the builtin features
+    // - router
+    // - aoo configuration
     container.register(IVinessRouter, VinessRouter)
     container.register(IVinessAppConfig, VinessAppConfig)
 
     container.get(IVinessAppConfig).setConfig(config)
 
+    // initialize features
+    if (config?.i18n?.resources) {
+        initI18n(config?.i18n)
+    }
+
     // Initialize the app
-    const app = new VinessApp(container, config)
+    const app = new VinessApp(container)
     return app
 }

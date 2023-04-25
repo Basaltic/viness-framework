@@ -1,14 +1,13 @@
-import { ServiceIdentifier } from '@viness/di'
 import { ReactNode } from 'react'
+import { IInstantiationService, ServiceIdentifier } from '@viness/di'
 import { RouteObject, generatePath, matchPath, useParams } from 'react-router-dom'
-import { VinessRouter } from './router'
+import { IVinessRouter, NavOption, VinessRouter } from './router'
 import { joinPath } from './utils'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
 
 /**
- * Encapsulate the 'RouteObject' in 'react-route-dom'
- * - Support Param & Query Defination
+ * Route
  */
 export class VinessRoute<
     Params extends Record<string, string | number | boolean> = {},
@@ -24,10 +23,13 @@ export class VinessRoute<
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
 
+    identifier: ServiceIdentifier<VinessRoute>
+    instantiantionService: IInstantiationService
+
     constructor(
         params: VinessRouteObject,
-        private identifier: ServiceIdentifier<VinessRoute>,
-        private router: VinessRouter
+        identifier: ServiceIdentifier<VinessRoute>,
+        instantiantionService: IInstantiationService
     ) {
         const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params
 
@@ -40,8 +42,37 @@ export class VinessRoute<
         this.hasErrorBoundary = hasErrorBoundary
         this.caseSensitive = caseSensitive
 
-        this.router = router
         this.identifier = identifier
+        this.instantiantionService = instantiantionService
+    }
+
+    /**
+     * Go tho this route path
+     *
+     * @param option
+     */
+    go(config?: { params?: Params; queries?: Queries }) {
+        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
+        const path = this.generatePath(config)
+        return router.go(path)
+    }
+
+    /**
+     * Push this route path to the history stack with state
+     */
+    push(config?: { params?: Params; queries?: Queries }, options?: NavOption) {
+        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
+        const path = this.generatePath(config)
+        return router.push(path, options)
+    }
+
+    /**
+     * Replace to this route path
+     */
+    replace(config?: { params?: Params; queries?: Queries }, options?: NavOption) {
+        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
+        const path = this.generatePath(config)
+        return router.replace(path, options)
     }
 
     /**
@@ -81,6 +112,9 @@ export class VinessRoute<
         return isMatch
     }
 
+    /**
+     * React hook to get current path params in the react component
+     */
     useParams() {
         return useParams() as Params
     }
@@ -89,18 +123,19 @@ export class VinessRoute<
      * Get the full path recurse to the parent
      */
     getFullPath(): string {
+        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
         const pathList = [this.path]
-        let parentRoute = this.router.getParentRoute(this.identifier)
+        let parentRoute = router.getParentRoute(this.identifier)
         while (parentRoute) {
             pathList.unshift(parentRoute.path)
-            parentRoute = this.router.getParentRoute(parentRoute.identifier)
+            parentRoute = router.getParentRoute(parentRoute.identifier)
         }
 
         return joinPath(...pathList)
     }
 
     /**
-     * Convert to React-Router Object
+     * Convert to React-Router Route Object
      */
     _toRouteObj(): RouteObject {
         return {

@@ -5,12 +5,16 @@ import { IVinessAppConfig } from './app-config'
 import { VinessRoute } from './route'
 
 type IRouter = ReturnType<typeof createHashRouter>
+export type NavOption = Pick<NavigateOptions, 'state' | 'preventScrollReset'>
 
 export const IVinessRouter = createDecorator<IVinessRouter>('IVinessRouter')
 
 export interface IVinessRouter {
     addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>): void
     navigate(to: string, option: NavigateOptions): Promise<void> | undefined
+    go(to: string): Promise<void> | undefined
+    push(to: string, option: Pick<NavigateOptions, 'state' | 'preventScrollReset'>): Promise<void> | undefined
+    replace(to: string, option: Pick<NavigateOptions, 'state' | 'preventScrollReset'>): Promise<void> | undefined
 }
 
 export interface VinessRouterConfig {
@@ -27,6 +31,22 @@ export class VinessRouter implements IVinessRouter {
         @IInstantiationService private instantiationService: InstantiationService,
         @IVinessAppConfig private config: IVinessAppConfig
     ) {}
+
+    navigate(to: string, option?: NavigateOptions) {
+        return this.router?.navigate(to, option)
+    }
+
+    go(to: string): Promise<void> | undefined {
+        return this.navigate(to)
+    }
+
+    push(to: string, option: NavOption = {}): Promise<void> | undefined {
+        return this.navigate(to, option)
+    }
+
+    replace(to: string, option: NavOption = {}): Promise<void> | undefined {
+        return this.navigate(to, { replace: true, ...option })
+    }
 
     getParentRoute(routeId: ServiceIdentifier<VinessRoute>) {
         const parentRouteId = this.childToParent.get(routeId)
@@ -49,10 +69,6 @@ export class VinessRouter implements IVinessRouter {
             this.parentToChildren.set(routeId, [])
             this.routeIdentifiers.push(routeId)
         }
-    }
-
-    navigate(to: string, option: NavigateOptions) {
-        return this.router?.navigate(to, option)
     }
 
     _getInnerRouter() {

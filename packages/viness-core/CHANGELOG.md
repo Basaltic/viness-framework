@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.1.0
+
+### Minor Changes
+
+- add route hooks & add navigate methods in router & route object
+
 ## 0.0.8
 
 ### Patch Changes

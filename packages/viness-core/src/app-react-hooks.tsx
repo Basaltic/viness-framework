@@ -2,6 +2,7 @@ import { ServiceIdentifier } from '@viness/di'
 import { VinessApp } from './app'
 import { useAppContext } from './app-react-context'
 import { VinessRoute } from './route'
+import { IVinessRouter } from './router'
 
 /**
  * Get the Viness App instance
@@ -20,7 +21,23 @@ export function useService<T>(id: ServiceIdentifier<T>) {
     return container?.get(id) as T
 }
 
+/**
+ * Get specific Route Instance by id in FC
+ *
+ * @param id
+ * @returns {VinessRoute}
+ */
 export function useRoute(id: ServiceIdentifier<VinessRoute>) {
     const app = useAppContext()
     return app?.getService(id)
+}
+
+/**
+ * Get 'Router' instance in FC
+ *
+ * @returns {IVinessRouter}
+ */
+export const useRouter = () => {
+    const app = useAppContext()
+    return app.getService(IVinessRouter)
 }
