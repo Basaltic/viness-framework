@@ -12,4 +12,5 @@ server/dist
 public/dist
 storybook-static/
 
-# packages/viness-di
+apps/docs/src/.vitepres/cache/*
+
