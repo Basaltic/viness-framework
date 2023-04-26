@@ -5,7 +5,7 @@ An out-of-box application framework focused on business logic and easy to use. I
 # Get Start
 
 ```bash
-npm install --save @viness/core
+npm install --save @viness/react
 
 ```
 
@@ -26,10 +26,10 @@ npm install --save @viness/core
 - [ ] api management
 - [ ] route management
 - [ ] state store management
-- [ ] support i18n
-- [ ] add more documents
+- [ ] i18n
+- [ ] form state management
+- [x] setup document site
 - [ ] template & examples
-- [ ] test cases
 
 
 
