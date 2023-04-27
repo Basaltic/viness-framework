@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
-import { IInstantiationService, ServiceIdentifier } from '@viness/di'
+import { type ServiceIdentifier } from '@viness/di'
 import { RouteObject, generatePath, matchPath, useParams } from 'react-router-dom'
-import { IVinessRouter, NavOption, VinessRouter } from './router'
+import { IVinessRouter, NavOption } from './router'
 import { joinPath } from './utils'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
@@ -23,13 +23,15 @@ export class VinessRoute<
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
 
-    identifier: ServiceIdentifier<VinessRoute>
-    instantiantionService: IInstantiationService
+    private router: IVinessRouter
+    private identifier: ServiceIdentifier<VinessRoute>
+    private parentIdentifier?: ServiceIdentifier<VinessRoute>
 
     constructor(
         params: VinessRouteObject,
         identifier: ServiceIdentifier<VinessRoute>,
-        instantiantionService: IInstantiationService
+        parentIdentifier: ServiceIdentifier<VinessRoute>,
+        router: IVinessRouter
     ) {
         const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params
 
@@ -43,7 +45,8 @@ export class VinessRoute<
         this.caseSensitive = caseSensitive
 
         this.identifier = identifier
-        this.instantiantionService = instantiantionService
+        this.parentIdentifier = parentIdentifier
+        this.router = router
     }
 
     /**
@@ -52,7 +55,7 @@ export class VinessRoute<
      * @param option
      */
     go(config?: { params?: Params; queries?: Queries }) {
-        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
+        const router = this.router
         const path = this.generatePath(config)
         return router.go(path)
     }
@@ -61,7 +64,7 @@ export class VinessRoute<
      * Push this route path to the history stack with state
      */
     push(config?: { params?: Params; queries?: Queries }, options?: NavOption) {
-        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
+        const router = this.router
         const path = this.generatePath(config)
         return router.push(path, options)
     }
@@ -70,9 +73,23 @@ export class VinessRoute<
      * Replace to this route path
      */
     replace(config?: { params?: Params; queries?: Queries }, options?: NavOption) {
-        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
+        const router = this.router
         const path = this.generatePath(config)
         return router.replace(path, options)
+    }
+
+    /**
+     * Get the full path recurse to the parent
+     */
+    getPath(): string {
+        if (this.parentIdentifier) {
+            const parentRoute = this.router.getRoute(this.parentIdentifier)
+            const parentPath = parentRoute.getPath()
+
+            return joinPath(parentPath, this.path)
+        } else {
+            return this.path
+        }
     }
 
     /**
@@ -84,11 +101,11 @@ export class VinessRoute<
     generatePath(option?: { params?: Params; queries?: Queries }): string {
         const { params = {}, queries } = option || {}
 
-        const fullPath = this.getFullPath()
+        const fullPath = this.getPath()
         const path = generatePath(fullPath, params)
 
         if (queries) {
-            const searchParams = new URLSearchParams()
+            const searchParams = new URLSearchParams(queries as any)
             return `${path}?${searchParams.toString()}`
         }
 
@@ -117,21 +134,6 @@ export class VinessRoute<
      */
     useParams() {
         return useParams() as Params
-    }
-
-    /**
-     * Get the full path recurse to the parent
-     */
-    getFullPath(): string {
-        const router = this.instantiantionService.invokeFunction((a) => a.get(IVinessRouter)) as VinessRouter
-        const pathList = [this.path]
-        let parentRoute = router.getParentRoute(this.identifier)
-        while (parentRoute) {
-            pathList.unshift(parentRoute.path)
-            parentRoute = router.getParentRoute(parentRoute.identifier)
-        }
-
-        return joinPath(...pathList)
     }
 
     /**

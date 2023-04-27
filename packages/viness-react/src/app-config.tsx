@@ -5,15 +5,15 @@ import { VinessRouterConfig } from './router'
 export const IVinessAppConfig = createDecorator<VinessAppConfig>('IVinessAppConfig')
 
 export interface IVinessAppConfig {
-    i18n?: VinessI18nConfig
-    router?: VinessRouterConfig
+    readonly i18n?: VinessI18nConfig
+    readonly router?: VinessRouterConfig
 }
 
 export class VinessAppConfig implements IVinessAppConfig {
-    i18n?: VinessI18nConfig
-    router?: VinessRouterConfig
+    readonly i18n?: VinessI18nConfig
+    readonly router?: VinessRouterConfig
 
-    setConfig(config?: IVinessAppConfig) {
+    constructor(config: IVinessAppConfig) {
         if (!config) return
         const { i18n, router } = config
         this.i18n = i18n

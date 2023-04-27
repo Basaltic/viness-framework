@@ -1,4 +1,4 @@
-import { Outlet } from '@viness/core'
+import { Outlet } from '@viness/react'
 
 export function DashboardLayout() {
     return (

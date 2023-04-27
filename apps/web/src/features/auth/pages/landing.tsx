@@ -1,4 +1,4 @@
-import { useNavigate } from '@viness/core'
+import { useNavigate } from '@viness/react'
 
 export default function LandingPage() {
     const navigate = useNavigate()

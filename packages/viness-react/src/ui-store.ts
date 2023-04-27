@@ -1,11 +1,16 @@
-import { StoreApi, UseBoundStore } from 'zustand'
-import { createStore } from 'zustand/vanilla'
+import { StoreApi, UseBoundStore, create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { ServiceIdentifier } from '@viness/di'
 
 export type StoreInstanceId = string | number
 export type StoreIdentifier<T> = (instanceId: string | number) => ServiceIdentifier<T>
+
+type ExtractState<S> = S extends {
+    getState: () => infer T
+}
+    ? T
+    : never
 
 type WithSelectors<S> = S extends { getState: () => infer T } ? S & { use: { [K in keyof T]: () => T[K] } } : never
 
@@ -21,34 +26,46 @@ const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) 
     return store
 }
 
-export function createStoreIdentifier() {}
-
 /**
  * extend this class to create ui store
  */
 export class UIStore<S extends object> {
-    protected store: UseBoundStore<StoreApi<S>>
+    protected store: WithSelectors<UseBoundStore<StoreApi<S>>>
 
     constructor(defaultState: S, name?: string) {
+        let store: any
         if (process.env.NODE_ENV === 'development') {
-            this.store = createStore(devtools(immer(() => defaultState))) as any
+            store = create(
+                devtools(
+                    immer(() => defaultState),
+                    { name }
+                )
+            )
         } else {
-            this.store = createStore(immer(() => defaultState)) as any
+            store = create(immer(() => defaultState))
         }
+
+        this.store = createSelectors(store)
     }
 
     /**
-     * auto selectors for the first level of the state object
+     * auto generated selectors of the object keys
+     *  ** use this function in react function components **
      */
-    get useSelectors() {
-        return createSelectors(this.store)
+    get use() {
+        return this.store.use
     }
 
     /**
-     * directly access the store instance
+     * subscribe the state with custom selectors
+     * ** use this function in react function components **
+     *
+     * @param selector
+     * @param equals
+     * @returns
      */
-    get useStore() {
-        return this.store
+    useState<U>(selector: (state: ExtractState<UseBoundStore<StoreApi<S>>>) => U, equals?: (a: U, b: U) => boolean): U {
+        return this.store(selector, equals)
     }
 
     /**

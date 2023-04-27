@@ -1,8 +1,10 @@
-import { createDecorator, IInstantiationService, InstantiationService, ServiceIdentifier } from '@viness/di'
+import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
 import { createMemoryRouter, NavigateOptions } from 'react-router'
 import { createBrowserRouter, createHashRouter } from 'react-router-dom'
+import { container, createDecorator } from './container'
 import { IVinessAppConfig } from './app-config'
-import { VinessRoute } from './route'
+import { VinessRoute, VinessRouteObject } from './route'
+import { generateId } from './utils'
 
 type IRouter = ReturnType<typeof createHashRouter>
 export type NavOption = Pick<NavigateOptions, 'state' | 'preventScrollReset'>
@@ -10,11 +12,53 @@ export type NavOption = Pick<NavigateOptions, 'state' | 'preventScrollReset'>
 export const IVinessRouter = createDecorator<IVinessRouter>('IVinessRouter')
 
 export interface IVinessRouter {
-    addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>): void
-    navigate(to: string, option: NavigateOptions): Promise<void> | undefined
+    /**
+     * add new route
+     *
+     * @param routeObj added route
+     * @param parentRouteId parent route of this added route
+     * @returns
+     */
+    addRoute(
+        routeObj: VinessRouteObject,
+        parentRouteId?: ServiceIdentifier<VinessRoute>
+    ): ServiceIdentifier<VinessRoute<{}, {}>>
+    /**
+     * get route instance by id
+     *
+     * @param id
+     */
+    getRoute<
+        P extends Record<string, string | number | boolean>,
+        Q extends Record<string, string | string[]>,
+        T extends VinessRoute<P, Q>
+    >(
+        id: ServiceIdentifier<T>
+    ): T
+    /**
+     * go to a specific route path
+     *
+     * @param to
+     */
     go(to: string): Promise<void> | undefined
-    push(to: string, option: Pick<NavigateOptions, 'state' | 'preventScrollReset'>): Promise<void> | undefined
-    replace(to: string, option: Pick<NavigateOptions, 'state' | 'preventScrollReset'>): Promise<void> | undefined
+    /**
+     * go to a specific route path with nav options
+     *
+     * @param to
+     */
+    push(to: string, option?: NavOption): Promise<void> | undefined
+    /**
+     * replace current route path to a specific route path with nav options
+     *
+     * @param to
+     */
+    replace(to: string, option?: NavOption): Promise<void> | undefined
+    /**
+     * navigate to a specific route path with full nav options
+     *
+     * @param to
+     */
+    navigate(to: string, option: NavigateOptions): Promise<void> | undefined
 }
 
 export interface VinessRouterConfig {
@@ -27,14 +71,7 @@ export class VinessRouter implements IVinessRouter {
     private parentToChildren = new Map<ServiceIdentifier<VinessRoute>, ServiceIdentifier<VinessRoute>[]>()
     private childToParent = new Map<ServiceIdentifier<VinessRoute>, ServiceIdentifier<VinessRoute>>()
 
-    constructor(
-        @IInstantiationService private instantiationService: InstantiationService,
-        @IVinessAppConfig private config: IVinessAppConfig
-    ) {}
-
-    navigate(to: string, option?: NavigateOptions) {
-        return this.router?.navigate(to, option)
-    }
+    constructor(@IVinessAppConfig private config: IVinessAppConfig) {}
 
     go(to: string): Promise<void> | undefined {
         return this.navigate(to)
@@ -48,14 +85,37 @@ export class VinessRouter implements IVinessRouter {
         return this.navigate(to, { replace: true, ...option })
     }
 
-    getParentRoute(routeId: ServiceIdentifier<VinessRoute>) {
-        const parentRouteId = this.childToParent.get(routeId)
-        if (parentRouteId) {
-            return this.instantiationService.invokeFunction((a) => a.get(parentRouteId))
-        }
+    navigate(to: string, option?: NavigateOptions) {
+        return this.router?.navigate(to, option)
     }
 
-    addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>) {
+    /**
+     * add new route
+     *
+     * @param routeObj added route
+     * @param parentRouteId parent route of this added route
+     * @returns
+     */
+    addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<VinessRoute>) {
+        const id = `VinessRoute_${routeObj.id || generateId()}`
+        const IRouteDecorator = createDecorator<VinessRoute>(id)
+
+        const descriptor = new SyncDescriptor(VinessRoute, [routeObj, id, parentRouteId, this], true)
+        container.register(IRouteDecorator, descriptor)
+        this._addRoute(IRouteDecorator, parentRouteId)
+
+        return IRouteDecorator
+    }
+
+    getRoute<
+        P extends Record<string, string | number | boolean>,
+        Q extends Record<string, string | string[]>,
+        T extends VinessRoute<P, Q>
+    >(id: ServiceIdentifier<T>): T {
+        return container.get<T>(id) as T
+    }
+
+    private _addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>) {
         if (parentRouteId) {
             const children = this.parentToChildren.get(parentRouteId)
             if (children) {
@@ -71,11 +131,9 @@ export class VinessRouter implements IVinessRouter {
         }
     }
 
-    _getInnerRouter() {
+    private _getInnerRouter() {
         if (!this.router) {
-            const routes = this.getRouteObjects()
-            console.log(routes)
-            console.log(this.parentToChildren)
+            const routes = this._getRouteObjects()
             switch (this.config.router?.routerType) {
                 case 'memory':
                     this.router = createMemoryRouter(routes)
@@ -92,19 +150,19 @@ export class VinessRouter implements IVinessRouter {
         return this.router
     }
 
-    private getRouteObjects() {
-        const routes = this.toRouteObjects(this.routeIdentifiers)
+    private _getRouteObjects() {
+        const routes = this._toRouteObjects(this.routeIdentifiers)
         return routes
     }
 
-    private toRouteObjects(ids: ServiceIdentifier<VinessRoute>[]) {
+    private _toRouteObjects(ids: ServiceIdentifier<VinessRoute>[]) {
         const routes = ids.map((id) => {
             const childrenIds = this.parentToChildren.get(id)
-            const route = this.instantiationService.invokeFunction((accessor) => accessor.get(id))
+            const route = container.get(id)
             const routeObj = route._toRouteObj()
 
             if (childrenIds) {
-                routeObj.children = this.toRouteObjects(childrenIds)
+                routeObj.children = this._toRouteObjects(childrenIds)
             }
 
             return routeObj

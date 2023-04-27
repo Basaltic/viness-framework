@@ -2,7 +2,7 @@ import './index.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { AppRouter, VinessReactApp } from '@viness/core'
+import { AppRouter, VinessReactApp } from '@viness/react'
 import { app } from './app'
 
 const ErrorFallbackComponent = () => <div>error</div>

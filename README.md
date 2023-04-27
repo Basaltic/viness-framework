@@ -1,6 +1,8 @@
 # Viness
 
-An out-of-box application framework focused on business logic and easy to use. It's especially suitable for single page applications.
+(WIP)An out-of-box application framework focused on business logic and easy to use. It's especially suitable for single page applications.
+
+
 
 # Get Start
 
@@ -23,7 +25,8 @@ npm install --save @viness/react
 ### basic
 
 - [x] di framework
-- [ ] api management & data fetch hooks
+- [x] api management
+- [ ] data fetch hooks
 - [ ] route management
 - [ ] state store management
 - [ ] i18n

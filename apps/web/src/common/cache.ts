@@ -1,1 +1,1 @@
-import {} from '@viness/core'
+import {} from '@viness/react'
