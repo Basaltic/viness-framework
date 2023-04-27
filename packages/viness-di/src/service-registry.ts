@@ -31,10 +31,12 @@ export interface IServiceRegistry {
 }
 
 /**
- * 服务注册器，服务的表示和服务实现本身（描述符）注册进去，后续需要获取对应的描述符来创建服务实例
+ * Manage the registered service
  */
 export class ServiceRegistry implements IServiceRegistry {
     private collection: ServiceCollection = new ServiceCollection()
+
+    private descriptorCollection: ServiceCollection = new ServiceCollection()
 
     register<T, Services extends BrandedService[]>(
         id: ServiceIdentifier<T>,
@@ -50,9 +52,14 @@ export class ServiceRegistry implements IServiceRegistry {
         }
 
         this.collection.set(id, ctorOrDescriptor)
+        this.descriptorCollection.set(id, ctorOrDescriptor)
     }
 
-    toServiceCollection() {
+    getServiceCollection() {
         return this.collection
+    }
+
+    getServiceDescriptorCollection() {
+        return this.descriptorCollection
     }
 }

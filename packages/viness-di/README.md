@@ -29,3 +29,7 @@ class TestService implements ITestService {
 
 container.register(ITestService, TestService)
 ```
+
+# Roadmap
+
+- [ ] support initialize mult-isntances of a service

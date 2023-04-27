@@ -23,7 +23,7 @@ npm install --save @viness/react
 ### basic
 
 - [x] di framework
-- [ ] api management
+- [ ] api management & data fetch hooks
 - [ ] route management
 - [ ] state store management
 - [ ] i18n

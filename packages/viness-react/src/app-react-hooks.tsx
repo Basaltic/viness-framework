@@ -17,8 +17,7 @@ export function useApp() {
  */
 export function useService<T>(id: ServiceIdentifier<T>) {
     const app = useAppContext()
-    const container = app?.container
-    return container?.get(id) as T
+    return app?.getService(id) as T
 }
 
 /**

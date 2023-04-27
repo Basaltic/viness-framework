@@ -60,6 +60,8 @@ export interface ServiceIdentifier<T> {
     type: T
 }
 
+export type ServiceInstanceIdentifier = string | number
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 function storeServiceDependency(id: Function, target: Function, index: number): void {
     if ((target as any)[_util.DI_TARGET] === target) {

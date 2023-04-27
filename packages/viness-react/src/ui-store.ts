@@ -2,6 +2,10 @@ import { StoreApi, UseBoundStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+import { ServiceIdentifier } from '@viness/di'
+
+export type StoreInstanceId = string | number
+export type StoreIdentifier<T> = (instanceId: string | number) => ServiceIdentifier<T>
 
 type WithSelectors<S> = S extends { getState: () => infer T } ? S & { use: { [K in keyof T]: () => T[K] } } : never
 
@@ -16,6 +20,8 @@ const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) 
 
     return store
 }
+
+export function createStoreIdentifier() {}
 
 /**
  * extend this class to create ui store
@@ -48,7 +54,7 @@ export class UIStore<S extends object> {
     /**
      * get the actually state object in the store
      */
-    protected getState() {
+    getState() {
         return this.store.getState()
     }
 

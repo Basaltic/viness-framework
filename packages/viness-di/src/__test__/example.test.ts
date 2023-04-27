@@ -9,12 +9,12 @@ describe('DI', () => {
     test('example', () => {
         const registory = new ServiceRegistry()
         registory.register(IApple, Apple)
-        const serviceCollection = registory.toServiceCollection()
+        const serviceCollection = registory.getServiceCollection()
         const instantiationService = new InstantiationService(serviceCollection, true)
 
         const registory2 = new ServiceRegistry()
         registory2.register(IPerson, Person)
-        const serviceCollection2 = registory2.toServiceCollection()
+        const serviceCollection2 = registory2.getServiceCollection()
 
         const instantiationService2 = instantiationService.createChild(serviceCollection2)
 

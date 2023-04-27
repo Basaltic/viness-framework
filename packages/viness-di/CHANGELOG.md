@@ -1,5 +1,11 @@
 # @viness/di
 
+## 0.0.5
+
+### Patch Changes
+
+- support initialize mutli-instance with the same service identifier
+
 ## 0.0.4
 
 ### Patch Changes

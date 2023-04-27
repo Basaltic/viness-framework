@@ -1,14 +1,12 @@
-import { generatePath } from 'react-router-dom'
 import { test, assert } from 'vitest'
 import { createVinessApp } from '../app'
-import { IVinessRouter } from '../router'
 
 test('app router', () => {
     const app = createVinessApp()
 
-    const level1 = app.router.addRoute({ path: '/level1' })
-    const level21 = app.router.addRoute({ path: 'level21' }, level1)
-    const level22 = app.router.addRoute({ path: ':level22' }, level1)
+    const level1 = app.addRoute({ path: '/level1' })
+    const level21 = app.addRoute({ path: 'level21' }, level1)
+    const level22 = app.addRoute({ path: ':level22' }, level1)
 
     const level21Route = app.getService(level21)
 
