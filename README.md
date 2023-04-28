@@ -31,7 +31,9 @@ npm install --save @viness/react
 - [ ] state store management
 - [ ] i18n
 - [ ] form state management
-- [x] setup document site
+- [ ] document
+    - [x] setup site
+    - [ ] add basic documents
 - [ ] template & examples
 
 

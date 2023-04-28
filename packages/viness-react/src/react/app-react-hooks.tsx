@@ -49,7 +49,7 @@ export function useRoute(id: ServiceIdentifier<VinessRoute>) {
  */
 export function useStore<S extends object, T extends UIStore<S>>(
     id: ServiceIdentifier<T>,
-    instanceId: ServiceInstanceIdentifier
+    instanceId?: ServiceInstanceIdentifier
 ) {
     const app = useAppContext()
     return app?.stores.getStore(id, instanceId)

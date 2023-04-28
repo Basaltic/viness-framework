@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.2.1
+
+### Patch Changes
+
+- fix: fix the import error & type file was not emited issue
+
 ## 0.2.0
 
 ### Minor Changes

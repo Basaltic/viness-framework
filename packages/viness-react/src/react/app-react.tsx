@@ -1,7 +1,7 @@
 import { Suspense, ComponentType } from 'react'
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
 import { HelmetProvider } from 'react-helmet-async'
-import { VinessApp } from './app'
+import { VinessApp } from '../app'
 import { AppContextProvider } from './app-react-context'
 
 export interface VinessReactAppProps {
