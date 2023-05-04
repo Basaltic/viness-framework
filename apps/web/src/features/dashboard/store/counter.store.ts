@@ -1,13 +1,17 @@
-import { createDecorator, UIStore } from '@viness/react'
+import { createDecorator, UIStore, useStore } from '@viness/react'
 
 export const ICounterStore = createDecorator<CounterStore>('ICounterStore')
 
+export const useCounterStore = () => useStore(ICounterStore)
+
 interface CounterState {
     count: number
+    selectedIds: Record<string, any>
 }
 
 const defaultCountareState: CounterState = {
-    count: 0
+    count: 0,
+    selectedIds: {}
 }
 
 export class CounterStore extends UIStore<CounterState> {
@@ -16,10 +20,26 @@ export class CounterStore extends UIStore<CounterState> {
     }
 
     increase() {
-        this.setState((s) => ({ count: s.count + 1 }))
+        this.setState((s) => {
+            s.count += 1
+        })
     }
 
     decrease() {
-        this.setState((s) => ({ count: s.count - 1 }))
+        this.setState((s) => {
+            s.count -= 1
+        })
+    }
+
+    select(id: string) {
+        this.setState((s) => {
+            s.selectedIds[id] = 1
+        })
+    }
+
+    deselect(id: string) {
+        this.setState((s) => {
+            delete s.selectedIds[id]
+        })
     }
 }

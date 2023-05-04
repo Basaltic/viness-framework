@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.2.3
+
+### Patch Changes
+
+- fix: ui store ts type issue
+
 ## 0.2.2
 
 ### Patch Changes

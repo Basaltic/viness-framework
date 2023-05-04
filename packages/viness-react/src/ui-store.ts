@@ -85,7 +85,7 @@ export class UIStore<S extends object> {
     /**
      * change the state
      */
-    protected setState(updater: S | Partial<S> | ((state: S) => S | Partial<S>), replace?: boolean) {
-        this.store.setState(updater, replace)
+    protected setState(updater: S | Partial<S> | ((state: S) => S | Partial<S> | void), replace?: boolean) {
+        this.store.setState(updater as any, replace)
     }
 }
