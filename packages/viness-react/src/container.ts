@@ -4,6 +4,7 @@ import {
     ServiceIdentifier,
     ServiceInstanceIdentifier
 } from '@viness/di'
+import { enableAllPlugins } from 'immer'
 import { UIStore } from '.'
 import { generateId } from './utils'
 
@@ -54,6 +55,10 @@ export class ServiceContainer {
 export const IStoreContainer = createDecorator<StoreContainer>('IStores')
 
 export class StoreContainer {
+    constructor() {
+        enableAllPlugins()
+    }
+
     /**
      * Add UIStore to the app
      *

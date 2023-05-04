@@ -18,7 +18,7 @@ export interface IVinessRoute<
     ErrorBoundary?: React.ComponentType | null
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
-    identifier: ServiceIdentifier<VinessRoute>
+    identifier: ServiceIdentifier<IVinessRoute>
     /**
      * Go tho this route path
      *
@@ -84,13 +84,13 @@ export class VinessRoute<
     caseSensitive?: boolean
 
     router: IVinessRouter
-    identifier: ServiceIdentifier<VinessRoute>
-    parentIdentifier?: ServiceIdentifier<VinessRoute>
+    identifier: ServiceIdentifier<IVinessRoute>
+    parentIdentifier?: ServiceIdentifier<IVinessRoute>
 
     constructor(
         params: VinessRouteObject,
-        identifier: ServiceIdentifier<VinessRoute>,
-        parentIdentifier: ServiceIdentifier<VinessRoute>,
+        identifier: ServiceIdentifier<IVinessRoute>,
+        parentIdentifier: ServiceIdentifier<IVinessRoute>,
         router: IVinessRouter
     ) {
         const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params

@@ -23,6 +23,7 @@ export class Container {
         this.instantiationService = instantiationService
         this.serviceIdToInstanceIdMap = new Map()
     }
+
     /**
      * Register new Service to the container
      * @param id

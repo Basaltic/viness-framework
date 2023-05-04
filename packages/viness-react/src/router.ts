@@ -31,7 +31,7 @@ export interface IVinessRouter {
     getRoute<
         P extends Record<string, string | number | boolean>,
         Q extends Record<string, string | string[]>,
-        T extends VinessRoute<P, Q>
+        T extends IVinessRoute<P, Q>
     >(
         id: ServiceIdentifier<T>
     ): T
@@ -103,7 +103,7 @@ export class VinessReactRouter implements IVinessRouter {
     getRoute<
         P extends Record<string, string | number | boolean>,
         Q extends Record<string, string | string[]>,
-        T extends VinessRoute<P, Q>
+        T extends IVinessRoute<P, Q>
     >(id: ServiceIdentifier<T>): T {
         return container.get<T>(id) as T
     }
