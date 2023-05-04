@@ -43,5 +43,7 @@ npm install --save @viness/react
 - [ ] support authentication
 - [ ] plugin system
 - [ ] expose more customizable abilities
+- [ ] cli
+    - [ ] template creation
 
 

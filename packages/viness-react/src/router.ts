@@ -1,9 +1,9 @@
 import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
 import { createMemoryRouter, NavigateOptions } from 'react-router'
-import { createBrowserRouter, createHashRouter } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, RouteObject } from 'react-router-dom'
 import { container, createDecorator } from './container'
 import { IVinessAppConfig } from './app-config'
-import { VinessRoute, VinessRouteObject } from './route'
+import { IVinessRoute, VinessRoute, VinessRouteObject } from './route'
 import { generateId } from './utils'
 
 type IRouter = ReturnType<typeof createHashRouter>
@@ -21,8 +21,8 @@ export interface IVinessRouter {
      */
     addRoute(
         routeObj: VinessRouteObject,
-        parentRouteId?: ServiceIdentifier<VinessRoute>
-    ): ServiceIdentifier<VinessRoute<{}, {}>>
+        parentRouteId?: ServiceIdentifier<IVinessRoute>
+    ): ServiceIdentifier<IVinessRoute<{}, {}>>
     /**
      * get route instance by id
      *
@@ -65,11 +65,11 @@ export interface VinessRouterConfig {
     routerType: 'hash' | 'browser' | 'memory'
 }
 
-export class VinessRouter implements IVinessRouter {
+export class VinessReactRouter implements IVinessRouter {
     private router?: IRouter
-    private routeIdentifiers: ServiceIdentifier<VinessRoute>[] = []
-    private parentToChildren = new Map<ServiceIdentifier<VinessRoute>, ServiceIdentifier<VinessRoute>[]>()
-    private childToParent = new Map<ServiceIdentifier<VinessRoute>, ServiceIdentifier<VinessRoute>>()
+    private routeIdentifiers: ServiceIdentifier<IVinessRoute>[] = []
+    private parentToChildren = new Map<ServiceIdentifier<IVinessRoute>, ServiceIdentifier<IVinessRoute>[]>()
+    private childToParent = new Map<ServiceIdentifier<IVinessRoute>, ServiceIdentifier<IVinessRoute>>()
 
     constructor(@IVinessAppConfig private config: IVinessAppConfig) {}
 
@@ -89,16 +89,9 @@ export class VinessRouter implements IVinessRouter {
         return this.router?.navigate(to, option)
     }
 
-    /**
-     * add new route
-     *
-     * @param routeObj added route
-     * @param parentRouteId parent route of this added route
-     * @returns
-     */
-    addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<VinessRoute>) {
+    addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<IVinessRoute>) {
         const id = `VinessRoute_${routeObj.id || generateId()}`
-        const IRouteDecorator = createDecorator<VinessRoute>(id)
+        const IRouteDecorator = createDecorator<IVinessRoute>(id)
 
         const descriptor = new SyncDescriptor(VinessRoute, [routeObj, id, parentRouteId, this], true)
         container.register(IRouteDecorator, descriptor)
@@ -115,7 +108,7 @@ export class VinessRouter implements IVinessRouter {
         return container.get<T>(id) as T
     }
 
-    private _addRoute(routeId: ServiceIdentifier<VinessRoute>, parentRouteId?: ServiceIdentifier<VinessRoute>) {
+    private _addRoute(routeId: ServiceIdentifier<IVinessRoute>, parentRouteId?: ServiceIdentifier<IVinessRoute>) {
         if (parentRouteId) {
             const children = this.parentToChildren.get(parentRouteId)
             if (children) {
@@ -155,11 +148,11 @@ export class VinessRouter implements IVinessRouter {
         return routes
     }
 
-    private _toRouteObjects(ids: ServiceIdentifier<VinessRoute>[]) {
+    private _toRouteObjects(ids: ServiceIdentifier<IVinessRoute>[]) {
         const routes = ids.map((id) => {
             const childrenIds = this.parentToChildren.get(id)
             const route = container.get(id)
-            const routeObj = route._toRouteObj()
+            const routeObj = this._toRouteObj(route)
 
             if (childrenIds) {
                 routeObj.children = this._toRouteObjects(childrenIds)
@@ -168,5 +161,21 @@ export class VinessRouter implements IVinessRouter {
             return routeObj
         })
         return routes
+    }
+
+    /**
+     * Convert to React-Router Route Object
+     */
+    private _toRouteObj(route: IVinessRoute): RouteObject {
+        return {
+            id: route.id,
+            path: route.path,
+            element: route.element,
+            errorElement: route.errorElement,
+            Component: route.Component,
+            ErrorBoundary: route.ErrorBoundary,
+            hasErrorBoundary: route.hasErrorBoundary,
+            caseSensitive: route.caseSensitive
+        }
     }
 }

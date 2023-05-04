@@ -1,10 +1,70 @@
 import { ReactNode } from 'react'
 import { type ServiceIdentifier } from '@viness/di'
-import { RouteObject, generatePath, matchPath, useParams } from 'react-router-dom'
+import { RouteObject, generatePath, matchPath, useParams, type PathMatch } from 'react-router-dom'
 import { IVinessRouter, NavOption } from './router'
 import { joinPath } from './utils'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
+
+export interface IVinessRoute<
+    Params extends Record<string, string | number | boolean> = {},
+    Queries extends Record<string, string | string[]> = {}
+> {
+    id?: string
+    path: string
+    element: ReactNode
+    errorElement?: React.ReactNode | null
+    Component?: React.ComponentType | null
+    ErrorBoundary?: React.ComponentType | null
+    hasErrorBoundary?: boolean
+    caseSensitive?: boolean
+    identifier: ServiceIdentifier<VinessRoute>
+    /**
+     * Go tho this route path
+     *
+     * @param option
+     */
+    go(config?: { params?: Params; queries?: Queries }): Promise<void> | undefined
+
+    /**
+     * Push this route path to the history stack with state
+     */
+    push(config?: { params?: Params; queries?: Queries }, options?: NavOption): Promise<void> | undefined
+
+    /**
+     * Replace to this route path
+     */
+    replace(config?: { params?: Params; queries?: Queries }, options?: NavOption): Promise<void> | undefined
+
+    /**
+     * Get the full path recurse to the parent
+     */
+    getPath(): string
+
+    /**
+     * Get tha path string
+     *
+     * @param option
+     * @returns
+     */
+    generatePath(option?: { params?: Params; queries?: Queries }): string
+
+    /**
+     *
+     * @param {string} path
+     * @returns
+     */
+    matchPath(path: string): PathMatch<string> | null
+    /**
+     * Check if current path is matched to this route's path
+     */
+    isMatch(path: string): boolean
+
+    /**
+     * React hook to get current path params in the react component
+     */
+    useParams(): Params
+}
 
 /**
  * Route
@@ -12,7 +72,7 @@ export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
 export class VinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
-> implements VinessRouteObject
+> implements IVinessRoute<Params, Queries>
 {
     id?: string
     path: string
@@ -23,9 +83,9 @@ export class VinessRoute<
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
 
-    private router: IVinessRouter
-    private identifier: ServiceIdentifier<VinessRoute>
-    private parentIdentifier?: ServiceIdentifier<VinessRoute>
+    router: IVinessRouter
+    identifier: ServiceIdentifier<VinessRoute>
+    parentIdentifier?: ServiceIdentifier<VinessRoute>
 
     constructor(
         params: VinessRouteObject,
@@ -134,21 +194,5 @@ export class VinessRoute<
      */
     useParams() {
         return useParams() as Params
-    }
-
-    /**
-     * Convert to React-Router Route Object
-     */
-    _toRouteObj(): RouteObject {
-        return {
-            id: this.id,
-            path: this.path,
-            element: this.element,
-            errorElement: this.errorElement,
-            Component: this.Component,
-            ErrorBoundary: this.ErrorBoundary,
-            hasErrorBoundary: this.hasErrorBoundary,
-            caseSensitive: this.caseSensitive
-        }
     }
 }

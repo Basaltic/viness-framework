@@ -12,5 +12,5 @@ server/dist
 public/dist
 storybook-static/
 
-apps/docs/src/.vitepres/cache/*
-
+apps/docs/src/.vitepress/cache/*
+apps/docs/src/.vitepress/cache/deps/*

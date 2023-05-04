@@ -18,8 +18,12 @@ export function createDecorator<T>(serviceId: string): ServiceIdentifier<T> {
     return createDecoratorInner(serviceId)
 }
 
+// stores -> effects
+// services -> effects
 // TODO: add more containers, Store Container ??
 export const container = new Container()
+export const storesContainer = new Container()
+export const effectsContainer = new Container()
 
 export const IServiceContainer = createDecorator<ServiceContainer>('IServiceContainer')
 
