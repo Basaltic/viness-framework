@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.2.2
+
+### Patch Changes
+
+- 460ff62: enable all immer plugins
+
 ## 0.2.1
 
 ### Patch Changes
