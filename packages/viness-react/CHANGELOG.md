@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.2.5
+
+### Patch Changes
+
+- fix ts type issue
+
 ## 0.2.4
 
 ### Patch Changes

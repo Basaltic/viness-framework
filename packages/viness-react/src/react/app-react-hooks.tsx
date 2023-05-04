@@ -1,7 +1,7 @@
 import { ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
 import { VinessApp } from '../app'
 import { useAppContext } from './app-react-context'
-import { IVinessRoute, VinessRoute } from '../route'
+import { IVinessRoute } from '../route'
 import { UIStore } from '../ui-store'
 
 /**
