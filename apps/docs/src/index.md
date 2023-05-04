@@ -4,20 +4,20 @@ layout: home
 
 hero:
   name: "Viness"
-  text: "Viness Framework Documents"
-  tagline: My great project tagline
+  text: "专注于业务的React框架"
+  tagline: 简单易用，功能强大
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: 开始使用
       link: /markdown-examples
     - theme: alt
       text: API Examples
       link: /api-examples
 
 features:
-  - title: Feature A
+  - title: 简单易用
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
+  - title: 易于扩展
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit

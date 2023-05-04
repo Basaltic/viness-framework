@@ -1,5 +1,12 @@
 # @viness/core
 
+## 0.2.4
+
+### Patch Changes
+
+- fix useRoute ts type issue
+- export IVinessRoute interface
+
 ## 0.2.3
 
 ### Patch Changes

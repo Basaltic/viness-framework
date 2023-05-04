@@ -4,6 +4,7 @@ export * from './react/app-react-hooks'
 export * from './react/router-react'
 export * from './ui-store'
 export * from './http-client'
+export { type IVinessRoute } from './route'
 
 export { createDecorator } from './container'
 export { useNavigate, useLocation, useParams, Outlet } from 'react-router-dom'
