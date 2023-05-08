@@ -19,12 +19,10 @@ export function createDecorator<T>(serviceId: string): ServiceIdentifier<T> {
     return createDecoratorInner(serviceId)
 }
 
-// stores -> effects
-// services -> effects
-// TODO: add more containers, Store Container ??
-export const container = new Container()
+// stores -> services
+
 export const storesContainer = new Container()
-export const effectsContainer = new Container()
+export const servicesContainer = new Container()
 
 export const IServiceContainer = createDecorator<ServiceContainer>('IServiceContainer')
 
@@ -38,7 +36,7 @@ export class ServiceContainer {
         isLazyInit: boolean = true
     ) {
         const supportType = isLazyInit ? 1 : 0
-        container.register(id, service, supportType)
+        servicesContainer.register(id, service, supportType)
     }
 
     /**
@@ -48,7 +46,7 @@ export class ServiceContainer {
      * @returns {T} service instance
      */
     getService<T>(id: ServiceIdentifier<T>) {
-        return container.get(id)
+        return servicesContainer.get(id)
     }
 }
 
@@ -69,7 +67,7 @@ export class StoreContainer {
         id: ServiceIdentifier<T>,
         store: new (...services: Services) => T
     ) {
-        container.register(id, store)
+        servicesContainer.register(id, store)
     }
 
     /**
@@ -80,6 +78,6 @@ export class StoreContainer {
      * @returns
      */
     getStore<S extends object, T extends UIStore<S>>(id: ServiceIdentifier<T>, instanceId?: ServiceInstanceIdentifier) {
-        return container.get(id, instanceId)
+        return servicesContainer.get(id, instanceId)
     }
 }

@@ -1,6 +1,6 @@
 import { SyncDescriptor } from '@viness/di'
 import { IVinessAppConfig, VinessAppConfig } from './app-config'
-import { container, IServiceContainer, IStoreContainer, ServiceContainer, StoreContainer } from './container'
+import { servicesContainer, IServiceContainer, IStoreContainer, ServiceContainer, StoreContainer } from './container'
 import { initI18n } from './i18n'
 import { IVinessRouter, VinessReactRouter } from './router'
 
@@ -9,30 +9,30 @@ import { IVinessRouter, VinessReactRouter } from './router'
  */
 export class VinessApp {
     get config() {
-        return container.get(IVinessAppConfig)
+        return servicesContainer.get(IVinessAppConfig)
     }
     /**
      * router instance of the application
      */
     get router() {
-        return container.get(IVinessRouter)
+        return servicesContainer.get(IVinessRouter)
     }
 
     get stores() {
-        return container.get(IStoreContainer)
+        return servicesContainer.get(IStoreContainer)
     }
 
     get services() {
-        return container.get(IServiceContainer)
+        return servicesContainer.get(IServiceContainer)
     }
 }
 
 export function createVinessApp(config?: IVinessAppConfig) {
     // register the builtin features
-    container.register(IStoreContainer, StoreContainer)
-    container.register(IServiceContainer, ServiceContainer)
-    container.register(IVinessRouter, VinessReactRouter)
-    container.register(IVinessAppConfig, new SyncDescriptor(VinessAppConfig, [config], true))
+    servicesContainer.register(IStoreContainer, StoreContainer)
+    servicesContainer.register(IServiceContainer, ServiceContainer)
+    servicesContainer.register(IVinessRouter, VinessReactRouter)
+    servicesContainer.register(IVinessAppConfig, new SyncDescriptor(VinessAppConfig, [config], true))
 
     // initialize features
     if (config?.i18n?.resources) {
