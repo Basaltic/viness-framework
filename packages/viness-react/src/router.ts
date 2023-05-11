@@ -1,15 +1,16 @@
-import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
+import { SyncDescriptor } from '@viness/di'
 import { createMemoryRouter, NavigateOptions } from 'react-router'
 import { createBrowserRouter, createHashRouter, RouteObject } from 'react-router-dom'
-import { servicesContainer, createDecorator } from './container'
+import { servicesContainer } from './container'
 import { IVinessAppConfig } from './app-config'
 import { IVinessRoute, VinessRoute, VinessRouteObject } from './route'
 import { generateId } from './utils'
+import { createIdentifier, VinessServiceIdentifier } from './identifier'
 
 type IRouter = ReturnType<typeof createHashRouter>
 export type NavOption = Pick<NavigateOptions, 'state' | 'preventScrollReset'>
 
-export const IVinessRouter = createDecorator<IVinessRouter>('IVinessRouter')
+export const IVinessRouter = createIdentifier<IVinessRouter>('IVinessRouter')
 
 export interface IVinessRouter {
     /**
@@ -19,21 +20,21 @@ export interface IVinessRouter {
      * @param parentRouteId parent route of this added route
      * @returns
      */
-    addRoute(
+    bind(
         routeObj: VinessRouteObject,
-        parentRouteId?: ServiceIdentifier<IVinessRoute>
-    ): ServiceIdentifier<IVinessRoute<{}, {}>>
+        parentRouteId?: VinessServiceIdentifier<IVinessRoute>
+    ): VinessServiceIdentifier<IVinessRoute<{}, {}>>
     /**
      * get route instance by id
      *
      * @param id
      */
-    getRoute<
+    get<
         P extends Record<string, string | number | boolean>,
         Q extends Record<string, string | string[]>,
         T extends IVinessRoute<P, Q>
     >(
-        id: ServiceIdentifier<T>
+        id: VinessServiceIdentifier<T>
     ): T
     /**
      * go to a specific route path
@@ -67,9 +68,9 @@ export interface VinessRouterConfig {
 
 export class VinessReactRouter implements IVinessRouter {
     private router?: IRouter
-    private routeIdentifiers: ServiceIdentifier<IVinessRoute>[] = []
-    private parentToChildren = new Map<ServiceIdentifier<IVinessRoute>, ServiceIdentifier<IVinessRoute>[]>()
-    private childToParent = new Map<ServiceIdentifier<IVinessRoute>, ServiceIdentifier<IVinessRoute>>()
+    private routeIdentifiers: VinessServiceIdentifier<IVinessRoute>[] = []
+    private parentToChildren = new Map<VinessServiceIdentifier<IVinessRoute>, VinessServiceIdentifier<IVinessRoute>[]>()
+    private childToParent = new Map<VinessServiceIdentifier<IVinessRoute>, VinessServiceIdentifier<IVinessRoute>>()
 
     constructor(@IVinessAppConfig private config: IVinessAppConfig) {}
 
@@ -89,9 +90,9 @@ export class VinessReactRouter implements IVinessRouter {
         return this.router?.navigate(to, option)
     }
 
-    addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<IVinessRoute>) {
+    bind(routeObj: VinessRouteObject, parentRouteId?: VinessServiceIdentifier<IVinessRoute>) {
         const id = `VinessRoute_${routeObj.id || generateId()}`
-        const IRouteDecorator = createDecorator<IVinessRoute>(id)
+        const IRouteDecorator = createIdentifier<IVinessRoute>(id)
 
         const descriptor = new SyncDescriptor(VinessRoute, [routeObj, id, parentRouteId, this], true)
         servicesContainer.register(IRouteDecorator, descriptor)
@@ -100,15 +101,18 @@ export class VinessReactRouter implements IVinessRouter {
         return IRouteDecorator
     }
 
-    getRoute<
+    get<
         P extends Record<string, string | number | boolean>,
         Q extends Record<string, string | string[]>,
         T extends IVinessRoute<P, Q>
-    >(id: ServiceIdentifier<T>): T {
+    >(id: VinessServiceIdentifier<T>): T {
         return servicesContainer.get<T>(id) as T
     }
 
-    private _addRoute(routeId: ServiceIdentifier<IVinessRoute>, parentRouteId?: ServiceIdentifier<IVinessRoute>) {
+    private _addRoute(
+        routeId: VinessServiceIdentifier<IVinessRoute>,
+        parentRouteId?: VinessServiceIdentifier<IVinessRoute>
+    ) {
         if (parentRouteId) {
             const children = this.parentToChildren.get(parentRouteId)
             if (children) {
@@ -148,7 +152,7 @@ export class VinessReactRouter implements IVinessRouter {
         return routes
     }
 
-    private _toRouteObjects(ids: ServiceIdentifier<IVinessRoute>[]) {
+    private _toRouteObjects(ids: VinessServiceIdentifier<IVinessRoute>[]) {
         const routes = ids.map((id) => {
             const childrenIds = this.parentToChildren.get(id)
             const route = servicesContainer.get(id)

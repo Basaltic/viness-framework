@@ -77,6 +77,7 @@ export class Container {
             } else {
                 const serviceDesc = this.registory.getServiceDescriptorCollection().get(id) as SyncDescriptor<any>
                 const serviceInstanceIdentifier = createDecorator<T>(`${id.toString()}_${instanceId}`)
+
                 serviceIdToInstanceIds.set(instanceId, serviceInstanceIdentifier)
 
                 this.register(

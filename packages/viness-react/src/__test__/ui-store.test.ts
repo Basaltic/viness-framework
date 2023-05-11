@@ -1,10 +1,11 @@
 import { it, expect, describe } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
 import { createVinessApp } from '../app'
-import { createDecorator } from '../container'
-import { UIStore } from '../ui-store'
 
-const ICounterStore = createDecorator<CounterStore>('ICounterStore')
+import { UIStore } from '../ui-store'
+import { createIdentifier } from '../identifier'
+
+const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
 
 interface CounterState {
     count: number
@@ -27,16 +28,18 @@ class CounterStore extends UIStore<CounterState> {
         this.setState((s) => ({ count: s.count - 1 }))
     }
 }
+
 describe('multiple ui store instance', () => {
     it('different instances should have different state', () => {
         const app = createVinessApp()
 
-        app.stores.addStore(ICounterStore, CounterStore)
+        app.stores.bind(CounterStore, ICounterStore)
 
-        const counterStore1 = app.stores.getStore(ICounterStore)
-        const counterStore2 = app.stores.getStore(ICounterStore, 'test')
+        const counterStore1 = app.stores.get(ICounterStore)
+        const counterStore2 = app.stores.get(ICounterStore, 'TEST')
 
         counterStore1.increase()
+
         expect(counterStore1.getState().count).toBe(1)
         expect(counterStore2.getState().count).toBe(0)
     })
@@ -45,8 +48,8 @@ describe('multiple ui store instance', () => {
 describe('store hooks', () => {
     it('should increment counter 1', () => {
         const app = createVinessApp()
-        app.stores.addStore(ICounterStore, CounterStore)
-        const counterStore = app.stores.getStore(ICounterStore)
+        app.stores.bind(CounterStore, ICounterStore)
+        const counterStore = app.stores.get(ICounterStore)
 
         const { result } = renderHook(() => counterStore.use.count())
         act(() => {
@@ -57,8 +60,8 @@ describe('store hooks', () => {
 
     it('should increment counter 2', () => {
         const app = createVinessApp()
-        app.stores.addStore(ICounterStore, CounterStore)
-        const counterStore = app.stores.getStore(ICounterStore)
+        app.stores.bind(CounterStore, ICounterStore)
+        const counterStore = app.stores.get(ICounterStore)
 
         const { result } = renderHook(() => counterStore.useState((s) => s.count))
         act(() => {

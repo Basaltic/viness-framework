@@ -2,6 +2,7 @@ import { StoreApi, UseBoundStore, create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { ServiceIdentifier } from '@viness/di'
+import cloneDeep from 'lodash.clonedeep'
 
 export type StoreInstanceId = string | number
 export type StoreIdentifier<T> = (instanceId: string | number) => ServiceIdentifier<T>
@@ -30,19 +31,20 @@ const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) 
  * extend this class to create ui store
  */
 export class UIStore<S extends object> {
-    protected store: WithSelectors<UseBoundStore<StoreApi<S>>>
+    store: WithSelectors<UseBoundStore<StoreApi<S>>>
 
     constructor(defaultState: S, name?: string) {
         let store: any
+
         if (process.env.NODE_ENV === 'development') {
             store = create(
                 devtools(
-                    immer(() => defaultState),
+                    immer(() => cloneDeep(defaultState)),
                     { name }
                 )
             )
         } else {
-            store = create(immer(() => defaultState))
+            store = create(immer(() => cloneDeep(defaultState)))
         }
 
         this.store = createSelectors(store)

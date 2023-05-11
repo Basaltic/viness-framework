@@ -1,6 +1,6 @@
-import { createDecorator, UIStore, useStore } from '@viness/react'
+import { createIdentifier, UIStore, useStore } from '@viness/react'
 
-export const ICounterStore = createDecorator<CounterStore>('ICounterStore')
+export const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
 
 export const useCounterStore = () => useStore(ICounterStore)
 

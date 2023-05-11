@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
-import { type ServiceIdentifier } from '@viness/di'
 import { RouteObject, generatePath, matchPath, useParams, type PathMatch } from 'react-router-dom'
 import { IVinessRouter, NavOption } from './router'
 import { joinPath } from './utils'
+import { VinessServiceIdentifier } from './identifier'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
 
@@ -18,7 +18,7 @@ export interface IVinessRoute<
     ErrorBoundary?: React.ComponentType | null
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
-    identifier: ServiceIdentifier<IVinessRoute>
+    identifier: VinessServiceIdentifier<IVinessRoute>
     /**
      * Go tho this route path
      *
@@ -84,13 +84,13 @@ export class VinessRoute<
     caseSensitive?: boolean
 
     router: IVinessRouter
-    identifier: ServiceIdentifier<IVinessRoute>
-    parentIdentifier?: ServiceIdentifier<IVinessRoute>
+    identifier: VinessServiceIdentifier<IVinessRoute>
+    parentIdentifier?: VinessServiceIdentifier<IVinessRoute>
 
     constructor(
         params: VinessRouteObject,
-        identifier: ServiceIdentifier<IVinessRoute>,
-        parentIdentifier: ServiceIdentifier<IVinessRoute>,
+        identifier: VinessServiceIdentifier<IVinessRoute>,
+        parentIdentifier: VinessServiceIdentifier<IVinessRoute>,
         router: IVinessRouter
     ) {
         const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params
@@ -143,7 +143,7 @@ export class VinessRoute<
      */
     getPath(): string {
         if (this.parentIdentifier) {
-            const parentRoute = this.router.getRoute(this.parentIdentifier)
+            const parentRoute = this.router.get(this.parentIdentifier)
             const parentPath = parentRoute.getPath()
 
             return joinPath(parentPath, this.path)

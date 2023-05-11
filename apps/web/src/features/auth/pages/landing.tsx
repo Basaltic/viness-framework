@@ -1,10 +1,10 @@
-import { useNavigate } from '@viness/react'
+import { DashboardPage1RouteId } from '../../../app'
 
 export default function LandingPage() {
-    const navigate = useNavigate()
+    const page1Route = DashboardPage1RouteId.get()
 
     const toPage = () => {
-        navigate('/dashboard/page1')
+        page1Route.go()
     }
 
     return (

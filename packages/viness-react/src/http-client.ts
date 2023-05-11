@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios'
-import { createDecorator } from './container'
+import { createIdentifier } from './identifier'
 
 /**
  * Promise can be canceled
@@ -11,7 +11,7 @@ export interface ICancelablePromise<T = any> extends Promise<T> {
     cancel: () => void
 }
 
-export const IHttpClient = createDecorator<IHttpClient>('IHttpClient')
+export const IHttpClient = createIdentifier<IHttpClient>('IHttpClient')
 
 export interface IHttpClient {
     /**

@@ -1,8 +1,7 @@
-import { useStore } from '@viness/react'
 import { ICounterStore } from '../store/counter.store'
 
 export function DashboardPage1() {
-    const store = useStore(ICounterStore)
+    const store = ICounterStore.get()
     const count = store.use.count()
 
     const handleIncrease = () => {
