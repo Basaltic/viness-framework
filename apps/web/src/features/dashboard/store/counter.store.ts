@@ -1,8 +1,4 @@
-import { createIdentifier, UIStore, useStore } from '@viness/react'
-
-export const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
-
-export const useCounterStore = () => useStore(ICounterStore)
+import { UIStore } from '@viness/react'
 
 interface CounterState {
     count: number

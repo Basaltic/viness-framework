@@ -1,4 +1,4 @@
-import { ICounterStore } from '../store/counter.store'
+import { ICounterStore } from '../../../app-stores'
 
 export function DashboardPage1() {
     const store = ICounterStore.get()

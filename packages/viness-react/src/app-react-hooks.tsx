@@ -3,7 +3,7 @@ import { VinessApp } from './app'
 import { useAppContext } from './app-react-context'
 import { VinessServiceIdentifier } from './identifier'
 import { IVinessRoute } from './route'
-import { UIStore } from './ui-store'
+import { UIStore } from './store'
 
 /**
  * Get the Viness App instance

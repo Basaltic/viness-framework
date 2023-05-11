@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.3.1
+
+### Patch Changes
+
+- add effects container & adjust the name of some apis
+
 ## 0.3.0
 
 ### Minor Changes

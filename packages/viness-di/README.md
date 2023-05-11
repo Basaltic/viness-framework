@@ -30,6 +30,7 @@ class TestService implements ITestService {
 container.register(ITestService, TestService)
 ```
 
-# Roadmap
+# Todo
 
-- [ ] support initialize mult-isntances of a service
+- [x] support initialize mult-isntances of a service
+- [ ] support complex hierarchical DI systems: one container can have multiple parents or children

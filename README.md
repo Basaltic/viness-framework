@@ -19,8 +19,14 @@ npm install --save @viness/react
 3. commit changes
 4. release
 
+# Packages
 
-# Roadmap
+* `apps/web`: example web app use viness framework
+* `apps/docs`: documents
+* `packages/viness-di`: Di framework
+* `packages/viness-react`: Viness application framework
+
+# Todos
 
 ### basic
 

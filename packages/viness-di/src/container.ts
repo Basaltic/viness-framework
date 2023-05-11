@@ -10,7 +10,7 @@ import { InstantiationService } from './instantiation-service'
 import { InstantiationType, ServiceRegistry } from './service-registry'
 
 export class Container {
-    private registory: ServiceRegistry
+    registory: ServiceRegistry
     private instantiationService: IInstantiationService
 
     private serviceIdToInstanceIdMap: Map<

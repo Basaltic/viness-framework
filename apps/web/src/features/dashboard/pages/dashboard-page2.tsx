@@ -1,4 +1,4 @@
-import { ICounterStore } from '../store/counter.store'
+import { ICounterStore } from '../../../app-stores'
 
 const ids = ['1', '2', '3', '4', '5', '6']
 

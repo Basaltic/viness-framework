@@ -1,8 +1,8 @@
 import { ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
 import { enableAllPlugins } from 'immer'
-import { servicesContainer } from './container'
+import { storeContainer } from './container'
 import { createIdentifier, VinessServiceIdentifier } from './identifier'
-import { UIStore } from './ui-store'
+import { UIStore } from './store'
 
 export const IStores = createIdentifier<Stores>('IStores')
 
@@ -19,13 +19,13 @@ export class Stores {
      */
     bind<S extends object, T extends UIStore<S>, Services extends {}[]>(
         store: new (...services: Services) => T,
-        identifier: VinessServiceIdentifier<T>
+        identifier?: VinessServiceIdentifier<T>
     ): VinessServiceIdentifier<T> {
         if (!identifier) {
             identifier = createIdentifier(store.name)
         }
 
-        servicesContainer.register(identifier, store)
+        storeContainer.register(identifier, store)
         return identifier
     }
 
@@ -40,6 +40,6 @@ export class Stores {
         identifier: ServiceIdentifier<T>,
         instanceId?: ServiceInstanceIdentifier
     ) {
-        return servicesContainer.get(identifier, instanceId)
+        return storeContainer.get(identifier, instanceId)
     }
 }
