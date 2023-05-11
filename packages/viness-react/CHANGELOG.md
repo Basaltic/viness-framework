@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.3.0
+
+### Minor Changes
+
+- redesign the api to make it easier to use
+
 ## 0.2.6
 
 ### Patch Changes
