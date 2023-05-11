@@ -1,5 +1,4 @@
-import { RouteObject, RouterProvider } from 'react-router-dom'
-import { VinessRoute } from '../route'
+import { RouterProvider } from 'react-router-dom'
 import { useAppContext } from './app-react-context'
 
 /**

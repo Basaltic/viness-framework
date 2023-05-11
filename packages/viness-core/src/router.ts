@@ -1,7 +1,7 @@
 import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
 import { createMemoryRouter, NavigateOptions } from 'react-router'
 import { createBrowserRouter, createHashRouter, RouteObject } from 'react-router-dom'
-import { servicesContainer, createDecorator } from './container'
+import { servicesContainer, createIdentifier } from './app-container'
 import { IVinessAppConfig } from './app-config'
 import { IVinessRoute, VinessRoute, VinessRouteObject } from './route'
 import { generateId } from './utils'
@@ -9,7 +9,7 @@ import { generateId } from './utils'
 type IRouter = ReturnType<typeof createHashRouter>
 export type NavOption = Pick<NavigateOptions, 'state' | 'preventScrollReset'>
 
-export const IVinessRouter = createDecorator<IVinessRouter>('IVinessRouter')
+export const IVinessRouter = createIdentifier<IVinessRouter>('IVinessRouter')
 
 export interface IVinessRouter {
     /**
@@ -91,7 +91,7 @@ export class VinessReactRouter implements IVinessRouter {
 
     addRoute(routeObj: VinessRouteObject, parentRouteId?: ServiceIdentifier<IVinessRoute>) {
         const id = `VinessRoute_${routeObj.id || generateId()}`
-        const IRouteDecorator = createDecorator<IVinessRoute>(id)
+        const IRouteDecorator = createIdentifier<IVinessRoute>(id)
 
         const descriptor = new SyncDescriptor(VinessRoute, [routeObj, id, parentRouteId, this], true)
         servicesContainer.register(IRouteDecorator, descriptor)

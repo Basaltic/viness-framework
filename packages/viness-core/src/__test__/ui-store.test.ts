@@ -1,7 +1,7 @@
 import { it, expect, describe } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
 import { createVinessApp } from '../app'
-import { createIdentifier } from '../container'
+import { createIdentifier } from '../app-container'
 import { UIStore } from '../ui-store'
 
 const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
