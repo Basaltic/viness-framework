@@ -9,10 +9,8 @@ hero:
   actions:
     - theme: brand
       text: 开始使用
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
+      link: /guide
+
 
 features:
   - title: 简单易用

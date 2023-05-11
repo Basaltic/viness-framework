@@ -17,18 +17,18 @@ export default defineConfig({
                 text: '快速入门',
                 collapsed: false,
                 items: [
-                    { text: '特点', link: '/features' },
-                    { text: '安装', link: '/install' }
+                    { text: '特点', link: '/guide' },
+                    { text: '安装', link: '/guide/install' }
                 ]
             },
             {
                 text: '核心',
                 collapsed: false,
                 items: [
-                    { text: '路由', link: '/router' },
-                    { text: '状态', link: '/state-management' },
-                    { text: '服务', link: '/services' },
-                    { text: '国际化', link: '/i18n' }
+                    { text: '路由', link: '/guide/router' },
+                    { text: '状态', link: '/guide/state-management' },
+                    { text: '服务', link: '/guide/services' },
+                    { text: '国际化', link: '/guide/i18n' }
                 ]
             }
         ],
