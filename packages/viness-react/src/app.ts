@@ -1,12 +1,6 @@
 import { SyncDescriptor } from '@viness/di'
 import { IVinessAppConfig, VinessAppConfig } from './app-config'
-import {
-    servicesContainer,
-    IServiceContainer,
-    IStoreContainer,
-    ServiceContainer,
-    StoreContainer
-} from './app-container'
+import { servicesContainer, IServiceContainer, IStoreContainer, ServiceContainer, StoreContainer } from './container'
 import { initI18n } from './i18n'
 import { IVinessRouter, VinessReactRouter } from './router'
 

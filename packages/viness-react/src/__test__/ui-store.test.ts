@@ -1,10 +1,10 @@
 import { it, expect, describe } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
 import { createVinessApp } from '../app'
-import { createIdentifier } from '../container'
+import { createDecorator } from '../container'
 import { UIStore } from '../ui-store'
 
-const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
+const ICounterStore = createDecorator<CounterStore>('ICounterStore')
 
 interface CounterState {
     count: number

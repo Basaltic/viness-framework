@@ -1,11 +1,12 @@
-import { createDecorator, Container, ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
+import {
+    createDecorator as createDecoratorInner,
+    Container,
+    ServiceIdentifier,
+    ServiceInstanceIdentifier
+} from '@viness/di'
 import { enableAllPlugins } from 'immer'
 import { UIStore } from '.'
 import { generateId } from './utils'
-
-export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
-    use: (id: ServiceIdentifier<T>) => T
-}
 
 /**
  * create service decorator
@@ -13,10 +14,9 @@ export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
  * @param serviceId
  * @returns
  */
-export function createIdentifier<T>(serviceId: string): VinessServiceIdentifier<T> {
+export function createDecorator<T>(serviceId: string): ServiceIdentifier<T> {
     serviceId = `${serviceId}_${generateId()}`
-    const id = createDecorator<T>(serviceId) as VinessServiceIdentifier<T>
-    return id
+    return createDecoratorInner(serviceId)
 }
 
 // stores -> services
@@ -24,25 +24,19 @@ export function createIdentifier<T>(serviceId: string): VinessServiceIdentifier<
 export const storesContainer = new Container()
 export const servicesContainer = new Container()
 
-export const IServiceContainer = createIdentifier<ServiceContainer>('IServiceContainer')
+export const IServiceContainer = createDecorator<ServiceContainer>('IServiceContainer')
 
 export class ServiceContainer {
     /**
      * add new service to app
      */
     addService<T, Services extends {}[]>(
+        id: ServiceIdentifier<T>,
         service: new (...services: Services) => T,
-        id?: ServiceIdentifier<T>,
         isLazyInit: boolean = true
-    ): ServiceIdentifier<T> {
+    ) {
         const supportType = isLazyInit ? 1 : 0
-        if (!id) {
-            id = createIdentifier<T>(`${service?.name}_${generateId()}`)
-        }
-        if (service) {
-            servicesContainer.register(id, service, supportType)
-        }
-        return id
+        servicesContainer.register(id, service, supportType)
     }
 
     /**
@@ -56,7 +50,7 @@ export class ServiceContainer {
     }
 }
 
-export const IStoreContainer = createIdentifier<StoreContainer>('IStores')
+export const IStoreContainer = createDecorator<StoreContainer>('IStores')
 
 export class StoreContainer {
     constructor() {
