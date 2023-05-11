@@ -1,4 +1,4 @@
-import { DashboardPage1RouteId } from '../../../app'
+import { DashboardPage1RouteId } from '../../../app-routes'
 
 export default function LandingPage() {
     const page1Route = DashboardPage1RouteId.get()
