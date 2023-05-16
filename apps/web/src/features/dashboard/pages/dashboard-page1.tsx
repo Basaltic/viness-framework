@@ -1,7 +1,7 @@
 import { ICounterStore } from '../../../app-stores'
 
 export function DashboardPage1() {
-    const store = ICounterStore.get()
+    const store = ICounterStore.use()
     const count = store.use.count()
 
     const handleIncrease = () => {
