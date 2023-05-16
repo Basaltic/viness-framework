@@ -78,7 +78,7 @@ export interface IHttpClient {
  * Http Client based in axios
  */
 export class HttpClient {
-    private instance: AxiosInstance
+    protected instance: AxiosInstance
 
     constructor(config?: AxiosRequestConfig) {
         this.instance = axios.create(config)

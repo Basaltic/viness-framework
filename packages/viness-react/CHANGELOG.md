@@ -1,5 +1,12 @@
 # @viness/core
 
+## 0.3.2
+
+### Patch Changes
+
+- feat: change api 'get' to 'use' in VinessServiceIdentifier
+- feat: add binChild api for VinessRoute & change get api to use api in VinessIdentifier
+
 ## 0.3.1
 
 ### Patch Changes

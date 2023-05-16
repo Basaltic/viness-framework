@@ -4,21 +4,20 @@ import { IVinessRouter, NavOption } from './router'
 import { joinPath } from './utils'
 import { VinessServiceIdentifier } from './identifier'
 
-export interface VinessRouteObject extends Omit<RouteObject, 'children'> {}
+export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
+    isPublic?: boolean
+}
 
 export interface IVinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
-> {
-    id?: string
-    path: string
-    element: ReactNode
-    errorElement?: React.ReactNode | null
-    Component?: React.ComponentType | null
-    ErrorBoundary?: React.ComponentType | null
-    hasErrorBoundary?: boolean
-    caseSensitive?: boolean
-    identifier: VinessServiceIdentifier<IVinessRoute>
+> extends VinessRouteObject {
+    /**
+     * Bind child route to this route
+     *
+     * @param routeObj
+     */
+    bindChild(routeObj: VinessRouteObject): VinessServiceIdentifier<IVinessRoute>
     /**
      * Go tho this route path
      *
@@ -83,6 +82,9 @@ export class VinessRoute<
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
 
+    // auth related
+    isPublic?: boolean
+
     router: IVinessRouter
     identifier: VinessServiceIdentifier<IVinessRoute>
     parentIdentifier?: VinessServiceIdentifier<IVinessRoute>
@@ -93,7 +95,8 @@ export class VinessRoute<
         parentIdentifier: VinessServiceIdentifier<IVinessRoute>,
         router: IVinessRouter
     ) {
-        const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive } = params
+        const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, isPublic } =
+            params
 
         this.id = id || identifier.toString()
         this.path = path || ''
@@ -103,10 +106,20 @@ export class VinessRoute<
         this.ErrorBoundary = ErrorBoundary
         this.hasErrorBoundary = hasErrorBoundary
         this.caseSensitive = caseSensitive
+        this.isPublic = isPublic
 
         this.identifier = identifier
         this.parentIdentifier = parentIdentifier
         this.router = router
+    }
+
+    /**
+     * Bind child route to this route
+     *
+     * @param routeObj
+     */
+    bindChild(routeObj: VinessRouteObject): VinessServiceIdentifier<IVinessRoute> {
+        return this.router.bind(routeObj, this.identifier)
     }
 
     /**
