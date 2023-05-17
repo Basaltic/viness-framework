@@ -45,4 +45,6 @@ export function createVinessApp(config?: IVinessAppConfig) {
     app.services.bind(VinessReactRouter, IVinessRouter)
     app.services.bind(new SyncDescriptor(VinessAppConfig, [config], true), IVinessAppConfig)
     app.services.bind(I18n, II18n, false)
+
+    return app
 }

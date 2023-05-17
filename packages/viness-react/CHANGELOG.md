@@ -1,5 +1,17 @@
 # @viness/core
 
+## 0.3.5
+
+### Patch Changes
+
+- fix: remove bindChild api
+
+## 0.3.4
+
+### Patch Changes
+
+- fix: app instance didnot return correctly
+
 ## 0.3.3
 
 ### Patch Changes

@@ -5,7 +5,6 @@ import { joinPath } from './utils'
 import { VinessServiceIdentifier } from './identifier'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
-    readonly fullPath: string
     /**
      * Whether this route can be access for everyone
      */
@@ -20,12 +19,8 @@ export interface IVinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
 > extends VinessRouteObject {
-    /**
-     * Bind child route to this route
-     *
-     * @param routeObj
-     */
-    bindChild(routeObj: VinessRouteObject): VinessServiceIdentifier<IVinessRoute>
+    readonly fullPath: string
+
     /**
      * Go tho this route path
      *
@@ -123,15 +118,6 @@ export class VinessRoute<
 
     get fullPath() {
         return this.getPath()
-    }
-
-    /**
-     * Bind child route to this route
-     *
-     * @param routeObj
-     */
-    bindChild(routeObj: VinessRouteObject): VinessServiceIdentifier<IVinessRoute> {
-        return this.router.bind(routeObj, this.identifier)
     }
 
     /**
