@@ -11,4 +11,4 @@ export { type IVinessRoute } from './route'
 export { type InitOptions } from 'i18next'
 export { useTranslation } from 'react-i18next'
 
-export { useNavigate, useLocation, useParams, Outlet } from 'react-router-dom'
+export { useNavigate, useLocation, useParams, useSearchParams, Outlet, Navigate } from 'react-router-dom'

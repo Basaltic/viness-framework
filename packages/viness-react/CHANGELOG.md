@@ -1,5 +1,13 @@
 # @viness/core
 
+## 0.3.3
+
+### Patch Changes
+
+- feat: export more route features
+- feat: add builtin I18n Service Implemenet
+- feat: add fullPath property to VinessRoute
+
 ## 0.3.2
 
 ### Patch Changes

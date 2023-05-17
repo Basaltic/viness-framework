@@ -1,8 +1,8 @@
-import { createDecorator } from '@viness/di'
 import { VinessI18nConfig } from './i18n'
+import { createIdentifier } from './identifier'
 import { VinessRouterConfig } from './router'
 
-export const IVinessAppConfig = createDecorator<VinessAppConfig>('IVinessAppConfig')
+export const IVinessAppConfig = createIdentifier<VinessAppConfig>('IVinessAppConfig')
 
 export interface IVinessAppConfig {
     readonly i18n?: VinessI18nConfig

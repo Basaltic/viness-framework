@@ -5,7 +5,15 @@ import { joinPath } from './utils'
 import { VinessServiceIdentifier } from './identifier'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
+    readonly fullPath: string
+    /**
+     * Whether this route can be access for everyone
+     */
     isPublic?: boolean
+    /**
+     * Roles needed to access this route
+     */
+    neededRoles?: string[]
 }
 
 export interface IVinessRoute<
@@ -111,6 +119,10 @@ export class VinessRoute<
         this.identifier = identifier
         this.parentIdentifier = parentIdentifier
         this.router = router
+    }
+
+    get fullPath() {
+        return this.getPath()
     }
 
     /**

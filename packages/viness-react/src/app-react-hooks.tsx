@@ -43,6 +43,18 @@ export function useRoute(id: VinessServiceIdentifier<IVinessRoute>) {
 }
 
 /**
+ * Get a list of route instances by route ids passed
+ *
+ * @param ids
+ * @returns
+ */
+export function useRoutes(ids: VinessServiceIdentifier<IVinessRoute>[]) {
+    const app = useAppContext()
+    const routes = ids.map((id) => app?.router?.get(id))
+    return routes
+}
+
+/**
  * Get UIStore instance
  *
  * @param {ServiceIdentifier<T>} id

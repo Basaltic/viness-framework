@@ -1,4 +1,4 @@
-import { ServiceIdentifier } from '@viness/di'
+import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
 import { servicesContainer } from './container'
 import { createIdentifier, VinessServiceIdentifier } from './identifier'
 
@@ -9,14 +9,15 @@ export class Services {
      * add new service to app
      */
     bind<T, Services extends {}[]>(
-        service: new (...services: Services) => T,
+        service: SyncDescriptor<any> | (new (...services: Services) => T),
         identifier?: VinessServiceIdentifier<T>,
         isLazyInit: boolean = true
     ): VinessServiceIdentifier<T> {
         const supportType = isLazyInit ? 1 : 0
 
         if (!identifier) {
-            identifier = createIdentifier(service.name)
+            // @ts-ignore
+            identifier = createIdentifier(service?.name || service?.ctor?.name)
         }
 
         servicesContainer.register(identifier, service, supportType)

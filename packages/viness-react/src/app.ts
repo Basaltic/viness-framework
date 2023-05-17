@@ -2,7 +2,7 @@ import { SyncDescriptor } from '@viness/di'
 import { IVinessAppConfig, VinessAppConfig } from './app-config'
 import { servicesContainer } from './container'
 import { Effectss, IEffectss } from './effects'
-import { initI18n } from './i18n'
+import { I18n, II18n } from './i18n'
 import { IVinessRouter, VinessReactRouter } from './router'
 import { IServices, Services } from './services'
 import { IStores, Stores } from './stores'
@@ -35,19 +35,14 @@ export class VinessApp {
 }
 
 export function createVinessApp(config?: IVinessAppConfig) {
-    // register the builtin features
-    servicesContainer.register(IStores, Stores)
-    servicesContainer.register(IServices, Services)
-    servicesContainer.register(IEffectss, Effectss)
-    servicesContainer.register(IVinessRouter, VinessReactRouter)
-    servicesContainer.register(IVinessAppConfig, new SyncDescriptor(VinessAppConfig, [config], true))
-
-    // initialize features
-    if (config?.i18n?.resources) {
-        initI18n(config?.i18n)
-    }
-
     // initialize the app
     const app = new VinessApp()
-    return app
+
+    // register the builtin features, override it by reregister these services
+    app.services.bind(Stores, IStores)
+    app.services.bind(Services, IServices)
+    app.services.bind(Effectss, IEffectss)
+    app.services.bind(VinessReactRouter, IVinessRouter)
+    app.services.bind(new SyncDescriptor(VinessAppConfig, [config], true), IVinessAppConfig)
+    app.services.bind(I18n, II18n, false)
 }
