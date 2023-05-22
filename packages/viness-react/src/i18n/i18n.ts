@@ -1,8 +1,8 @@
 import i18n, { InitOptions } from 'i18next'
 
 import { initReactI18next } from 'react-i18next'
-import { IVinessAppConfig } from './app-config'
-import { createIdentifier } from './identifier'
+import { IVinessAppConfig } from '../app/app-config'
+import { createIdentifier } from '../identifier'
 
 export type VinessI18nConfig<T = object> = InitOptions<T>
 

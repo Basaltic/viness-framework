@@ -1,6 +1,6 @@
 import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
-import { servicesContainer } from './container'
-import { createIdentifier, VinessServiceIdentifier } from './identifier'
+import { servicesContainer } from '../container'
+import { createIdentifier, VinessServiceIdentifier } from '../identifier'
 
 export const IServices = createIdentifier<Services>('IServiceContainer')
 
@@ -8,7 +8,7 @@ export class Services {
     /**
      * add new service to app
      */
-    bind<T, Services extends {}[]>(
+    add<T, Services extends {}[]>(
         service: SyncDescriptor<any> | (new (...services: Services) => T),
         identifier?: VinessServiceIdentifier<T>,
         isLazyInit: boolean = true

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
-import { RouteObject, generatePath, matchPath, useParams, type PathMatch } from 'react-router-dom'
-import { IVinessRouter, NavOption } from './router'
-import { joinPath } from './utils'
-import { VinessServiceIdentifier } from './identifier'
+import { RouteObject, generatePath, matchPath, useParams, type PathMatch, NavigateFunction } from 'react-router-dom'
+import { joinPath } from '../utils'
+import { VinessRouteIdentifer } from './route-identifier'
+import { IVinessRoutes, NavOption } from './routes'
 
 export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
     /**
@@ -19,29 +19,38 @@ export interface IVinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
 > extends VinessRouteObject {
-    readonly fullPath: string
+    readonly identifier: VinessRouteIdentifer<IVinessRoute>
+    readonly parentIdentifier: VinessRouteIdentifer<IVinessRoute>
+    /**
+     * navigate to any path
+     *
+     * @param to
+     * @param opts
+     * @returns
+     */
+    navigate: NavigateFunction
 
     /**
      * Go tho this route path
      *
      * @param option
      */
-    go(config?: { params?: Params; queries?: Queries }): Promise<void> | undefined
+    go(config?: { params?: Params; queries?: Queries }): void
 
     /**
      * Push this route path to the history stack with state
      */
-    push(config?: { params?: Params; queries?: Queries }, options?: NavOption): Promise<void> | undefined
+    push(config?: { params?: Params; queries?: Queries }, options?: NavOption): void
 
     /**
      * Replace to this route path
      */
-    replace(config?: { params?: Params; queries?: Queries }, options?: NavOption): Promise<void> | undefined
+    replace(config?: { params?: Params; queries?: Queries }, options?: NavOption): void
 
     /**
      * Get the full path recurse to the parent
      */
-    getPath(): string
+    getFullPath(): string
 
     /**
      * Get tha path string
@@ -87,19 +96,32 @@ export class VinessRoute<
 
     // auth related
     isPublic?: boolean
+    neededRoles?: string[]
 
-    router: IVinessRouter
-    identifier: VinessServiceIdentifier<IVinessRoute>
-    parentIdentifier?: VinessServiceIdentifier<IVinessRoute>
+    readonly routes: IVinessRoutes
+    readonly identifier: VinessRouteIdentifer<IVinessRoute>
+    readonly parentIdentifier: VinessRouteIdentifer<IVinessRoute>
+
+    navigate!: NavigateFunction
 
     constructor(
         params: VinessRouteObject,
-        identifier: VinessServiceIdentifier<IVinessRoute>,
-        parentIdentifier: VinessServiceIdentifier<IVinessRoute>,
-        router: IVinessRouter
+        identifier: VinessRouteIdentifer<IVinessRoute>,
+        parentIdentifier: VinessRouteIdentifer<IVinessRoute>,
+        routes: IVinessRoutes
     ) {
-        const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, isPublic } =
-            params
+        const {
+            id,
+            path,
+            element,
+            errorElement,
+            Component,
+            ErrorBoundary,
+            hasErrorBoundary,
+            caseSensitive,
+            isPublic,
+            neededRoles
+        } = params
 
         this.id = id || identifier.toString()
         this.path = path || ''
@@ -110,14 +132,13 @@ export class VinessRoute<
         this.hasErrorBoundary = hasErrorBoundary
         this.caseSensitive = caseSensitive
         this.isPublic = isPublic
+        this.neededRoles = neededRoles
 
+        this.routes = routes
         this.identifier = identifier
         this.parentIdentifier = parentIdentifier
-        this.router = router
-    }
 
-    get fullPath() {
-        return this.getPath()
+        this.navigate = () => {}
     }
 
     /**
@@ -126,37 +147,33 @@ export class VinessRoute<
      * @param option
      */
     go(config?: { params?: Params; queries?: Queries }) {
-        const router = this.router
         const path = this.generatePath(config)
-        return router.go(path)
+        return this.navigate(path)
     }
 
     /**
      * Push this route path to the history stack with state
      */
     push(config?: { params?: Params; queries?: Queries }, options?: NavOption) {
-        const router = this.router
         const path = this.generatePath(config)
-        return router.push(path, options)
+        return this.navigate(path, options)
     }
 
     /**
      * Replace to this route path
      */
     replace(config?: { params?: Params; queries?: Queries }, options?: NavOption) {
-        const router = this.router
         const path = this.generatePath(config)
-        return router.replace(path, options)
+        return this.navigate(path, { ...options, replace: true })
     }
 
     /**
      * Get the full path recurse to the parent
      */
-    getPath(): string {
+    getFullPath(): string {
         if (this.parentIdentifier) {
-            const parentRoute = this.router.get(this.parentIdentifier)
-            const parentPath = parentRoute.getPath()
-
+            const parentRoute = this.routes.get(this.parentIdentifier)
+            const parentPath = parentRoute.getFullPath()
             return joinPath(parentPath, this.path)
         } else {
             return this.path
@@ -172,7 +189,7 @@ export class VinessRoute<
     generatePath(option?: { params?: Params; queries?: Queries }): string {
         const { params = {}, queries } = option || {}
 
-        const fullPath = this.getPath()
+        const fullPath = this.getFullPath()
         const path = generatePath(fullPath, params)
 
         if (queries) {

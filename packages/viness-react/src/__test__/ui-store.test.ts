@@ -1,8 +1,8 @@
 import { it, expect, describe } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
-import { createVinessApp } from '../app'
+import { createApp } from '../app/app'
 
-import { UIStore } from '../store'
+import { UIStore } from '../store/store'
 import { createIdentifier } from '../identifier'
 
 const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
@@ -31,9 +31,9 @@ class CounterStore extends UIStore<CounterState> {
 
 describe('multiple ui store instance', () => {
     it('different instances should have different state', () => {
-        const app = createVinessApp()
+        const app = createApp()
 
-        app.stores.bind(CounterStore, ICounterStore)
+        app.stores.add(CounterStore, ICounterStore)
 
         const counterStore1 = app.stores.get(ICounterStore)
         const counterStore2 = app.stores.get(ICounterStore, 'TEST')
@@ -47,8 +47,8 @@ describe('multiple ui store instance', () => {
 
 describe('store hooks', () => {
     it('should increment counter 1', () => {
-        const app = createVinessApp()
-        app.stores.bind(CounterStore, ICounterStore)
+        const app = createApp()
+        app.stores.add(CounterStore, ICounterStore)
         const counterStore = app.stores.get(ICounterStore)
 
         const { result } = renderHook(() => counterStore.use.count())
@@ -59,8 +59,8 @@ describe('store hooks', () => {
     })
 
     it('should increment counter 2', () => {
-        const app = createVinessApp()
-        app.stores.bind(CounterStore, ICounterStore)
+        const app = createApp()
+        app.stores.add(CounterStore, ICounterStore)
         const counterStore = app.stores.get(ICounterStore)
 
         const { result } = renderHook(() => counterStore.useState((s) => s.count))

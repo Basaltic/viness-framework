@@ -1,5 +1,14 @@
 # @viness/core
 
+## 0.3.7
+
+### Patch Changes
+
+- feat: change bind api to add
+- feat: add patches manipulation in UI Store
+- feat: add manipulate patches in store
+- feat: support addChild api in route identifier
+
 ## 0.3.6
 
 ### Patch Changes

@@ -13,7 +13,7 @@ export class Effectss {
      * @param id
      * @param effects
      */
-    bind<T extends Effects, Services extends {}[]>(
+    add<T extends Effects, Services extends {}[]>(
         effects: new (...services: Services) => T,
         identifier?: VinessServiceIdentifier<T>
     ): VinessServiceIdentifier<T> {
@@ -36,3 +36,4 @@ export class Effectss {
         return storeContainer.get(identifier, instanceId)
     }
 }
+// depecrated

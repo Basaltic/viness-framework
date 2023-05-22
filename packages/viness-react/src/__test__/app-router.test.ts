@@ -1,20 +1,20 @@
 import { test, expect } from 'vitest'
-import { createVinessApp } from '../app'
+import { createApp } from '../app/app'
 
 test('app router', () => {
-    const app = createVinessApp()
+    const app = createApp()
 
-    const level1 = app.router.bind({ path: '/level1' })
-    const level21 = app.router.bind({ path: 'level21' }, level1)
-    const level22 = app.router.bind({ path: ':level22' }, level1)
+    const level1 = app.routes.add({ path: '/level1' })
+    const level21 = app.routes.add({ path: 'level21' }, level1)
+    const level22 = app.routes.add({ path: ':level22' }, level1)
 
-    const level21Route = app.router.get(level21)
+    const level21Route = app.routes.get(level21)
 
-    const fullPath1 = level21Route.getPath()
+    const fullPath1 = level21Route.getFullPath()
     expect(fullPath1).toBe('/level1/level21')
 
     const level22Route = app.services.get(level22)
-    const fullPath2 = level22Route.getPath()
+    const fullPath2 = level22Route.getFullPath()
     expect(fullPath2).toBe('/level1/:level22')
 
     const fullPathWithParams = level22Route.generatePath({ params: { level22: 'test' } })

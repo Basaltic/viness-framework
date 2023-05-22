@@ -1,3 +1,3 @@
-import { createVinessApp } from '@viness/react'
+import { createApp } from '@viness/react'
 
-export const app = createVinessApp({ router: { routerType: 'browser' } })
+export const app = createApp({ router: { routerType: 'browser' } })

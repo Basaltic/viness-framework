@@ -1,23 +1,22 @@
 import { ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
-import { enableAllPlugins } from 'immer'
-import { storeContainer } from './container'
-import { createIdentifier, VinessServiceIdentifier } from './identifier'
+import { enablePatches, enableMapSet } from 'immer'
+import { storeContainer } from '../container'
+import { createIdentifier, VinessServiceIdentifier } from '../identifier'
 import { UIStore } from './store'
-
-export const IStores = createIdentifier<Stores>('IStores')
 
 export class Stores {
     constructor() {
-        enableAllPlugins()
+        enablePatches()
+        enableMapSet()
     }
 
     /**
-     * Add UIStore to the app
+     * add UIStore to the app
      *
      * @param id
      * @param store
      */
-    bind<S extends object, T extends UIStore<S>, Services extends {}[]>(
+    add<S extends object, T extends UIStore<S>, Services extends {}[]>(
         store: new (...services: Services) => T,
         identifier?: VinessServiceIdentifier<T>
     ): VinessServiceIdentifier<T> {
@@ -30,7 +29,7 @@ export class Stores {
     }
 
     /**
-     * Get store instance by id
+     * get store instance by id
      *
      * @param {ServiceIdentifier} identifier
      * @param {ServiceInstanceIdentifier} [instanceId]

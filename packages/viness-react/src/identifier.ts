@@ -1,5 +1,5 @@
 import { createDecorator, ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
-import { effectsContainer } from './container'
+import { servicesContainer } from './container'
 import { generateId } from './utils'
 
 export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
@@ -22,7 +22,7 @@ export function createIdentifier<T>(serviceId: string): VinessServiceIdentifier<
     serviceId = `${serviceId}_${generateId()}`
     const identifier = createDecorator(serviceId) as VinessServiceIdentifier<T>
 
-    identifier.use = (instanceId) => effectsContainer.get(identifier, instanceId)
+    identifier.use = (instanceId) => servicesContainer.get(identifier, instanceId)
 
     return identifier
 }
