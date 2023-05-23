@@ -26,7 +26,7 @@ const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) 
  * extend this class to create ui store
  */
 export class UIStore<S extends object> {
-    store: WithSelectors<UseBoundStore<StoreApi<S>>>
+    protected store: WithSelectors<UseBoundStore<StoreApi<S>>>
 
     constructor(defaultState: S, name?: string) {
         let store: any

@@ -26,7 +26,7 @@ export default defineConfig({
                 collapsed: false,
                 items: [
                     { text: '路由', link: '/guide/router' },
-                    { text: '状态', link: '/guide/state-management' },
+                    { text: '状态', link: '/guide/ui-state' },
                     { text: '服务', link: '/guide/services' },
                     { text: '国际化', link: '/guide/i18n' }
                 ]

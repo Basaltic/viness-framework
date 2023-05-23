@@ -1,4 +1,4 @@
-import { ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
+import { ServiceIdentifier, ServiceInstanceIdentifier, SyncDescriptor } from '@viness/di'
 import { enablePatches, enableMapSet } from 'immer'
 import { storeContainer } from '../container'
 import { createIdentifier, VinessServiceIdentifier } from '../identifier'
@@ -40,5 +40,19 @@ export class Stores {
         instanceId?: ServiceInstanceIdentifier
     ) {
         return storeContainer.get(identifier, instanceId)
+    }
+
+    /**
+     * directly create a store
+     *
+     * @param defaultState
+     * @param name
+     * @returns
+     */
+    createStore<S extends object>(defaultState: S, name?: string): VinessServiceIdentifier<UIStore<S>> {
+        const uiStoreDescriptor = new SyncDescriptor(UIStore, [defaultState, name], true)
+        const identifier = createIdentifier<UIStore<S>>('UIStore')
+        storeContainer.register(identifier, uiStoreDescriptor)
+        return identifier
     }
 }
