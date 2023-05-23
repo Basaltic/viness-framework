@@ -1,0 +1,3 @@
+[submodule "packages/viness-react-hook-form"]
+	path = packages/viness-react-hook-form
+	url = https://github.com/Basaltic/react-hook-form.git
