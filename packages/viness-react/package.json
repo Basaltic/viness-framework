@@ -1,6 +1,6 @@
 {
     "name": "@viness/react",
-    "version": "0.3.8",
+    "version": "0.3.9",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -39,7 +39,6 @@
     },
     "dependencies": {
         "@viness/di": "workspace:*",
-        "@viness/react-hook-form": "workspace:*",
         "axios": "^1.4.0",
         "eventemitter3": "^5.0.1",
         "i18next": "^22.5.0",

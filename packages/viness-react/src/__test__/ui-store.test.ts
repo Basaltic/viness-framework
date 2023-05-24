@@ -2,7 +2,7 @@ import { it, expect, describe } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
 import { createApp } from '../app/app'
 
-import { UIStore } from '../store/store'
+import { VinessUIStore } from '../store/store'
 import { createIdentifier } from '../identifier'
 
 const ICounterStore = createIdentifier<CounterStore>('ICounterStore')
@@ -15,7 +15,7 @@ const defaultCountareState: CounterState = {
     count: 0
 }
 
-class CounterStore extends UIStore<CounterState> {
+class CounterStore extends VinessUIStore<CounterState> {
     constructor() {
         super(defaultCountareState, 'counter-store')
     }

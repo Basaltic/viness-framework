@@ -1,17 +1,25 @@
 import { IVinessAppConfig, VinessAppConfig } from './app-config'
-import { Effectss } from '../effects'
-import { I18n, II18n } from '../i18n/i18n'
 import { IVinessRoutes, VinessReactRoutes } from '../route/routes'
 import { Services } from './app-services'
 import { Stores } from '../store/stores'
+import { Forms, IForms } from '../form/forms'
+import { ServiceIdentifier } from '@viness/di'
+
+export interface IVinessApp {
+    readonly forms: IForms
+    readonly routes: IVinessRoutes
+    readonly stores: Stores
+    readonly config: IVinessAppConfig
+    readonly services: Services
+}
 
 /**
  * Manage all the instances
  */
 export class VinessApp {
+    private innerForms = new Forms()
     private innerStores = new Stores()
     private innerServices = new Services()
-    private innerEffectss = new Effectss()
 
     private innerConfig: IVinessAppConfig
     private innerRouter: IVinessRoutes
@@ -23,6 +31,10 @@ export class VinessApp {
 
     get config() {
         return this.innerConfig
+    }
+
+    get forms() {
+        return this.innerForms
     }
 
     /**
@@ -40,15 +52,12 @@ export class VinessApp {
         return this.innerServices
     }
 
-    get effectss() {
-        return this.innerEffectss
+    resolve<T>(id: ServiceIdentifier<T>) {
+        return this.services.get(id)
     }
 }
 
 export function createApp(config?: IVinessAppConfig) {
-    // initialize the app
     const app = new VinessApp(config)
-
-    app.services.add(I18n, II18n, false)
     return app
 }

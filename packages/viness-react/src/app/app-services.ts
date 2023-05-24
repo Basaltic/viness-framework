@@ -1,5 +1,5 @@
 import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
-import { servicesContainer } from '../container'
+import { servicesContainer } from './container'
 import { createIdentifier, VinessServiceIdentifier } from '../identifier'
 
 export const IServices = createIdentifier<Services>('IServiceContainer')

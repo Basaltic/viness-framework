@@ -35,9 +35,8 @@ import {
     UseFormSetValue,
     UseFormTrigger,
     UseFormUnregister,
-    UseFormWatch,
-    createFormControl
-} from '@viness/react-hook-form'
+    UseFormWatch
+} from 'react-hook-form'
 
 export interface IVinessFormForm<TFieldValues extends FieldValues = FieldValues, TContext = any> {
     watch: UseFormWatch<TFieldValues>
@@ -78,10 +77,7 @@ export interface IVinessFormForm<TFieldValues extends FieldValues = FieldValues,
 
     useFormState(props?: UseFormStateProps<TFieldValues>): UseFormStateReturn<TFieldValues>
 
-    useFieldArray<
-        TFieldArrayName extends FieldArrayPath<TFieldValues> = FieldArrayPath<TFieldValues>,
-        TKeyName extends string = 'id'
-    >(
+    useFieldArray<TFieldArrayName extends FieldArrayPath<TFieldValues> = FieldArrayPath<TFieldValues>, TKeyName extends string = 'id'>(
         props: UseFieldArrayProps<TFieldValues, TFieldArrayName, TKeyName>
     ): UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>
 
@@ -93,10 +89,8 @@ export interface IVinessFormForm<TFieldValues extends FieldValues = FieldValues,
 /**
  *
  */
-export class VinessForm<TFieldValues extends FieldValues = FieldValues, TContext = any>
-    implements IVinessFormForm<TFieldValues, TContext>
-{
-    private form!: UseFormReturn<TFieldValues, TContext>
+export class Form<TFieldValues extends FieldValues = FieldValues, TContext = any> implements IVinessFormForm<TFieldValues, TContext> {
+    form!: UseFormReturn<TFieldValues, TContext>
     private props: UseFormProps<TFieldValues, TContext>
 
     constructor(props: UseFormProps<TFieldValues, TContext>) {
@@ -130,9 +124,11 @@ export class VinessForm<TFieldValues extends FieldValues = FieldValues, TContext
     get getFieldState() {
         return this.form.getFieldState
     }
+
     get watch() {
         return this.form.watch
     }
+
     get register() {
         return this.form.register
     }
@@ -140,15 +136,19 @@ export class VinessForm<TFieldValues extends FieldValues = FieldValues, TContext
     get unregister() {
         return this.form.unregister
     }
+
     get handleSubmit() {
         return this.form.handleSubmit
     }
+
     get reset() {
         return this.form.reset
     }
+
     get resetField() {
         return this.form.resetField
     }
+
     get trigger() {
         return this.form.trigger
     }
@@ -183,10 +183,7 @@ export class VinessForm<TFieldValues extends FieldValues = FieldValues, TContext
         return useFormState({ control: this.control as any, ...props })
     }
 
-    useFieldArray<
-        TFieldArrayName extends ArrayPath<TFieldValues> = ArrayPath<TFieldValues>,
-        TKeyName extends string = 'id'
-    >(
+    useFieldArray<TFieldArrayName extends ArrayPath<TFieldValues> = ArrayPath<TFieldValues>, TKeyName extends string = 'id'>(
         props: UseFieldArrayProps<TFieldValues, TFieldArrayName, TKeyName>
     ): UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName> {
         this.initialize()
@@ -227,8 +224,6 @@ export class VinessForm<TFieldValues extends FieldValues = FieldValues, TContext
     }
 }
 
-export const createForm = <TFieldValues extends FieldValues = FieldValues, TContext = any>(
-    props: UseFormProps<TFieldValues, TContext>
-) => {
-    return new VinessForm<TFieldValues, TContext>(props)
+export const createForm = <TFieldValues extends FieldValues = FieldValues, TContext = any>(props: UseFormProps<TFieldValues, TContext>) => {
+    return new Form<TFieldValues, TContext>(props)
 }

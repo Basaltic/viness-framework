@@ -1,5 +1,12 @@
 # @viness/core
 
+## 0.3.9
+
+### Patch Changes
+
+- feat: change get to resolve
+- feat: expose all the api in VinessUIStore
+
 ## 0.3.8
 
 ### Patch Changes

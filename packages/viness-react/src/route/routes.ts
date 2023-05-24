@@ -1,6 +1,6 @@
 import { SyncDescriptor } from '@viness/di'
 import { NavigateOptions } from 'react-router'
-import { servicesContainer } from '../container'
+import { servicesContainer } from '../app/container'
 import { createIdentifier } from '../identifier'
 import { generateId } from '../utils'
 import { VinessRouteObject, IVinessRoute, VinessRoute } from './route'
@@ -19,20 +19,13 @@ export interface IVinessRoutes {
      * @param parentRouteId parent route of this added route
      * @returns
      */
-    add(
-        routeObj: VinessRouteObject,
-        parentRouteId?: VinessRouteIdentifer<IVinessRoute>
-    ): VinessRouteIdentifer<IVinessRoute<{}, {}>>
+    add(routeObj: VinessRouteObject, parentRouteId?: VinessRouteIdentifer<IVinessRoute>): VinessRouteIdentifer<IVinessRoute<{}, {}>>
     /**
      * get route instance by id
      *
      * @param id
      */
-    get<
-        P extends Record<string, string | number | boolean>,
-        Q extends Record<string, string | string[]>,
-        T extends IVinessRoute<P, Q>
-    >(
+    get<P extends Record<string, string | number | boolean>, Q extends Record<string, string | string[]>, T extends IVinessRoute<P, Q>>(
         id: VinessRouteIdentifer<T>
     ): T
 
@@ -70,11 +63,9 @@ export class VinessReactRoutes implements IVinessRoutes {
         return IRouteDecorator
     }
 
-    get<
-        P extends Record<string, string | number | boolean>,
-        Q extends Record<string, string | string[]>,
-        T extends IVinessRoute<P, Q>
-    >(id: VinessRouteIdentifer<T>): T {
+    get<P extends Record<string, string | number | boolean>, Q extends Record<string, string | string[]>, T extends IVinessRoute<P, Q>>(
+        id: VinessRouteIdentifer<T>
+    ): T {
         return servicesContainer.get<T>(id) as T
     }
 

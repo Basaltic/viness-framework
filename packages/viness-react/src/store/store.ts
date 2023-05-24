@@ -25,7 +25,7 @@ const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) 
 /**
  * extend this class to create ui store
  */
-export class UIStore<S extends object> {
+export class VinessUIStore<S extends object> {
     protected store: WithSelectors<UseBoundStore<StoreApi<S>>>
 
     constructor(defaultState: S, name?: string) {
@@ -70,14 +70,14 @@ export class UIStore<S extends object> {
     /**
      * subscribe the modification of the state in this store
      */
-    protected subscribe(listener: (state: S, prevState: S) => void): () => void {
+    subscribe(listener: (state: S, prevState: S) => void): () => void {
         return this.store.subscribe(listener)
     }
 
     /**
      * change the state
      */
-    protected setState(
+    setState(
         updater: S | Partial<S> | ((state: S) => S | void),
         withPatches?: (patches: Patch[], inversePatches: Patch[]) => void,
         replace?: boolean
@@ -102,7 +102,7 @@ export class UIStore<S extends object> {
      * @param replace
      * @returns [patches, inverse patches]
      */
-    protected setStateWithPatches(updater: (state: S) => S | void, replace?: boolean): [Patch[], Patch[]] {
+    setStateWithPatches(updater: (state: S) => S | void, replace?: boolean): [Patch[], Patch[]] {
         const state = this.getState()
         const [nextState, patches, inversePatches] = produceWithPatches(state, updater)
         this.store.setState(nextState, replace)
@@ -114,7 +114,7 @@ export class UIStore<S extends object> {
      *
      * @param patches
      */
-    protected applyPatches(patches: Patch[]) {
+    applyPatches(patches: Patch[]) {
         const updater = (s: S) => applyPatches(s, patches)
         this.store.setState(updater)
     }

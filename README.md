@@ -23,8 +23,8 @@ npm install --save @viness/react
 
 * `apps/web`: example web app use viness framework
 * `apps/docs`: documents
-* `packages/viness-di`: Di framework
-* `packages/viness-react`: Viness application framework
+* `packages/viness-di`: di framework
+* `packages/viness-react`: viness react application framework
 
 # Todos
 

@@ -15,7 +15,7 @@ export function DashboardPage2() {
 function Item(props: { id: string }) {
     const { id } = props
 
-    const store = ICounterStore.use()
+    const store = ICounterStore.resolve()
     const selectedId = store.useState((s) => s.selectedIds[id])
     const isSelected = 1 === selectedId
 
