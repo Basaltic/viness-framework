@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.3.10
+
+### Patch Changes
+
+- feat: add resolve funtion in identifier
+
 ## 0.3.9
 
 ### Patch Changes

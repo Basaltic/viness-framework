@@ -10,6 +10,14 @@ export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
      * @returns
      */
     resolve: (instanceId?: ServiceInstanceIdentifier) => T
+
+    /**
+     * call it in FC
+     *
+     * @param instanceId
+     * @returns
+     */
+    use: (instanceId?: ServiceInstanceIdentifier) => T
 }
 
 /**
@@ -23,6 +31,7 @@ export function createIdentifier<T>(serviceId: string): VinessServiceIdentifier<
     const identifier = createDecorator(serviceId) as VinessServiceIdentifier<T>
 
     identifier.resolve = (instanceId) => servicesContainer.get(identifier, instanceId)
+    identifier.use = (instanceId) => servicesContainer.get(identifier, instanceId)
 
     return identifier
 }

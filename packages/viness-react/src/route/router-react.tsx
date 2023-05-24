@@ -1,13 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import {
-    createBrowserRouter,
-    createHashRouter,
-    createMemoryRouter,
-    Navigate,
-    Outlet,
-    RouteObject,
-    RouterProvider
-} from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, createMemoryRouter, Navigate, Outlet, RouteObject, RouterProvider } from 'react-router-dom'
 import { useAppContext } from '../app-react-context'
 import { IVinessRoute } from './route'
 
@@ -50,6 +42,8 @@ export const AppRouter = () => {
                 return createBrowserRouter(routes)
         }
     }, [])
+
+    router.routes
 
     return <RouterProvider router={router} />
 }

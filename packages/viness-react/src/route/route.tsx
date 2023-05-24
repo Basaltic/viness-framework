@@ -110,18 +110,7 @@ export class VinessRoute<
         parentIdentifier: VinessRouteIdentifer<IVinessRoute>,
         routes: IVinessRoutes
     ) {
-        const {
-            id,
-            path,
-            element,
-            errorElement,
-            Component,
-            ErrorBoundary,
-            hasErrorBoundary,
-            caseSensitive,
-            isPublic,
-            neededRoles
-        } = params
+        const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, isPublic, neededRoles } = params
 
         this.id = id || identifier.toString()
         this.path = path || ''
