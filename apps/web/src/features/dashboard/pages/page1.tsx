@@ -1,7 +1,7 @@
-import { ICounterStore } from '../../../app-stores'
+import { CounterStoreIdentifier } from '../store/counter.store'
 
 export function DashboardPage1() {
-    const store = ICounterStore.resolve()
+    const store = CounterStoreIdentifier.useResolve()
     const count = store.use.count()
 
     const handleIncrease = () => {
@@ -22,7 +22,7 @@ export function DashboardPage1() {
 
     return (
         <div>
-            dashboard page1
+            <div>dashboard page1</div>
             <div>count: {count}</div>
             <button onClick={handleIncrease}>increase</button>
             <button onClick={handleDecrease}>decrease</button>

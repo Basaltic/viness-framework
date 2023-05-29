@@ -1,63 +1,22 @@
-import { FieldErrors, FieldNamesMarkedBoolean } from 'react-hook-form'
 import { VinessUIStore } from '../store/store'
-import { FieldValues } from './form-types'
-
-export interface FormState<TFieldValues extends FieldValues> {
-    isDirty: boolean
-    isLoading: boolean
-    isSubmitted: boolean
-    isSubmitSuccessful: boolean
-    isSubmitting: boolean
-    isValidating: boolean
-    isValid: boolean
-    submitCount: number
-    defaultValues?: Partial<TFieldValues>
-    dirtyFields: Partial<Readonly<FieldNamesMarkedBoolean<TFieldValues>>>
-    touchedFields: Partial<Readonly<FieldNamesMarkedBoolean<TFieldValues>>>
-    errors: FieldErrors<TFieldValues>
-}
-
-export interface Field {
-    /**
-     * wethoer field has modified
-     */
-    isDirty: boolean
-    /**
-     * field has received a focus and blur event
-     */
-    isTouched: boolean
-    /**
-     * field is not valid
-     */
-    invalid: boolean
-    /**
-     * field error object.
-     */
-    error: FieldErrors
-}
+import { FormState, createDefaultFormState } from './form-state'
+import { CriteriaMode, FieldValues, KeepStateOptions, ValidationMode } from './form-types'
+import { IVinessForm } from './viness-form-interface'
 
 export interface VinessFormProps<TFieldValues extends FieldValues> {
+    values?: TFieldValues
     defaultValues: TFieldValues
+    mode?: ValidationMode
+    reValidateMode?: Exclude<ValidationMode, 'onTouched' | 'all'>
+    resetOptions?: KeepStateOptions
+    // resolver: Resolver<TFieldValues, TContext>
+    // context: TContext
+    shouldFocusError?: boolean
+    shouldUnregister?: boolean
+    shouldUseNativeValidation?: boolean
+    criteriaMode?: CriteriaMode
+    delayError?: number
 }
-
-function createDefaultFormState() {
-    return {
-        isDirty: false,
-        isLoading: false,
-        isSubmitted: false,
-        isSubmitSuccessful: false,
-        isSubmitting: false,
-        isValidating: false,
-        isValid: false,
-        submitCount: 0,
-        defaultValues: {},
-        dirtyFields: {},
-        touchedFields: {},
-        errors: {}
-    }
-}
-
-export interface IVinessForm<TFieldValues extends FieldValues = FieldValues> {}
 
 export class VinessForm<TFieldValues extends FieldValues> implements IVinessForm<TFieldValues> {
     private formStateStore: VinessUIStore<FormState<TFieldValues>>
@@ -67,21 +26,46 @@ export class VinessForm<TFieldValues extends FieldValues> implements IVinessForm
         const { defaultValues } = props
 
         const defaultFormState = createDefaultFormState()
-        this.formStateStore = new VinessUIStore<FormState<TFieldValues>>(defaultFormState)
-        this.formValuesStore = new VinessUIStore<TFieldValues>(defaultValues)
+        this.formStateStore = new VinessUIStore<FormState<TFieldValues>>({ defaultState: defaultFormState })
+        this.formValuesStore = new VinessUIStore<TFieldValues>({ defaultState: defaultValues })
     }
 
+    /**
+     *
+     * @returns
+     */
+    getFormState() {
+        return this.formStateStore.getState()
+    }
+
+    getFormValues() {}
+
     async handleSubmit(cb: (values: TFieldValues) => void) {
-        //  trigger validate
         this.formStateStore.setState((formState) => {
             formState.isSubmitting = true
         })
+
+        //  trigger validate
+
         const values = this.formValuesStore.getState()
         await cb(values)
     }
 
-    useWatch(name: string) {
-        return this.formValuesStore.use[name]()
+    /**
+     * subscribe the changes of the form values
+     */
+    useWatch(): TFieldValues
+    useWatch<T extends keyof TFieldValues>(name: T): TFieldValues[T]
+    useWatch<T>(valuesSelector: (v: TFieldValues) => T): T
+    useWatch(name?: any): any {
+        if (name) {
+            if (typeof name === 'function') {
+                return this.formValuesStore.useState(name)
+            }
+            return this.formValuesStore.use[name]()
+        } else {
+            return this.formValuesStore.useState((s) => s)
+        }
     }
 
     useField(name: string, options: {}) {}
@@ -92,3 +76,7 @@ export class VinessForm<TFieldValues extends FieldValues> implements IVinessForm
         return this.formStateStore.useState((s) => s)
     }
 }
+
+const form = new VinessForm({ defaultValues: { a: 1 } })
+
+const a = form.useWatch()

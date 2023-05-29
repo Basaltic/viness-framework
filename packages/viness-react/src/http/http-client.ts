@@ -29,10 +29,7 @@ export interface IHttpClient {
      * @param data
      * @param config
      */
-    post<D = any, P = any, T = any>(
-        url: string,
-        config?: AxiosRequestConfig
-    ): (data?: D, params?: P) => ICancelablePromise<T>
+    post<D = any, P = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D, params?: P) => ICancelablePromise<T>
 
     /**
      * Patch
@@ -41,10 +38,7 @@ export interface IHttpClient {
      * @param data
      * @param config
      */
-    patch<D = any, P = any, T = any>(
-        url: string,
-        config?: AxiosRequestConfig
-    ): (data?: D, params?: P) => ICancelablePromise<T>
+    patch<D = any, P = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D, params?: P) => ICancelablePromise<T>
 
     /**
      * Delete

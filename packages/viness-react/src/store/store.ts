@@ -3,32 +3,24 @@ import { devtools } from 'zustand/middleware'
 import { ServiceIdentifier } from '@viness/di'
 import { produce, produceWithPatches, applyPatches, Patch } from 'immer'
 
-export { type Patch }
 export type StoreInstanceId = string | number
 export type StoreIdentifier<T> = (instanceId: string | number) => ServiceIdentifier<T>
 
-type ExtractState<S> = S extends { getState: () => infer T } ? T : never
-type WithSelectors<S> = S extends { getState: () => infer T } ? S & { use: { [K in keyof T]: () => T[K] } } : never
-
-const createSelectors = <S extends UseBoundStore<StoreApi<unknown>>>(_store: S) => {
-    const store = _store as WithSelectors<typeof _store>
-    store.use = {}
-
-    const state = store.getState() as any
-    for (const k of Object.keys(state)) {
-        ;(store.use as any)[k] = () => store((s: any) => s[k as keyof typeof s])
-    }
-
-    return store
+export interface StoreOptions<S extends object> {
+    defaultState: S
+    name?: string
+    immer?: boolean
 }
 
 /**
  * extend this class to create ui store
  */
 export class VinessUIStore<S extends object> {
-    protected store: WithSelectors<UseBoundStore<StoreApi<S>>>
+    protected store: UseBoundStore<StoreApi<S>>
+    private selectors!: { [K in keyof S]: () => S[K] }
 
-    constructor(defaultState: S, name?: string) {
+    constructor(options: StoreOptions<S>) {
+        const { defaultState, name = '' } = options
         let store: any
 
         if (process.env.NODE_ENV === 'development') {
@@ -37,7 +29,7 @@ export class VinessUIStore<S extends object> {
             store = create(() => defaultState)
         }
 
-        this.store = createSelectors(store)
+        this.store = store
     }
 
     /**
@@ -45,7 +37,18 @@ export class VinessUIStore<S extends object> {
      *  ** use this in react functional components **
      */
     get use() {
-        return this.store.use
+        if (this.selectors) {
+            return this.selectors
+        }
+        const state = this.getState()
+        const selectors: any = {}
+        for (const k of Object.keys(state)) {
+            selectors[k] = () => this.useState((s: any) => s[k as keyof typeof s])
+        }
+
+        this.selectors = selectors as any
+
+        return this.selectors
     }
 
     /**
@@ -63,7 +66,7 @@ export class VinessUIStore<S extends object> {
      * @param equals
      * @returns
      */
-    useState<U>(selector: (state: ExtractState<UseBoundStore<StoreApi<S>>>) => U, equals?: (a: U, b: U) => boolean): U {
+    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U {
         return this.store(selector, equals)
     }
 

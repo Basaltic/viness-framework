@@ -1,10 +1,24 @@
 import { ReactNode } from 'react'
 import { RouteObject, generatePath, matchPath, useParams, type PathMatch, NavigateFunction } from 'react-router-dom'
+import { VinessServiceIdentifier } from '../identifier'
 import { joinPath } from '../utils'
-import { VinessRouteIdentifer } from './route-identifier'
-import { IVinessRoutes, NavOption } from './routes'
+import { IVinessRouter, vinessRouter } from './router'
+import { NavOption, To, NavigateOptions } from './types'
 
-export interface VinessRouteObject extends Omit<RouteObject, 'children'> {
+export interface RouteNode {
+    id: VinessRouteIdentifer
+    index?: boolean
+    children?: RouteItem[]
+}
+
+export type RouteItem = RouteNode | VinessRouteIdentifer
+
+export type VinessRouteIdentifer<
+    Params extends Record<string, string | number | boolean> = {},
+    Queries extends Record<string, string | string[]> = {}
+> = VinessServiceIdentifier<IVinessRoute<Params, Queries>>
+
+export interface VinessRouteObject extends Omit<RouteObject, 'children' | 'index'> {
     /**
      * Whether this route can be access for everyone
      */
@@ -19,16 +33,8 @@ export interface IVinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
 > extends VinessRouteObject {
-    readonly identifier: VinessRouteIdentifer<IVinessRoute>
-    readonly parentIdentifier: VinessRouteIdentifer<IVinessRoute>
-    /**
-     * navigate to any path
-     *
-     * @param to
-     * @param opts
-     * @returns
-     */
-    navigate: NavigateFunction
+    readonly identifier: VinessRouteIdentifer
+    readonly parentIdentifier?: VinessRouteIdentifer
 
     /**
      * Go tho this route path
@@ -66,6 +72,7 @@ export interface IVinessRoute<
      * @returns
      */
     matchPath(path: string): PathMatch<string> | null
+
     /**
      * Check if current path is matched to this route's path
      */
@@ -98,19 +105,22 @@ export class VinessRoute<
     isPublic?: boolean
     neededRoles?: string[]
 
-    readonly routes: IVinessRoutes
-    readonly identifier: VinessRouteIdentifer<IVinessRoute>
-    readonly parentIdentifier: VinessRouteIdentifer<IVinessRoute>
+    readonly routes: IVinessRouter
+    readonly identifier: VinessRouteIdentifer
 
-    navigate!: NavigateFunction
-
-    constructor(
-        params: VinessRouteObject,
-        identifier: VinessRouteIdentifer<IVinessRoute>,
-        parentIdentifier: VinessRouteIdentifer<IVinessRoute>,
-        routes: IVinessRoutes
-    ) {
-        const { id, path, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, isPublic, neededRoles } = params
+    constructor(params: VinessRouteObject, identifier: VinessRouteIdentifer, routes: IVinessRouter) {
+        const {
+            id,
+            path,
+            element,
+            errorElement,
+            Component,
+            ErrorBoundary,
+            hasErrorBoundary,
+            caseSensitive,
+            isPublic = true,
+            neededRoles
+        } = params
 
         this.id = id || identifier.toString()
         this.path = path || ''
@@ -125,9 +135,17 @@ export class VinessRoute<
 
         this.routes = routes
         this.identifier = identifier
-        this.parentIdentifier = parentIdentifier
+    }
 
-        this.navigate = () => {}
+    /**
+     * navigate to anywhere
+     *
+     * @param to
+     * @param options
+     * @returns
+     */
+    navigate(to: To, options?: NavigateOptions) {
+        return vinessRouter.navigate(to, options)
     }
 
     /**
@@ -160,8 +178,11 @@ export class VinessRoute<
      * Get the full path recurse to the parent
      */
     getFullPath(): string {
-        if (this.parentIdentifier) {
-            const parentRoute = this.routes.get(this.parentIdentifier)
+        const parentRoute = this.routes.getParent(this.identifier)
+
+        console.log(parentRoute)
+
+        if (parentRoute) {
             const parentPath = parentRoute.getFullPath()
             return joinPath(parentPath, this.path)
         } else {

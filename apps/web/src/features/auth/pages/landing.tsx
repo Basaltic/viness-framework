@@ -1,7 +1,7 @@
 import { DashboardPage1RouteId } from '../../../app-routes'
 
 export default function LandingPage() {
-    const page1Route = DashboardPage1RouteId.use()
+    const page1Route = DashboardPage1RouteId.useResolve()
 
     const toPage = () => {
         page1Route.go()

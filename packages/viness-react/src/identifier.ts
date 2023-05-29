@@ -4,7 +4,7 @@ import { generateId } from './utils'
 
 export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
     /**
-     * call it in anywhere
+     * call it in any services
      *
      * @param instanceId
      * @returns
@@ -12,16 +12,17 @@ export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
     resolve: (instanceId?: ServiceInstanceIdentifier) => T
 
     /**
-     * call it in FC
+     * resolve the instance
+     * - call it in FC
      *
      * @param instanceId
      * @returns
      */
-    use: (instanceId?: ServiceInstanceIdentifier) => T
+    useResolve: (instanceId?: ServiceInstanceIdentifier) => T
 }
 
 /**
- * create service identifier
+ * create service decorator as identifier
  *
  * @param serviceId
  * @returns
@@ -30,8 +31,8 @@ export function createIdentifier<T>(serviceId: string): VinessServiceIdentifier<
     serviceId = `${serviceId}_${generateId()}`
     const identifier = createDecorator(serviceId) as VinessServiceIdentifier<T>
 
-    identifier.resolve = (instanceId) => servicesContainer.get(identifier, instanceId)
-    identifier.use = (instanceId) => servicesContainer.get(identifier, instanceId)
+    identifier.resolve = (instanceId) => servicesContainer.resolve(identifier, instanceId)
+    identifier.useResolve = (instanceId) => servicesContainer.resolve(identifier, instanceId)
 
     return identifier
 }

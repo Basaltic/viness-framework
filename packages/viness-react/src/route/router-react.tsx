@@ -1,56 +1,42 @@
-import { useCallback, useMemo } from 'react'
-import { createBrowserRouter, createHashRouter, createMemoryRouter, Navigate, Outlet, RouteObject, RouterProvider } from 'react-router-dom'
-import { useAppContext } from '../app-react-context'
-import { IVinessRoute } from './route'
+import { RouteObject, RouterProvider } from 'react-router-dom'
+import { IVinessRoute, RouteNode, RouteItem } from './route'
+import { vinessRouter } from './router'
+import { createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom'
 
-export { Outlet, Navigate }
+export interface AppRouterProps {
+    type: 'hash' | 'browser' | 'memory'
+    basename?: string
+    routeItems: RouteItem[]
+}
 
 /**
  * Router Component
  */
-export const AppRouter = () => {
-    const app = useAppContext()
+export const AppRouter = (props: AppRouterProps) => {
+    const { type, basename, routeItems } = props
+    const routes = toRouteObjects(routeItems)
 
-    const toRouteObjects = useCallback(
-        (vinessRoutes: IVinessRoute[]) => {
-            const routes = vinessRoutes.map((vinessRoute) => {
-                const routeObj = toRouteObj(vinessRoute)
+    let router
+    switch (type) {
+        case 'memory':
+            router = createMemoryRouter(routes, { basename })
+        case 'hash':
+            router = createHashRouter(routes, { basename })
+        case 'browser':
+        default:
+            router = createBrowserRouter(routes, { basename })
+    }
 
-                const childRoutes = app.routes.getChildren(vinessRoute.identifier)
-
-                if (childRoutes && childRoutes.length > 0) {
-                    routeObj.children = toRouteObjects(childRoutes)
-                }
-
-                return routeObj
-            })
-            return routes
-        },
-        [app]
-    )
-
-    const router = useMemo(() => {
-        const vinessRoutes = app.routes.getChildren()
-        const routes = toRouteObjects(vinessRoutes)
-        switch (app.config.router?.routerType) {
-            case 'memory':
-                return createMemoryRouter(routes)
-            case 'hash':
-                return createHashRouter(routes)
-            case 'browser':
-            default:
-                return createBrowserRouter(routes)
-        }
-    }, [])
-
-    router.routes
+    vinessRouter.navigate = router.navigate
 
     return <RouterProvider router={router} />
 }
-const toRouteObj = (route: IVinessRoute): RouteObject => {
+
+const toRouteObj = (route: IVinessRoute, item?: RouteNode): RouteObject => {
     return {
         id: route.id,
         path: route.path,
+        index: item?.index,
         element: route.element,
         errorElement: route.errorElement,
         Component: route.Component,
@@ -58,4 +44,30 @@ const toRouteObj = (route: IVinessRoute): RouteObject => {
         hasErrorBoundary: route.hasErrorBoundary,
         caseSensitive: route.caseSensitive
     }
+}
+
+const toRouteObjects = (routeNodes: RouteItem[], parentId?: any) => {
+    return routeNodes.map((item) => {
+        let routeId
+        let routeObject
+        if (typeof item === 'function') {
+            routeId = item
+            const route = vinessRouter.resolve(routeId)
+            routeObject = toRouteObj(route)
+        } else {
+            routeId = item.id
+            const route = vinessRouter.resolve(routeId)
+            routeObject = toRouteObj(route, item)
+
+            if (item.children && item.children.length > 0) {
+                routeObject.children = toRouteObjects(item.children, routeId)
+            }
+        }
+
+        if (parentId) {
+            vinessRouter.setParentChild(parentId, routeId)
+        }
+
+        return routeObject
+    })
 }

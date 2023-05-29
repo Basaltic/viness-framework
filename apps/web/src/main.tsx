@@ -1,27 +1,19 @@
 import './index.css'
 
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { AppRouter, VinessReactApp } from '@viness/react'
+import { createRoot } from 'react-dom/client'
+import { VinessReactApp } from '@viness/react'
 
-import { app } from './app'
-
-import './app-routes'
-import './app-stores'
+import { routes } from './app-routes'
 
 const ErrorFallbackComponent = () => <div>error</div>
 const SuspenseFallbackComponent = () => <div></div>
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
-        {/* Other Custom Providers Wrap App */}
+const container = document.getElementById('root')
+container &&
+    createRoot(container).render(
         <VinessReactApp
-            app={app}
-            SuspenseFallbackComponent={SuspenseFallbackComponent}
+            router={{ type: 'browser', routes: routes }}
             ErrorFallbackComponent={ErrorFallbackComponent}
-        >
-            {/* Other Custom Providers Wrap Routes */}
-            <AppRouter />
-        </VinessReactApp>
-    </React.StrictMode>
-)
+            SuspenseFallbackComponent={SuspenseFallbackComponent}
+        />
+    )
