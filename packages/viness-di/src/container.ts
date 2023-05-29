@@ -1,11 +1,5 @@
 import { SyncDescriptor } from './descriptors'
-import {
-    BrandedService,
-    createDecorator,
-    IInstantiationService,
-    ServiceIdentifier,
-    ServiceInstanceIdentifier
-} from './instantiation'
+import { BrandedService, createDecorator, IInstantiationService, ServiceIdentifier, ServiceInstanceIdentifier } from './instantiation'
 import { InstantiationService } from './instantiation-service'
 import { InstantiationType, ServiceRegistry } from './service-registry'
 
@@ -13,10 +7,7 @@ export class Container {
     registory: ServiceRegistry
     private instantiationService: IInstantiationService
 
-    private serviceIdToInstanceIdMap: Map<
-        ServiceIdentifier<any>,
-        Map<ServiceInstanceIdentifier, ServiceIdentifier<any>>
-    >
+    private serviceIdToInstanceIdMap: Map<ServiceIdentifier<any>, Map<ServiceInstanceIdentifier, ServiceIdentifier<any>>>
 
     constructor(serviceRegistory?: ServiceRegistry, instantiation?: IInstantiationService) {
         const registory = serviceRegistory ? serviceRegistory : new ServiceRegistry()
@@ -62,7 +53,7 @@ export class Container {
      * @param instanceId
      * @returns
      */
-    get<T>(id: ServiceIdentifier<T>, instanceId?: ServiceInstanceIdentifier): T {
+    resolve<T>(id: ServiceIdentifier<T>, instanceId?: ServiceInstanceIdentifier): T {
         // construct a new service identifier
         if (instanceId) {
             let serviceIdToInstanceIds = this.serviceIdToInstanceIdMap.get(id)
@@ -80,11 +71,7 @@ export class Container {
 
                 serviceIdToInstanceIds.set(instanceId, serviceInstanceIdentifier)
 
-                this.register(
-                    serviceInstanceIdentifier,
-                    serviceDesc.ctor,
-                    serviceDesc.supportsDelayedInstantiation ? 1 : 0
-                )
+                this.register(serviceInstanceIdentifier, serviceDesc.ctor, serviceDesc.supportsDelayedInstantiation ? 1 : 0)
                 return this.instantiationService.invokeFunction((accessor) => accessor.get(serviceInstanceIdentifier))
             }
         }

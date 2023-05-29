@@ -10,8 +10,8 @@ describe('Multi Service Instance', () => {
         container.register(IApple, Apple)
         container.register(IPerson, Person)
 
-        const person1 = container.get(IPerson)
-        const person2 = container.get(IPerson, 'test')
+        const person1 = container.resolve(IPerson)
+        const person2 = container.resolve(IPerson, 'test')
 
         person1.countApple(100)
         expect(person1.getAppleCount()).toBe(100)

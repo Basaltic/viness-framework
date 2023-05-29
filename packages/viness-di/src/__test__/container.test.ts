@@ -10,7 +10,7 @@ describe('Container', () => {
         container.register(IApple, Apple)
         container.register(IPerson, Person)
 
-        const person = container.get(IPerson)
+        const person = container.resolve(IPerson)
 
         person.eatApple()
     })
@@ -22,7 +22,7 @@ describe('Container', () => {
         parentContainer.register(IApple, Apple)
         childContainer.register(IPerson, Person)
 
-        const person = childContainer.get(IPerson)
+        const person = childContainer.resolve(IPerson)
 
         person.eatApple()
     })
