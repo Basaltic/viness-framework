@@ -1,5 +1,16 @@
 # @viness/core
 
+## 0.4.0
+
+### Minor Changes
+
+- 5f05f47: feat: redesign the apis to make it more directly
+
+### Patch Changes
+
+- Updated dependencies [5f05f47]
+  - @viness/di@0.0.7
+
 ## 0.3.10
 
 ### Patch Changes

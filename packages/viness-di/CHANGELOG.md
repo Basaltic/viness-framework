@@ -1,5 +1,11 @@
 # @viness/di
 
+## 0.0.7
+
+### Patch Changes
+
+- 5f05f47: feat: change method name from 'get' to 'resolve' in Container class
+
 ## 0.0.6
 
 ### Patch Changes

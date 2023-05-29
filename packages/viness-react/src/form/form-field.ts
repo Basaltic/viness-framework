@@ -1,12 +1,10 @@
-import React from 'react'
 import { FieldValues } from './form-types'
 
-export interface Field<TFieldValues extends FieldValues = FieldValues, FieldName extends keyof TFieldValues = ''> {
-    onChange(value: any): void
-    onBlur(): void
-    value: TFieldValues[FieldName]
+export interface Field<TFieldValues extends FieldValues, FieldName extends keyof TFieldValues> {
     name: FieldName
-    ref: React.Ref<any>
+    value: TFieldValues[FieldName]
+    onBlur(): void
+    onChange(value: any): void
 }
 
 export interface FieldState {
