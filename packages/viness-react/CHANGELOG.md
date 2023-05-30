@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.5.0
+
+### Minor Changes
+
+- feat: redesign the apis
+
 ## 0.4.2
 
 ### Patch Changes

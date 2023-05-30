@@ -2,7 +2,7 @@ import i18n, { InitOptions } from 'i18next'
 
 import { initReactI18next } from 'react-i18next'
 import { IVinessAppConfig } from '../app/app-config'
-import { createIdentifier } from '../decorator'
+import { createDecorator } from '../decorator'
 
 export type VinessI18nConfig<T = object> = InitOptions<T>
 
@@ -20,7 +20,7 @@ export function initI18n<T>(option: InitOptions<T>) {
 
 export { type InitOptions }
 
-export const II18n = createIdentifier<I18n>('II18n')
+export const II18n = createDecorator<I18n>('II18n')
 
 export class I18n {
     constructor(@IVinessAppConfig appConfig: IVinessAppConfig) {
