@@ -3,7 +3,7 @@ import './index.css'
 import { createRoot } from 'react-dom/client'
 import { VinessReactApp } from '@viness/react'
 
-import { routes } from './app-routes'
+import { routes } from './routes'
 
 const ErrorFallbackComponent = () => <div>error</div>
 const SuspenseFallbackComponent = () => <div></div>

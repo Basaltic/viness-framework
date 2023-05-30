@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.4.1
+
+### Patch Changes
+
+- fix: useResolve error in Route Identifier
+
 ## 0.4.0
 
 ### Minor Changes

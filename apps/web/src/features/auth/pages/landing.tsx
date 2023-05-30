@@ -1,6 +1,6 @@
-import { DashboardPage1RouteId } from '../../../app-routes'
+import { DashboardPage1RouteId } from '../../../routes'
 
-export default function LandingPage() {
+export function LandingPage() {
     const page1Route = DashboardPage1RouteId.useResolve()
 
     const toPage = () => {

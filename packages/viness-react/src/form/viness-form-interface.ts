@@ -1,19 +1,33 @@
-import { KeepStateOptions } from 'react-hook-form'
-import { Field, FieldState } from './form-field'
+import { Field, FieldError, FieldState } from './form-field'
 import { FormState } from './form-state'
-import { FieldValues } from './form-types'
+import { FieldValues, KeepStateOptions } from './form-types'
 
 export interface IVinessForm<TFieldValues extends FieldValues = FieldValues> {
-    setError(): void
+    setError<TName extends keyof TFieldValues>(name: TName, error: FieldError): void
 
+    /**
+     * Remove all errors
+     */
     clearErrors(): void
 
-    trigger(): void
+    /**
+     * Trigger validation
+     */
+    trigger<TName extends keyof TFieldValues>(name: TName): void
 
     reset(values: TFieldValues, options?: KeepStateOptions): void
 
+    /**
+     * Register new field
+     *
+     * @param name
+     */
     register<TName extends keyof TFieldValues>(name: any): Field<TFieldValues, TName>
 
+    /**
+     * Handle form submitation
+     * @param cb
+     */
     handleSubmit(cb: (values: TFieldValues) => void): Promise<void>
 
     getFormState(): FormState<TFieldValues>
@@ -42,5 +56,4 @@ export interface IVinessForm<TFieldValues extends FieldValues = FieldValues> {
 export interface UseFieldReturn<TFieldValues extends FieldValues = FieldValues, TName extends keyof TFieldValues = ''> {
     field: Field<TFieldValues, TName>
     fieldState: FieldState
-    // formState: FormState<TFieldValues>
 }

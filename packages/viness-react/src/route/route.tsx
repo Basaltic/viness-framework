@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { RouteObject, generatePath, matchPath, useParams, type PathMatch, NavigateFunction } from 'react-router-dom'
+import { RouteObject, generatePath, matchPath, useParams, type PathMatch } from 'react-router-dom'
 import { VinessServiceIdentifier } from '../identifier'
 import { joinPath } from '../utils'
 import { IVinessRouter, vinessRouter } from './router'
@@ -179,8 +179,6 @@ export class VinessRoute<
      */
     getFullPath(): string {
         const parentRoute = this.routes.getParent(this.identifier)
-
-        console.log(parentRoute)
 
         if (parentRoute) {
             const parentPath = parentRoute.getFullPath()

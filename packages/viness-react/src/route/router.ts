@@ -60,9 +60,6 @@ export class VinessRouter implements IVinessRouter {
         const id = `VinessRoute_${routeObj.id || generateId()}`
         const IRouteIdentifier = createIdentifier(id) as VinessRouteIdentifer
 
-        IRouteIdentifier.resolve = () => IRouteIdentifier.resolve()
-        IRouteIdentifier.useResolve = () => IRouteIdentifier.useResolve()
-
         const descriptor = new SyncDescriptor(VinessRoute, [routeObj, IRouteIdentifier, this], true)
         servicesContainer.register(IRouteIdentifier, descriptor)
 
