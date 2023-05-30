@@ -1,4 +1,5 @@
-import { CounterStoreIdentifier } from '../store/counter.store'
+import { useResolve } from '@viness/react'
+import { ICounterStore } from '../store/counter.store'
 
 const ids = ['1', '2', '3', '4', '5', '6']
 
@@ -15,7 +16,7 @@ export function DashboardPage2() {
 function Item(props: { id: string }) {
     const { id } = props
 
-    const store = CounterStoreIdentifier.useResolve()
+    const store = useResolve(ICounterStore)
     const selectedId = store.useState((s) => s.selectedIds[id])
     const isSelected = 1 === selectedId
 

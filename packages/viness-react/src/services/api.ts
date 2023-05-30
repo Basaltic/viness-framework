@@ -1,6 +1,6 @@
 import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
-import { createIdentifier, VinessServiceIdentifier } from '../identifier'
-import { servicesContainer } from './container'
+import { createDecorator, VinessServiceIdentifier } from '../decorator'
+import { container } from '../app/container'
 
 /**
  * Register a new service in the container
@@ -19,10 +19,10 @@ export function registerService<T, Services extends {}[]>(
 
     if (!identifier) {
         // @ts-ignore
-        identifier = createIdentifier(service?.name || service?.ctor?.name)
+        identifier = createDecorator(service?.name || service?.ctor?.name)
     }
 
-    servicesContainer.register(identifier, service, supportType)
+    container.register(identifier, service, supportType)
     return identifier
 }
 
@@ -33,5 +33,5 @@ export function registerService<T, Services extends {}[]>(
  * @returns {T} service instance
  */
 export function resolveService<T>(id: ServiceIdentifier<T>) {
-    return servicesContainer.resolve(id)
+    return container.resolve(id)
 }

@@ -1,4 +1,4 @@
-import { createIdentifier } from '../identifier'
+import { createIdentifier } from '../decorator'
 
 export const IAuthentication = createIdentifier<IAuthentication>('IAuthentication')
 

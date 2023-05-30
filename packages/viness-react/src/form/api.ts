@@ -1,1 +1,1 @@
-export function registerForm() {}
+export function createForm() {}

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios'
-import { createIdentifier } from '../identifier'
+import { createIdentifier } from '../decorator'
 
 /**
  * Promise can be canceled

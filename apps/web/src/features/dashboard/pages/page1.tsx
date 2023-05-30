@@ -1,7 +1,8 @@
-import { CounterStoreIdentifier } from '../store/counter.store'
+import { useResolve } from '@viness/react'
+import { ICounterStore } from '../store/counter.store'
 
 export function DashboardPage1() {
-    const store = CounterStoreIdentifier.useResolve()
+    const store = useResolve(ICounterStore)
     const count = store.use.count()
 
     const handleIncrease = () => {

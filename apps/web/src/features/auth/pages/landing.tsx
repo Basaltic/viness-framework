@@ -1,7 +1,8 @@
+import { useResolve } from '@viness/react'
 import { DashboardPage1RouteId } from '../../../routes'
 
 export function LandingPage() {
-    const page1Route = DashboardPage1RouteId.useResolve()
+    const page1Route = useResolve(DashboardPage1RouteId)
 
     const toPage = () => {
         page1Route.go()

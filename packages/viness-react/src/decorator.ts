@@ -1,5 +1,5 @@
-import { createDecorator, ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
-import { servicesContainer } from './app/container'
+import { createDecorator as createDecoratorInner, ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
+import { container } from './app/container'
 import { generateId } from './utils'
 
 export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
@@ -27,12 +27,12 @@ export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {
  * @param serviceId
  * @returns
  */
-export function createIdentifier<T>(serviceId: string): VinessServiceIdentifier<T> {
+export function createDecorator<T>(serviceId: string): VinessServiceIdentifier<T> {
     serviceId = `${serviceId}_${generateId()}`
-    const identifier = createDecorator(serviceId) as VinessServiceIdentifier<T>
+    const identifier = createDecoratorInner(serviceId) as VinessServiceIdentifier<T>
 
-    identifier.resolve = (instanceId) => servicesContainer.resolve(identifier, instanceId)
-    identifier.useResolve = (instanceId) => servicesContainer.resolve(identifier, instanceId)
+    identifier.resolve = (instanceId) => container.resolve(identifier, instanceId)
+    identifier.useResolve = (instanceId) => container.resolve(identifier, instanceId)
 
     return identifier
 }

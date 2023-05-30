@@ -1,4 +1,4 @@
-import { Patch, VinessUIStore, registerStoreExtended } from '@viness/react'
+import { Patch, IVinessUIStore, VinessUIStore, createDecorator } from '@viness/react'
 
 interface CounterState {
     count: number
@@ -10,9 +10,24 @@ const defaultCountareState: CounterState = {
     selectedIds: {}
 }
 
-export class CounterStore extends VinessUIStore<CounterState> {
+export const ICounterStore = createDecorator<ICounterStore>('ICounterStore')
+
+export interface ICounterStore extends IVinessUIStore<CounterState> {
+    undo(): void
+    redo(): void
+    increase(): void
+    decrease(): void
+    select(id: string): void
+    deselect(id: string): void
+}
+
+export class CounterStore extends VinessUIStore<CounterState> implements ICounterStore {
     private patchesQueue: Array<[Patch[], Patch[]]> = []
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = []
+
+    constructor() {
+        super({ defaultState: defaultCountareState })
+    }
 
     undo() {
         const patches = this.patchesQueue.pop()
@@ -63,5 +78,3 @@ export class CounterStore extends VinessUIStore<CounterState> {
         })
     }
 }
-
-export const CounterStoreIdentifier = registerStoreExtended(CounterStore, { defaultState: defaultCountareState })

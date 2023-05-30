@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 import { RouteObject, generatePath, matchPath, useParams, type PathMatch } from 'react-router-dom'
-import { VinessServiceIdentifier } from '../identifier'
+import { VinessServiceIdentifier } from '../decorator'
 import { joinPath } from '../utils'
-import { IVinessRouter, vinessRouter } from './router'
+import { IVinessRouter } from './router.interface'
 import { NavOption, To, NavigateOptions } from './types'
 
 export interface RouteNode {
@@ -105,7 +105,7 @@ export class VinessRoute<
     isPublic?: boolean
     neededRoles?: string[]
 
-    readonly routes: IVinessRouter
+    readonly router: IVinessRouter
     readonly identifier: VinessRouteIdentifer
 
     constructor(params: VinessRouteObject, identifier: VinessRouteIdentifer, routes: IVinessRouter) {
@@ -133,7 +133,7 @@ export class VinessRoute<
         this.isPublic = isPublic
         this.neededRoles = neededRoles
 
-        this.routes = routes
+        this.router = routes
         this.identifier = identifier
     }
 
@@ -145,7 +145,7 @@ export class VinessRoute<
      * @returns
      */
     navigate(to: To, options?: NavigateOptions) {
-        return vinessRouter.navigate(to, options)
+        return this.router.navigate(to, options)
     }
 
     /**
@@ -178,7 +178,7 @@ export class VinessRoute<
      * Get the full path recurse to the parent
      */
     getFullPath(): string {
-        const parentRoute = this.routes.getParent(this.identifier)
+        const parentRoute = this.router.getParent(this.identifier)
 
         if (parentRoute) {
             const parentPath = parentRoute.getFullPath()
