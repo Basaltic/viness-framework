@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.5.4
+
+### Patch Changes
+
+- feat: redesiang the HttpClient api & export the types that encapsulate the axios types
+
 ## 0.5.3
 
 ### Patch Changes

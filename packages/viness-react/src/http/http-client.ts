@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
 import { createDecorator } from '../decorator'
 
+export interface HttpRequestConfig<D = any> extends AxiosRequestConfig<D> {}
+
 export interface HttpResponse<T = any, D = any> extends AxiosResponse<T, D> {}
 
 /**
@@ -20,7 +22,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param url
      * @param config
      */
-    get<P = any, T = any>(url: string, config?: AxiosRequestConfig): (params?: P) => ICancelablePromise<T, Response>
+    get<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
 
     /**
      * Post
@@ -29,7 +31,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    post<D = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D) => ICancelablePromise<T, Response>
+    post<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
 
     /**
      * Patch
@@ -38,7 +40,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    patch<D = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D) => ICancelablePromise<T, Response>
+    patch<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
 
     /**
      * Delete
@@ -47,7 +49,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    delete<P = any, T = any>(url: string, config: AxiosRequestConfig): (params?: P) => ICancelablePromise<T, Response>
+    delete<T = any>(url: string, config: HttpRequestConfig): ICancelablePromise<T, Response>
 
     /**
      * Head
@@ -56,7 +58,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    head<P = any, T = any>(url: string, config?: AxiosRequestConfig): (params?: P) => ICancelablePromise<T, Response>
+    head<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
 
     /**
      * Options
@@ -65,7 +67,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    options<P = any, T = any>(url: string, config?: AxiosRequestConfig): (params?: P) => ICancelablePromise<T, Response>
+    options<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
 }
 
 export const IHttpClient = createDecorator<IHttpClient>('IHttpClient')
@@ -76,8 +78,18 @@ export const IHttpClient = createDecorator<IHttpClient>('IHttpClient')
 export class HttpClient<Response extends HttpResponse = HttpResponse> implements IHttpClient<Response> {
     protected instance: AxiosInstance
 
-    constructor(config?: AxiosRequestConfig) {
+    constructor(config?: HttpRequestConfig) {
         this.instance = axios.create(config)
+    }
+
+    protected request<T = any>(url: string, config: HttpRequestConfig = {}) {
+        const source = axios.CancelToken.source()
+        config.cancelToken = source.token
+
+        const promise = this.instance(url, config) as ICancelablePromise<T, Response>
+        promise.cancel = () => source.cancel()
+
+        return promise
     }
 
     /**
@@ -86,114 +98,63 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param url
      * @param config
      */
-    get<P = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (params?: P) => {
-            const source = axios.CancelToken.source()
-            config.cancelToken = source.token
-            config.params = params
-
-            const promise = this.instance.get(url, config) as any
-            promise.cancel = () => source.cancel()
-
-            return promise as ICancelablePromise<T, Response>
-        }
+    get<T = any>(url: string, config: HttpRequestConfig = {}) {
+        config.method = 'GET'
+        return this.request<T>(url, config)
     }
 
     /**
      * Post
      *
      * @param url
-     * @param data
      * @param config
      */
-    post<D = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (data?: D) => {
-            const source = axios.CancelToken.source()
-            config.cancelToken = source.token
-
-            const promise = this.instance.post(url, data, config) as any
-            promise.cancel = () => source.cancel()
-
-            return promise as ICancelablePromise<T, Response>
-        }
+    post<T = any>(url: string, config: HttpRequestConfig = {}) {
+        config.method = 'POST'
+        return this.request<T>(url, config)
     }
 
     /**
      * Patch
      *
      * @param url
-     * @param data
      * @param config
      */
-    patch<D = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (data?: D) => {
-            const source = axios.CancelToken.source()
-            config.cancelToken = source.token
-
-            const promise = this.instance.patch(url, data, config) as any
-            promise.cancel = () => source.cancel()
-
-            return promise as ICancelablePromise<T, Response>
-        }
+    patch<T = any>(url: string, config: AxiosRequestConfig = {}) {
+        config.method = 'PATCH'
+        return this.request<T>(url, config)
     }
 
     /**
      * Delete
      *
      * @param url
-     * @param data
      * @param config
      */
-    delete<P = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (params?: P) => {
-            const source = axios.CancelToken.source()
-            config.cancelToken = source.token
-            config.params = params
-
-            const promise = this.instance.delete(url, config) as any
-            promise.cancel = () => source.cancel()
-
-            return promise as ICancelablePromise<T, Response>
-        }
+    delete<T = any>(url: string, config: HttpRequestConfig = {}) {
+        config.method = 'DELETE'
+        return this.request<T>(url, config)
     }
 
     /**
      * Head
      *
      * @param url
-     * @param data
      * @param config
      */
-    head<P = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (params?: P) => {
-            const source = axios.CancelToken.source()
-            config.cancelToken = source.token
-            config.params = params
-
-            const promise = this.instance.head(url, config) as any
-            promise.cancel = () => source.cancel()
-
-            return promise as ICancelablePromise<T, Response>
-        }
+    head<T = any>(url: string, config: HttpRequestConfig = {}) {
+        config.method = 'HEAD'
+        return this.request<T>(url, config)
     }
 
     /**
      * Options
      *
      * @param url
-     * @param data
      * @param config
      */
-    options<P = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (params?: P) => {
-            const source = axios.CancelToken.source()
-            config.cancelToken = source.token
-            config.params = params
-
-            const promise = this.instance.options(url, config) as any
-            promise.cancel = () => source.cancel()
-
-            return promise as ICancelablePromise<T, Response>
-        }
+    options<T = any>(url: string, config: HttpRequestConfig = {}) {
+        config.method = 'OPTIONS'
+        return this.request<T>(url, config)
     }
 }
