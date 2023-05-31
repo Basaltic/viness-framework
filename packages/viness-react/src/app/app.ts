@@ -22,7 +22,7 @@ export class VinessApp {
         return this.container.resolve(IVinessRouter)
     }
 
-    register<T>(id: ServiceIdentifier<T>, service: SyncDescriptor<any> | (new (...services: any[]) => T)): void {
+    register<T>(id: ServiceIdentifier<T>, service: new (...services: any[]) => T, staticArguments?: any[]): void {
         return this.container.register(id, service)
     }
 
