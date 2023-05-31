@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.5.2
+
+### Patch Changes
+
+- feat: make http client more customizable
+
 ## 0.5.1
 
 ### Patch Changes
