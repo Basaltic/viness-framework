@@ -1,17 +1,19 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
 import { createDecorator } from '../decorator'
 
+export interface HttpResponse<T = any, D = any> extends AxiosResponse<T, D> {}
+
 /**
  * Promise can be canceled
  */
-export interface ICancelablePromise<T, Response extends AxiosResponse<T>> extends Promise<Response> {
+export interface ICancelablePromise<T, Response extends HttpResponse<T>> extends Promise<Response> {
     /**
      * cancel the request
      */
     cancel: () => void
 }
 
-export interface IHttpClient<Response extends AxiosResponse = AxiosResponse> {
+export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
     /**
      * Get Request
      *
@@ -27,7 +29,7 @@ export interface IHttpClient<Response extends AxiosResponse = AxiosResponse> {
      * @param data
      * @param config
      */
-    post<D = any, P = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D, params?: P) => ICancelablePromise<T, Response>
+    post<D = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D) => ICancelablePromise<T, Response>
 
     /**
      * Patch
@@ -36,7 +38,7 @@ export interface IHttpClient<Response extends AxiosResponse = AxiosResponse> {
      * @param data
      * @param config
      */
-    patch<D = any, P = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D, params?: P) => ICancelablePromise<T, Response>
+    patch<D = any, T = any>(url: string, config?: AxiosRequestConfig): (data?: D) => ICancelablePromise<T, Response>
 
     /**
      * Delete
@@ -71,7 +73,7 @@ export const IHttpClient = createDecorator<IHttpClient>('IHttpClient')
 /**
  * Http Client based in axios
  */
-export class HttpClient<Response extends AxiosResponse = AxiosResponse> implements IHttpClient<Response> {
+export class HttpClient<Response extends HttpResponse = HttpResponse> implements IHttpClient<Response> {
     protected instance: AxiosInstance
 
     constructor(config?: AxiosRequestConfig) {
@@ -104,11 +106,10 @@ export class HttpClient<Response extends AxiosResponse = AxiosResponse> implemen
      * @param data
      * @param config
      */
-    post<D = any, P = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (data?: D, params?: P) => {
+    post<D = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
+        return (data?: D) => {
             const source = axios.CancelToken.source()
             config.cancelToken = source.token
-            config.params = params
 
             const promise = this.instance.post(url, data, config) as any
             promise.cancel = () => source.cancel()
@@ -124,11 +125,10 @@ export class HttpClient<Response extends AxiosResponse = AxiosResponse> implemen
      * @param data
      * @param config
      */
-    patch<D = any, P = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
-        return (data?: D, params?: P) => {
+    patch<D = any, T = any>(url: string, config: AxiosRequestConfig = {}) {
+        return (data?: D) => {
             const source = axios.CancelToken.source()
             config.cancelToken = source.token
-            config.params = params
 
             const promise = this.instance.patch(url, data, config) as any
             promise.cancel = () => source.cancel()
