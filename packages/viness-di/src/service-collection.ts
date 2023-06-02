@@ -30,4 +30,14 @@ export class ServiceCollection {
     get<T>(id: ServiceIdentifier<T>): T | SyncDescriptor<T> {
         return this._entries.get(id)
     }
+
+    forEach(cb: (value: any, key: any) => void) {
+        this._entries.forEach(cb)
+    }
+
+    merge(collection: ServiceCollection) {
+        collection.forEach((value, key) => {
+            this._entries.set(key, value)
+        })
+    }
 }

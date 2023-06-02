@@ -1,5 +1,15 @@
 # @viness/core
 
+## 0.5.5
+
+### Patch Changes
+
+- 38b10ac: feat: add Module feature, make it more easier to manage the app in modules
+- chore: minor typo
+- Updated dependencies [38b10ac]
+- Updated dependencies
+  - @viness/di@0.1.0
+
 ## 0.5.4
 
 ### Patch Changes

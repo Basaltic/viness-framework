@@ -1,5 +1,15 @@
 # @viness/di
 
+## 0.1.0
+
+### Minor Changes
+
+- feat: add merge two registries feature
+
+### Patch Changes
+
+- 38b10ac: fix: remove useless collection instance & duplicate method
+
 ## 0.0.7
 
 ### Patch Changes

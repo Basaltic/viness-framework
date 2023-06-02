@@ -56,5 +56,7 @@ export class ServiceRegistry implements IServiceRegistry {
         return this.descriptorCollection
     }
 
-    merge(collection: ServiceCollection) {}
+    merge(registry: ServiceRegistry) {
+        this.descriptorCollection.merge(registry.getServiceCollection())
+    }
 }
