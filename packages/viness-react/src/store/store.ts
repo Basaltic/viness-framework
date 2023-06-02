@@ -1,6 +1,9 @@
 import { StoreApi, UseBoundStore, create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { produce, produceWithPatches, applyPatches, Patch } from 'immer'
+import { produce, produceWithPatches, applyPatches, Patch, enableMapSet, enablePatches } from 'immer'
+
+enableMapSet()
+enablePatches()
 
 export type StoreInstanceId = string | number
 
@@ -55,7 +58,7 @@ export interface IVinessUIStore<S extends object> {
  * extend this class to create ui store
  */
 export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
-    protected innerState: UseBoundStore<StoreApi<S>>
+    protected storeApi: UseBoundStore<StoreApi<S>>
     private selectors!: { [K in keyof S]: () => S[K] }
 
     constructor(options?: StoreOptions<S>) {
@@ -68,7 +71,7 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
             store = create(() => defaultState)
         }
 
-        this.innerState = store
+        this.storeApi = store
     }
 
     /**
@@ -94,7 +97,7 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
      * get the actually state object in the store without subscribtion
      */
     getState() {
-        return this.innerState.getState()
+        return this.storeApi.getState()
     }
 
     /**
@@ -109,12 +112,12 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
             if (withPatches) {
                 const state = this.getState()
                 const nextState = produce(state, updater, withPatches)
-                this.innerState.setState(nextState, replace)
+                this.storeApi.setState(nextState, replace)
             } else {
-                this.innerState.setState(produce(updater) as any, replace)
+                this.storeApi.setState(produce(updater) as any, replace)
             }
         } else {
-            this.innerState.setState(updater as any, replace)
+            this.storeApi.setState(updater as any, replace)
         }
     }
 
@@ -128,7 +131,7 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     setStateWithPatches(updater: (state: S) => S | void, replace?: boolean): [Patch[], Patch[]] {
         const state = this.getState()
         const [nextState, patches, inversePatches] = produceWithPatches(state, updater)
-        this.innerState.setState(nextState, replace)
+        this.storeApi.setState(nextState, replace)
         return [patches, inversePatches]
     }
 
@@ -139,14 +142,14 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
      */
     applyPatches(patches: Patch[]) {
         const updater = (s: S) => applyPatches(s, patches)
-        this.innerState.setState(updater)
+        this.storeApi.setState(updater)
     }
 
     /**
      * subscribe the modification of the state in this store
      */
     subscribe(listener: (state: S, prevState: S) => void): () => void {
-        return this.innerState.subscribe(listener)
+        return this.storeApi.subscribe(listener)
     }
 
     /**
@@ -158,6 +161,6 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
      * @returns
      */
     useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U {
-        return this.innerState(selector, equals)
+        return this.storeApi(selector, equals)
     }
 }

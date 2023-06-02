@@ -4,7 +4,7 @@ import { InstantiationService } from './instantiation-service'
 import { InstantiationType, ServiceRegistry } from './service-registry'
 
 export class Container {
-    registory: ServiceRegistry
+    private registory: ServiceRegistry
     private instantiationService: IInstantiationService
 
     private serviceIdToInstanceIdMap: Map<ServiceIdentifier<any>, Map<ServiceInstanceIdentifier, ServiceIdentifier<any>>>
@@ -66,7 +66,7 @@ export class Container {
             if (serviceInstanceIdentifier) {
                 return this.instantiationService.invokeFunction((accessor) => accessor.get(serviceInstanceIdentifier))
             } else {
-                const serviceDesc = this.registory.getServiceDescriptorCollection().get(id) as SyncDescriptor<any>
+                const serviceDesc = this.registory.getServiceCollection().get(id) as SyncDescriptor<any>
                 const serviceInstanceIdentifier = createDecorator<T>(`${id.toString()}_${instanceId}`)
 
                 serviceIdToInstanceIds.set(instanceId, serviceInstanceIdentifier)
@@ -96,6 +96,6 @@ export class Container {
      * @returns
      */
     getDescriptor<T>(id: ServiceIdentifier<T>) {
-        return this.registory.getServiceDescriptorCollection().get(id)
+        return this.registory.getServiceCollection().get(id)
     }
 }

@@ -34,8 +34,6 @@ export interface IServiceRegistry {
  * Manage the registered service
  */
 export class ServiceRegistry implements IServiceRegistry {
-    private collection: ServiceCollection = new ServiceCollection()
-
     private descriptorCollection: ServiceCollection = new ServiceCollection()
 
     register<T, Services extends BrandedService[]>(
@@ -51,15 +49,12 @@ export class ServiceRegistry implements IServiceRegistry {
             )
         }
 
-        this.collection.set(id, ctorOrDescriptor)
         this.descriptorCollection.set(id, ctorOrDescriptor)
     }
 
     getServiceCollection() {
-        return this.collection
-    }
-
-    getServiceDescriptorCollection() {
         return this.descriptorCollection
     }
+
+    merge(collection: ServiceCollection) {}
 }

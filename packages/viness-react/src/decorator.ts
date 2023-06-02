@@ -1,4 +1,4 @@
-import { createDecorator as createDecoratorInner, ServiceIdentifier, ServiceInstanceIdentifier } from '@viness/di'
+import { createDecorator as createDecoratorInner, ServiceIdentifier } from '@viness/di'
 import { generateId } from './utils'
 
 export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {}

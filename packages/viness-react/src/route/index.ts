@@ -1,3 +1,4 @@
+export * from './router.module'
 export { type RouteNode, type RouteItem } from './route'
 
-export { Navigate, Outlet } from 'react-router-dom'
+export { Navigate, Outlet, useNavigate } from 'react-router-dom'

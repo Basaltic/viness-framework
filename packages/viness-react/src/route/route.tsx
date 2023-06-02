@@ -145,7 +145,7 @@ export class VinessRoute<
      * @returns
      */
     navigate(to: To, options?: NavigateOptions) {
-        return this.router.navigate(to, options)
+        // return this.router.navigate(to, options)
     }
 
     /**
@@ -178,14 +178,15 @@ export class VinessRoute<
      * Get the full path recurse to the parent
      */
     getFullPath(): string {
-        const parentRoute = this.router.getParent(this.identifier)
+        // const parentRoute = this.router.getParent(this.identifier)
 
-        if (parentRoute) {
-            const parentPath = parentRoute.getFullPath()
-            return joinPath(parentPath, this.path)
-        } else {
-            return this.path
-        }
+        // if (parentRoute) {
+        //     const parentPath = parentRoute.getFullPath()
+        //     return joinPath(parentPath, this.path)
+        // } else {
+        //     return this.path
+        // }
+        return this.path
     }
 
     /**

@@ -1,2 +1,2 @@
 export * from './store'
-export { type Patch } from 'immer'
+export { type Patch, applyPatches, produceWithPatches } from 'immer'
