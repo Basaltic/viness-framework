@@ -6,7 +6,7 @@ export interface IVInessApp {}
 
 export class VinessApp {
     private appModule: VinessModule
-    private container: Container
+    container: Container
     constructor(appModule: VinessModule) {
         this.appModule = appModule
         this.container = this.initializeContainer(appModule)

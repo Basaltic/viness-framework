@@ -112,7 +112,7 @@ importers:
         version: 5.0.4
       vite:
         specifier: ^4.3.9
-        version: 4.3.9(@types/node@20.2.3)
+        version: 4.3.9(@types/node@18.15.11)
 
   packages/eslint-config-viness:
     dependencies:
@@ -169,6 +169,9 @@ importers:
       immer:
         specifier: ^10.0.2
         version: 10.0.2
+      inversify:
+        specifier: ^6.0.1
+        version: 6.0.1
       lodash.clonedeep:
         specifier: ^4.5.0
         version: 4.5.0
@@ -2271,7 +2274,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.21.0(@babel/core@7.22.1)
       '@babel/plugin-transform-react-jsx-source': 7.19.6(@babel/core@7.22.1)
       react-refresh: 0.14.0
-      vite: 4.3.9(@types/node@20.2.3)
+      vite: 4.3.9(@types/node@18.15.11)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4347,6 +4350,10 @@ packages:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /inversify@6.0.1:
+    resolution: {integrity: sha512-B3ex30927698TJENHR++8FfEaJGqoWOgI6ZY5Ht/nLUsFCwHn6akbwtnUAPCgUepAnTpe2qHxhDNjoKLyz6rgQ==}
     dev: false
 
   /is-arguments@1.1.1:

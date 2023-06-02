@@ -27,14 +27,18 @@ export interface VinessRouteObject extends Omit<RouteObject, 'children' | 'index
      * Roles needed to access this route
      */
     neededRoles?: string[]
+    /**
+     * Children
+     */
+    children?: IVinessRoute[]
 }
 
 export interface IVinessRoute<
     Params extends Record<string, string | number | boolean> = {},
     Queries extends Record<string, string | string[]> = {}
 > extends VinessRouteObject {
-    readonly identifier: VinessRouteIdentifer
-    readonly parentIdentifier?: VinessRouteIdentifer
+    // readonly identifier: VinessRouteIdentifer
+    // readonly parentIdentifier?: VinessRouteIdentifer
 
     /**
      * Go tho this route path
@@ -77,11 +81,6 @@ export interface IVinessRoute<
      * Check if current path is matched to this route's path
      */
     isMatch(path: string): boolean
-
-    /**
-     * React hook to get current path params in the react component
-     */
-    useParams(): Params
 }
 
 /**
@@ -105,10 +104,7 @@ export class VinessRoute<
     isPublic?: boolean
     neededRoles?: string[]
 
-    readonly router: IVinessRouter
-    readonly identifier: VinessRouteIdentifer
-
-    constructor(params: VinessRouteObject, identifier: VinessRouteIdentifer, routes: IVinessRouter) {
+    constructor(params: VinessRouteObject) {
         const {
             id,
             path,
@@ -122,7 +118,7 @@ export class VinessRoute<
             neededRoles
         } = params
 
-        this.id = id || identifier.toString()
+        this.id = id
         this.path = path || ''
         this.element = element
         this.errorElement = errorElement
@@ -132,9 +128,6 @@ export class VinessRoute<
         this.caseSensitive = caseSensitive
         this.isPublic = isPublic
         this.neededRoles = neededRoles
-
-        this.router = routes
-        this.identifier = identifier
     }
 
     /**
@@ -225,11 +218,8 @@ export class VinessRoute<
         const isMatch = Boolean(matchPath({ path: this.path }, path))
         return isMatch
     }
-
-    /**
-     * React hook to get current path params in the react component
-     */
-    useParams() {
-        return useParams() as Params
-    }
 }
+const childRoute = new VinessRoute({ path: '/' })
+const parentRoute = new VinessRoute({ path: '/' })
+
+const routes = [{ route: parentRoute, children: [] }]
