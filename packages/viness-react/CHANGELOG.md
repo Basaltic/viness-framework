@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.5.6
+
+### Patch Changes
+
+- fix: fix module incorrectly register the service with static arguments
+
 ## 0.5.5
 
 ### Patch Changes

@@ -15,8 +15,9 @@ export class VinessModule {
         if (staticArguments) {
             const ctor = new SyncDescriptor(service, staticArguments)
             this.registry.register(id, ctor)
+        } else {
+            this.registry.register(id, service)
         }
-        this.registry.register(id, service)
     }
     imports(module: VinessModule) {
         this.subModules.push(module)

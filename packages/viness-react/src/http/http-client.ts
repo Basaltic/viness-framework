@@ -82,16 +82,6 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
         this.instance = axios.create(config)
     }
 
-    protected request<T = any>(url: string, config: HttpRequestConfig = {}) {
-        const source = axios.CancelToken.source()
-        config.cancelToken = source.token
-
-        const promise = this.instance(url, config) as ICancelablePromise<T, Response>
-        promise.cancel = () => source.cancel()
-
-        return promise
-    }
-
     /**
      * Get Request
      *
@@ -156,5 +146,15 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
     options<T = any>(url: string, config: HttpRequestConfig = {}) {
         config.method = 'OPTIONS'
         return this.request<T>(url, config)
+    }
+
+    protected request<T = any>(url: string, config: HttpRequestConfig = {}) {
+        const source = axios.CancelToken.source()
+        config.cancelToken = source.token
+
+        const promise = this.instance(url, config) as ICancelablePromise<T, Response>
+        promise.cancel = () => source.cancel()
+
+        return promise
     }
 }

@@ -1,14 +1,13 @@
 import { Container, ServiceRegistry } from '@viness/di'
 import { renderApp, VinessReactAppProps } from './app-react'
 import { VinessModule } from './module'
+import { createRoot } from 'react-dom/client'
 
 export interface IVInessApp {}
 
 export class VinessApp {
-    private appModule: VinessModule
     container: Container
     constructor(appModule: VinessModule) {
-        this.appModule = appModule
         this.container = this.initializeContainer(appModule)
     }
 
@@ -29,8 +28,10 @@ export class VinessApp {
         return container
     }
 
-    render(props: Omit<VinessReactAppProps, 'app'>) {
-        return renderApp({ ...props, app: this })
+    render(selector: string, props: Omit<VinessReactAppProps, 'app'>) {
+        const app = renderApp({ ...props, app: this })
+        const container = document.getElementById(selector)
+        container && createRoot(container).render(app)
     }
 }
 
