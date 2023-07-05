@@ -1,64 +1,22 @@
-import { StoreApi, UseBoundStore, create } from 'zustand'
+import { StoreApi, useStore } from 'zustand'
+import { createStore } from 'zustand/vanilla'
 import { devtools } from 'zustand/middleware'
-import { produce, produceWithPatches, applyPatches, Patch, enableMapSet, enablePatches } from 'immer'
-
-enableMapSet()
-enablePatches()
+import { produce, produceWithPatches, applyPatches, Patch } from 'immer'
 
 export type StoreInstanceId = string | number
+
+export interface IVinessUIStore<S extends object> extends StoreApi<S> {}
 
 export interface StoreOptions<S extends object> {
     defaultState?: S
     name?: string
-    immer?: boolean
-}
-
-export interface IVinessUIStore<S extends object> {
-    readonly use: { [K in keyof S]: () => S[K] }
-    /**
-     * get the actually state object in the store without subscribtion
-     */
-    getState(): S
-    /**
-     * change the state & trigger ui updates
-     */
-    setState(
-        updater: S | Partial<S> | ((state: S) => S | void),
-        withPatches?: (patches: Patch[], inversePatches: Patch[]) => void,
-        replace?: boolean
-    ): void
-    /**
-     * change the state and return the patches
-     *
-     * @param updater
-     * @param replace
-     * @returns [patches, inverse patches]
-     */
-    setStateWithPatches(updater: (state: S) => S | void, replace?: boolean): [Patch[], Patch[]]
-    /**
-     * applay change patches to this store state
-     */
-    applyPatches(patches: Patch[]): void
-    /**
-     * subscribe the modification of the state in this store
-     */
-    subscribe(listener: (state: S, prevState: S) => void): () => void
-    /**
-     * subscribe the state with custom selectors
-     * ** use this function in react functional components **
-     *
-     * @param selector
-     * @param equals
-     * @returns
-     */
-    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U
 }
 
 /**
  * extend this class to create ui store
  */
 export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
-    protected storeApi: UseBoundStore<StoreApi<S>>
+    private storeApi: StoreApi<S>
     private selectors!: { [K in keyof S]: () => S[K] }
 
     constructor(options?: StoreOptions<S>) {
@@ -66,14 +24,13 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
         let store: any
 
         if (process.env.NODE_ENV === 'development') {
-            store = create(devtools(() => defaultState, { name }))
+            store = createStore(devtools(() => defaultState, { name }))
         } else {
-            store = create(() => defaultState)
+            store = createStore(() => defaultState)
         }
 
         this.storeApi = store
     }
-
     /**
      * auto generated selectors of the object keys
      *  ** use this in react functional components **
@@ -85,12 +42,23 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
         const state = this.getState()
         const selectors: any = {}
         for (const k of Object.keys(state)) {
-            selectors[k] = () => this.useState((s: any) => s[k as keyof typeof s])
+            selectors[k] = () => useStore(this.storeApi, (s: any) => s[k as keyof typeof s] as any)
         }
 
         this.selectors = selectors as any
 
         return this.selectors
+    }
+
+    /**
+     * change the state
+     */
+    setState(updater: S | Partial<S> | ((state: S) => S | Partial<S> | void), replace?: boolean | undefined) {
+        if (typeof updater === 'function') {
+            this.storeApi.setState(produce(updater) as any, replace)
+        } else {
+            this.storeApi.setState(updater as any, replace)
+        }
     }
 
     /**
@@ -101,24 +69,10 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     }
 
     /**
-     * change the state
+     * subscribe the modification of the state in this store
      */
-    setState(
-        updater: S | Partial<S> | ((state: S) => S | void),
-        withPatches?: (patches: Patch[], inversePatches: Patch[]) => void,
-        replace?: boolean
-    ) {
-        if (typeof updater === 'function') {
-            if (withPatches) {
-                const state = this.getState()
-                const nextState = produce(state, updater, withPatches)
-                this.storeApi.setState(nextState, replace)
-            } else {
-                this.storeApi.setState(produce(updater) as any, replace)
-            }
-        } else {
-            this.storeApi.setState(updater as any, replace)
-        }
+    subscribe(listener: (state: S, prevState: S) => void): () => void {
+        return this.storeApi.subscribe(listener)
     }
 
     /**
@@ -128,10 +82,10 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
      * @param replace
      * @returns [patches, inverse patches]
      */
-    setStateWithPatches(updater: (state: S) => S | void, replace?: boolean): [Patch[], Patch[]] {
+    setStateWithPatches(updater: (state: S) => S | void): [Patch[], Patch[]] {
         const state = this.getState()
         const [nextState, patches, inversePatches] = produceWithPatches(state, updater)
-        this.storeApi.setState(nextState, replace)
+        this.storeApi.setState(nextState)
         return [patches, inversePatches]
     }
 
@@ -146,21 +100,9 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     }
 
     /**
-     * subscribe the modification of the state in this store
+     * @deprecated
      */
-    subscribe(listener: (state: S, prevState: S) => void): () => void {
-        return this.storeApi.subscribe(listener)
-    }
-
-    /**
-     * subscribe the state with custom selectors
-     * ** use this function in react functional components **
-     *
-     * @param selector
-     * @param equals
-     * @returns
-     */
-    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U {
-        return this.storeApi(selector, equals)
+    destroy() {
+        return this.storeApi.destroy()
     }
 }

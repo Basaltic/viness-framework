@@ -1,4 +1,4 @@
-import { Patch, IVinessUIStore, VinessUIStore, createDecorator } from '@viness/react'
+import { Patch, IVinessUIStore, VinessUIStore, createDecorator, Injectable } from '@viness/react'
 
 interface CounterState {
     count: number
@@ -21,6 +21,7 @@ export interface ICounterStore extends IVinessUIStore<CounterState> {
     deselect(id: string): void
 }
 
+@Injectable(ICounterStore)
 export class CounterStore extends VinessUIStore<CounterState> implements ICounterStore {
     private patchesQueue: Array<[Patch[], Patch[]]> = []
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = []
@@ -55,14 +56,10 @@ export class CounterStore extends VinessUIStore<CounterState> implements ICounte
     }
 
     decrease() {
-        this.setState(
-            (s) => {
-                s.count -= 1
-            },
-            (patches, inversePatches) => {
-                this.patchesQueue.push([patches, inversePatches])
-            }
-        )
+        const [patches, inversePatches] = this.setStateWithPatches((s) => {
+            s.count -= 1
+        })
+        this.patchesQueue.push([patches, inversePatches])
 
         this.redoPatchesQueue = []
     }

@@ -1,16 +1,19 @@
 import { useStore } from 'zustand'
-import { createDecorator, VinessServiceIdentifier } from '../decorator'
+import { VinessServiceIdentifier } from '../decorator'
 import { useResolve } from '../hooks'
-import { VinessUIStore } from './store-v2'
+import { VinessUIStore } from './store'
+import { useMemo } from 'react'
 
-export function convertToStoreHooks<S extends object, T extends VinessUIStore<S>>(id: VinessServiceIdentifier<T>) {
-    return {
-        useState: <U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U => {
-            const store = useResolve(id) as any
-            return useStore(store, selector as any, equals)
-        },
-        useActions: () => {
-            return useResolve(id)
-        }
-    }
+export const useResolveStore = <S extends object, T extends VinessUIStore<S>>(id: VinessServiceIdentifier<T>) => {
+    const store = useResolve(id)
+    return useMemo(
+        () => ({
+            use: () => store.use,
+            useState: <U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U => {
+                const store = useResolve(id) as any
+                return useStore(store, selector as any, equals)
+            }
+        }),
+        []
+    )
 }

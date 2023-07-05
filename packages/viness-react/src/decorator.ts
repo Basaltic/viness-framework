@@ -1,6 +1,6 @@
 import { createDecorator as createDecoratorInner, ServiceIdentifier } from '@viness/di'
-import { generateId } from './utils'
 
+// = PropertyDecorator & ParameterDecorator
 export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {}
 
 /**
@@ -9,9 +9,8 @@ export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {}
  * @param serviceId
  * @returns
  */
-export function createDecorator<T>(serviceId: string): VinessServiceIdentifier<T> {
-    serviceId = `${serviceId}_${generateId()}`
-    const identifier = createDecoratorInner(serviceId) as VinessServiceIdentifier<T>
+export function createDecorator<T>(serviceName: string): VinessServiceIdentifier<T> {
+    const serviceDecorator = createDecoratorInner(serviceName) as VinessServiceIdentifier<T>
 
-    return identifier
+    return serviceDecorator
 }

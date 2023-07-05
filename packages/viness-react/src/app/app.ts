@@ -1,32 +1,17 @@
-import { Container, ServiceRegistry } from '@viness/di'
 import { renderApp, VinessReactAppProps } from './app-react'
-import { VinessModule } from './module'
+import { IVinessModule } from './module'
 import { createRoot } from 'react-dom/client'
 
 export interface IVInessApp {}
 
+/**
+ * ```
+ *  const app = createApp()
+ *  app.render()
+ * ```
+ */
 export class VinessApp {
-    container: Container
-    constructor(appModule: VinessModule) {
-        this.container = this.initializeContainer(appModule)
-    }
-
-    private initializeContainer(appModule: VinessModule) {
-        const mergeRegistry = (appModule: VinessModule, mainRegistry: ServiceRegistry) => {
-            const moduelRegistry = appModule.registry
-            mainRegistry.merge(moduelRegistry)
-
-            if (appModule.subModules && appModule.subModules.length > 0) {
-                appModule.subModules.forEach((module) => mergeRegistry(module, mainRegistry))
-            }
-        }
-
-        const mainRegistry = new ServiceRegistry()
-        mergeRegistry(appModule, mainRegistry)
-
-        const container = new Container(mainRegistry)
-        return container
-    }
+    constructor(private appModule: IVinessModule) {}
 
     render(selector: string, props: Omit<VinessReactAppProps, 'app'>) {
         const app = renderApp({ ...props, app: this })
@@ -35,6 +20,6 @@ export class VinessApp {
     }
 }
 
-export function createApp(appModule: VinessModule) {
+export function createApp(appModule: IVinessModule) {
     return new VinessApp(appModule)
 }

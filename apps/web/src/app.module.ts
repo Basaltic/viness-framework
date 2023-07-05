@@ -5,9 +5,9 @@ import enCommon from './i18n/en/common.json'
 import zhCommon from './i18n/zh/common.json'
 import { routerModule } from './router.module'
 
-export const appModule = createModule()
-appModule.imports(routerModule)
-appModule.imports(dashboardModule)
+export const appModule = createModule({
+    imports: [routerModule, dashboardModule]
+})
 
 initI18n({
     resources: {

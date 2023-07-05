@@ -19,7 +19,6 @@
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^14.0.0",
-        "@types/lodash.clonedeep": "^4.5.7",
         "@types/node": "^20.2.3",
         "@types/react": "^18.2.6",
         "@types/react-dom": "^18.2.4",
@@ -28,7 +27,6 @@
         "@viness/tsconfig": "workspace:*",
         "eslint": "^8.41.0",
         "jsdom": "^22.0.0",
-        "react": "^18.2.0",
         "tsup": "^6.7.0",
         "typescript": "^5.0.4",
         "vitest": "^0.31.1"
@@ -39,8 +37,6 @@
         "eventemitter3": "^5.0.1",
         "i18next": "^22.5.0",
         "immer": "^10.0.2",
-        "inversify": "^6.0.1",
-        "lodash.clonedeep": "^4.5.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-error-boundary": "^4.0.4",
