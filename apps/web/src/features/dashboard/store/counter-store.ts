@@ -1,28 +1,13 @@
-import { Patch, IVinessUIStore, VinessUIStore, createDecorator, Injectable } from '@viness/react'
-
-interface CounterState {
-    count: number
-    selectedIds: Record<string, any>
-}
+import { Patch, VinessUIStore, Injectable } from '@viness/react'
+import { CounterState, CounterStore } from './counter-store.protocol'
 
 const defaultCountareState: CounterState = {
     count: 0,
     selectedIds: {}
 }
 
-export const ICounterStore = createDecorator<ICounterStore>('ICounterStore')
-
-export interface ICounterStore extends IVinessUIStore<CounterState> {
-    undo(): void
-    redo(): void
-    increase(): void
-    decrease(): void
-    select(id: string): void
-    deselect(id: string): void
-}
-
-@Injectable(ICounterStore)
-export class CounterStore extends VinessUIStore<CounterState> implements ICounterStore {
+@Injectable(CounterStore)
+export class CounterStoreImpl extends VinessUIStore<CounterState> implements CounterStore {
     private patchesQueue: Array<[Patch[], Patch[]]> = []
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = []
 

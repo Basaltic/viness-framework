@@ -7,6 +7,7 @@ export type StoreInstanceId = string | number
 
 export interface IVinessUIStore<S extends object> extends StoreApi<S> {
     use: { [K in keyof S]: () => S[K] }
+    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U
     setStateWithPatches(updater: (state: S) => S | void): [Patch[], Patch[]]
     applyPatches(patches: Patch[]): void
 }
@@ -37,7 +38,7 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     }
     /**
      * auto generated selectors of the object keys
-     *  ** use this in react functional components **
+     * ** use this in react functional components **
      */
     get use() {
         if (this.selectors) {
@@ -52,6 +53,18 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
         this.selectors = selectors as any
 
         return this.selectors
+    }
+
+    /**
+     * subscribe the state in this store
+     * ** use this in react functional components **
+     *
+     * @param selector
+     * @param equals
+     * @returns
+     */
+    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U {
+        return useStore(this.storeApi, selector as any, equals)
     }
 
     /**
