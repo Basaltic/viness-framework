@@ -40,6 +40,6 @@ export function VinessReactApp(props: VinessReactAppProps) {
     )
 }
 
-export function renderApp(props: VinessReactAppProps) {
+export function createReactApp(props: VinessReactAppProps) {
     return <VinessReactApp {...props} />
 }

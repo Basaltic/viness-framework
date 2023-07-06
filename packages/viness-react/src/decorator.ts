@@ -1,7 +1,9 @@
 import { createDecorator as createDecoratorInner, ServiceIdentifier } from '@viness/di'
 
 // = PropertyDecorator & ParameterDecorator
-export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {}
+// export interface VinessServiceIdentifier<T> extends ServiceIdentifier<T> {}
+
+export type VinessServiceIdentifier<T> = ServiceIdentifier<T>
 
 /**
  * create service decorator as identifier

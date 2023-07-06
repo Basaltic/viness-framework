@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.6.0
+
+### Minor Changes
+
+- cad4c10: feat: add useResolveStore hook
+
 ## 0.5.6
 
 ### Patch Changes

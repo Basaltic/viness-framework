@@ -5,7 +5,11 @@ import { produce, produceWithPatches, applyPatches, Patch } from 'immer'
 
 export type StoreInstanceId = string | number
 
-export interface IVinessUIStore<S extends object> extends StoreApi<S> {}
+export interface IVinessUIStore<S extends object> extends StoreApi<S> {
+    use: { [K in keyof S]: () => S[K] }
+    setStateWithPatches(updater: (state: S) => S | void): [Patch[], Patch[]]
+    applyPatches(patches: Patch[]): void
+}
 
 export interface StoreOptions<S extends object> {
     defaultState?: S

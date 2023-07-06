@@ -1,4 +1,4 @@
-import { renderApp, VinessReactAppProps } from './app-react'
+import { createReactApp, VinessReactAppProps } from './app-react'
 import { IVinessModule } from './module'
 import { createRoot } from 'react-dom/client'
 
@@ -14,12 +14,14 @@ export class VinessApp {
     constructor(private appModule: IVinessModule) {}
 
     render(selector: string, props: Omit<VinessReactAppProps, 'app'>) {
-        const app = renderApp({ ...props, app: this })
+        const app = createReactApp({ ...props, app: this })
         const container = document.getElementById(selector)
         container && createRoot(container).render(app)
     }
 }
 
-export function createApp(appModule: IVinessModule) {
-    return new VinessApp(appModule)
+export class AppFactory {
+    static create(appModule: IVinessModule) {
+        return new VinessApp(appModule)
+    }
 }
