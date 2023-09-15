@@ -11,5 +11,7 @@ export class ContaienrUtil {
         container.register(id, ctorOrDescriptor, supportsDelayedInstantiation)
     }
 
-    static get() {}
+    static get<T>(identifier: ServiceIdentifier<T>) {
+        return container.resolve(identifier)
+    }
 }

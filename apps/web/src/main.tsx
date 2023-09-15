@@ -1,6 +1,6 @@
 import './index.css'
 
 import { AppFactory } from '@viness/react'
-import { appModule } from './app.module'
+import { AppModule } from './app.module'
 
-AppFactory.create(appModule).render('root', {})
+AppFactory.create(AppModule).render('root', {})

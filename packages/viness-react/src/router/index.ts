@@ -1,4 +1,6 @@
 export * from './router-module'
-export { type RouteNode, type RouteItem } from './route'
+export * from './route.factory'
+
+export * from './hooks'
 
 export { Navigate, Outlet, useNavigate } from 'react-router-dom'

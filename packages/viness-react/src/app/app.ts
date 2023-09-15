@@ -1,3 +1,4 @@
+import { INJECTABLE_MODULE_ID } from '../annotation'
 import { createReactApp, VinessReactAppProps } from './app-react'
 import { IVinessModule } from './module'
 import { createRoot } from 'react-dom/client'
@@ -21,7 +22,9 @@ export class VinessApp {
 }
 
 export class AppFactory {
-    static create(appModule: IVinessModule) {
-        return new VinessApp(appModule)
+    static create(appModule: any) {
+        const module = appModule[INJECTABLE_MODULE_ID]
+
+        return new VinessApp(module)
     }
 }

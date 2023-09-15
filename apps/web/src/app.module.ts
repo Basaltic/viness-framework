@@ -1,21 +1,9 @@
-import { createModule, initI18n } from '@viness/react'
+import { Module, RouterModule } from '@viness/react'
 import { dashboardModule } from './features/dashboard/dashboard.module'
 
-import enCommon from './i18n/en/common.json'
-import zhCommon from './i18n/zh/common.json'
-import { routerModule } from './router.module'
+import { dashboardRoute, rootRoute } from './routes/routes.module'
 
-export const appModule = createModule({
-    imports: [routerModule, dashboardModule]
+@Module({
+    imports: [RouterModule.forRoot({ type: 'browser', routes: [rootRoute, dashboardRoute] }), dashboardModule]
 })
-
-initI18n({
-    resources: {
-        zh: {
-            common: zhCommon
-        },
-        en: {
-            common: enCommon
-        }
-    }
-})
+export class AppModule {}

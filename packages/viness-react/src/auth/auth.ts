@@ -1,6 +1,6 @@
-import { createDecorator } from '../decorator'
+import { createToken } from '../decorator'
 
-export const IAuthentication = createDecorator<IAuthentication>('IAuthentication')
+export const IAuthentication = createToken<IAuthentication>('IAuthentication')
 
 export interface IAuthentication {
     isAuthenticated(): boolean | Promise<boolean>

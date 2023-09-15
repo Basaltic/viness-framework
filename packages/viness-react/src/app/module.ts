@@ -2,13 +2,16 @@ import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
 import { ContaienrUtil } from './container'
 import { INJECTABLE_ID } from '../annotation'
 
-export interface ModuleOptions {
-    // providers?: Array<[ServiceIdentifier<any>, new (...services: any[]) => any]>
-    providers?: Array<new (...services: any[]) => any>
-    imports?: IVinessModule[]
+export interface Type<T = any> extends Function {
+    new (...args: any[]): T
 }
 
-export interface IVinessModule {
+export interface ModuleOptions {
+    imports?: IVinessModule[] | Type<any>[]
+    providers?: Array<new (...services: any[]) => any>
+}
+
+export interface IVinessModule extends ModuleOptions {
     /**
      * Register service in this module
      *

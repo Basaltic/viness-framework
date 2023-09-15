@@ -1,5 +1,6 @@
-import { useResolve } from '@viness/react'
+import { useResolve, useRoute } from '@viness/react'
 import { CounterStore } from '../store/counter-store.protocol'
+import { dashboardPage2RouteToken, dashboardRouteToken } from '../../../routes/routes.protocol'
 
 const ids = ['1', '2', '3', '4', '5', '6']
 
@@ -15,6 +16,10 @@ export function DashboardPage2() {
 
 function Item(props: { id: string }) {
     const { id } = props
+
+    const route = useRoute(dashboardPage2RouteToken)
+
+    route.getParams()
 
     const store = useResolve(CounterStore)
     const selectedId = store.useState((s) => s.selectedIds[id])

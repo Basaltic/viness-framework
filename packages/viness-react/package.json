@@ -16,6 +16,10 @@
         "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
         "test": "vitest run --passWithNoTests"
     },
+    "peerDependencies": {
+        "react": "^18.x",
+        "react-dom": "^18.x"
+    },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^14.0.0",

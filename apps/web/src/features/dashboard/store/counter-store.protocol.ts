@@ -1,11 +1,11 @@
-import { createDecorator, IVinessUIStore } from '@viness/react'
+import { createToken, IVinessUIStore } from '@viness/react'
 
 export interface CounterState {
     count: number
     selectedIds: Record<string, any>
 }
 
-export const CounterStore = createDecorator<CounterStore>('CounterStore')
+export const CounterStore = createToken<CounterStore>('CounterStore')
 
 export interface CounterStore extends IVinessUIStore<CounterState> {
     undo(): void

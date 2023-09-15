@@ -16,11 +16,11 @@
         "docs:preview": "turbo run docs:preview"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.26.1",
+        "@changesets/cli": "^2.26.2",
         "@viness/eslint-config": "workspace:*",
-        "eslint": "^8.41.0",
+        "eslint": "^8.49.0",
         "prettier": "^2.8.8",
-        "turbo": "^1.10.7"
+        "turbo": "^1.10.13"
     },
     "publishConfig": {
         "access": "public",

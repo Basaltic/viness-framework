@@ -11,7 +11,7 @@ export type VinessServiceIdentifier<T> = ServiceIdentifier<T>
  * @param serviceId
  * @returns
  */
-export function createDecorator<T>(serviceName: string): VinessServiceIdentifier<T> {
+export function createToken<T>(serviceName: string): VinessServiceIdentifier<T> {
     const serviceDecorator = createDecoratorInner(serviceName) as VinessServiceIdentifier<T>
 
     return serviceDecorator

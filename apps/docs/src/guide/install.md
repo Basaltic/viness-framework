@@ -6,6 +6,8 @@
 1. 安装依赖
 ```bash
 npm install @viness/react --save
+// or
+pnpm install @viness/react --save
 ```
 
 2. 引入模块
@@ -13,9 +15,6 @@ npm install @viness/react --save
 引入指定模块：
 
 ```ts
-import { createVinessApp } from '@viness/react'
+import {  } from '@viness/react'
 ```
-或引入全局模块：
-```ts
-import * as Orillusion from '@orillusion/core'
-```
+

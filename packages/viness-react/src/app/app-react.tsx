@@ -1,7 +1,7 @@
 import { Suspense, ComponentType, StrictMode } from 'react'
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
 import { HelmetProvider } from 'react-helmet-async'
-import { AppRouter } from '../route/router-react'
+import { AppRouter } from '../router/router-react'
 import { VinessApp } from './app'
 import { AppContextProvider } from './app-react-context'
 import { DefaultErrorFallbackComponent, DefaultSuspenseFallbackComponent } from './app-fallbacks'

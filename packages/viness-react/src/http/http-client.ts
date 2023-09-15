@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
-import { createDecorator } from '../decorator'
+import { createToken } from '../decorator'
 
 export interface HttpRequestConfig<D = any> extends AxiosRequestConfig<D> {}
 
@@ -70,7 +70,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
     options<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
 }
 
-export const IHttpClient = createDecorator<IHttpClient>('IHttpClient')
+export const IHttpClient = createToken<IHttpClient>('IHttpClient')
 
 /**
  * Http Client based in axios

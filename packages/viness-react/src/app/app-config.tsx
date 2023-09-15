@@ -1,7 +1,7 @@
 import { VinessI18nConfig } from '../i18n/i18n'
-import { createDecorator } from '../decorator'
+import { createToken } from '../decorator'
 
-export const IVinessAppConfig = createDecorator<VinessAppConfig>('IVinessAppConfig')
+export const IVinessAppConfig = createToken<VinessAppConfig>('IVinessAppConfig')
 
 export interface IVinessAppConfig {
     readonly i18n?: VinessI18nConfig

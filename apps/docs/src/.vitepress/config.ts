@@ -25,6 +25,8 @@ export default defineConfig({
                 text: '核心',
                 collapsed: false,
                 items: [
+                    { text: '模块', link: '/guide/module' },
+                    { text: '代币（Token）', link: '/guide/token' },
                     { text: '路由', link: '/guide/router' },
                     { text: '状态', link: '/guide/ui-state' },
                     { text: '服务', link: '/guide/services' },

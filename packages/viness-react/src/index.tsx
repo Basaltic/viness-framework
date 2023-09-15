@@ -1,8 +1,9 @@
 export * from './annotation'
 export * from './app'
-export * from './route'
-export * from './store'
 export * from './decorator'
+
+export * from './router'
+export * from './store'
 export * from './hooks'
 export * from './http'
 export * from './i18n'

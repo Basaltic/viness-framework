@@ -1,6 +1,6 @@
-import { Injectable, createDecorator } from '@viness/react'
+import { Injectable, createToken } from '@viness/react'
 
-export const ITestService = createDecorator<TestService>('ITestService')
+export const ITestService = createToken<TestService>('ITestService')
 
 @Injectable(ITestService)
 export class TestService {
@@ -9,7 +9,7 @@ export class TestService {
     }
 }
 
-export const ITest2Service = createDecorator<Test2Service>('ITest2Service')
+export const ITest2Service = createToken<Test2Service>('ITest2Service')
 
 @Injectable(ITest2Service)
 export class Test2Service {

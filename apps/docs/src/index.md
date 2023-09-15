@@ -13,11 +13,11 @@ hero:
 
 
 features:
+  - title: 开箱即用
+    details:
   - title: 简单易用
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details:
   - title: 易于扩展
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details:
 ---
 

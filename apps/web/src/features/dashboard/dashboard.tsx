@@ -1,4 +1,5 @@
-import { Outlet } from '@viness/react'
+import { Navigate, Outlet, useResolve } from '@viness/react'
+import { dashboardRouteToken, dashboardPage1RouteToken } from '../../routes/routes.protocol'
 
 export function DashboardLayout() {
     return (
