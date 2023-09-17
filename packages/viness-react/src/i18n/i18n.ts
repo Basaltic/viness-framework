@@ -1,6 +1,6 @@
 import i18n, { InitOptions } from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { createToken } from '../decorator'
+import { createToken } from '../token'
 
 export type VinessI18nConfig<T = object> = InitOptions<T>
 

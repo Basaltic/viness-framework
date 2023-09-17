@@ -1,4 +1,4 @@
-import { createToken } from '../decorator'
+import { createToken } from '../token'
 
 export const IAuthentication = createToken<IAuthentication>('IAuthentication')
 

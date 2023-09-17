@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
-import { createToken } from '../decorator'
+import { createToken } from '../token'
 
 export interface HttpRequestConfig<D = any> extends AxiosRequestConfig<D> {}
 

@@ -8,7 +8,7 @@ export class ContaienrUtil {
         ctorOrDescriptor: SyncDescriptor<any> | (new (...services: Services) => T),
         supportsDelayedInstantiation?: InstantiationType
     ): void {
-        container.register(id, ctorOrDescriptor, supportsDelayedInstantiation)
+        container.register(id, ctorOrDescriptor, supportsDelayedInstantiation || 1)
     }
 
     static get<T>(identifier: ServiceIdentifier<T>) {

@@ -1,6 +1,6 @@
-import { INJECTABLE_MODULE_ID } from '../annotation'
 import { createReactApp, VinessReactAppProps } from './app-react'
-import { IVinessModule } from './module'
+import { MODULE_METADATA } from './module'
+import { IVinessModule } from './module/module'
 import { createRoot } from 'react-dom/client'
 
 export interface IVInessApp {}
@@ -23,7 +23,7 @@ export class VinessApp {
 
 export class AppFactory {
     static create(appModule: any) {
-        const module = appModule[INJECTABLE_MODULE_ID]
+        const module = appModule[MODULE_METADATA]
 
         return new VinessApp(module)
     }

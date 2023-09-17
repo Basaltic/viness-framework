@@ -1,5 +1,5 @@
 import { RouteObject, NavigateOptions, type PathMatch } from 'react-router-dom'
-import { VinessServiceIdentifier } from '../decorator'
+import { VinessServiceToken } from '../token'
 
 export declare type _PathParam<Path extends string> = Path extends `${infer L}/${infer R}`
     ? _PathParam<L> | _PathParam<R>
@@ -23,7 +23,7 @@ export declare type PathParam<Path extends string> = Path extends '*' | '/*'
     ? '*' | _PathParam<Rest>
     : _PathParam<Path>
 
-export type VinessRouteIdentifer<Path extends string> = VinessServiceIdentifier<IVinessRoute<Path>>
+export type VinessRouteIdentifer<Path extends string> = VinessServiceToken<IVinessRoute<Path>>
 
 export interface IVinessRouteObject<Path extends string> {
     id?: string

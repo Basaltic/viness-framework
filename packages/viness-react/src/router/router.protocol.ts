@@ -1,6 +1,7 @@
 import { createBrowserRouter, NavigateFunction } from 'react-router-dom'
-import { createToken } from '../decorator'
+import { createToken } from '../token'
 import { IVinessRoute, PathParam } from './route.protocol'
+import { Provider } from 'react'
 
 export type ReactRouter = ReturnType<typeof createBrowserRouter>
 
@@ -26,6 +27,6 @@ export interface IVinessRouter {
 
 export interface RouterConfig {
     type: 'hash' | 'browser' | 'memory'
-    routes: IVinessRoute<any>[]
+    routes: Provider<IVinessRoute<any>>[]
     basename?: string
 }

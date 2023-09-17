@@ -1,10 +1,10 @@
 import { useStore } from 'zustand'
-import { VinessServiceIdentifier } from '../decorator'
+import { VinessServiceToken } from '../token'
 import { useResolve } from '../hooks'
 import { VinessUIStore } from './store'
 import { useMemo } from 'react'
 
-export const useResolveStore = <S extends object, T extends VinessUIStore<S>>(id: VinessServiceIdentifier<T>) => {
+export const useResolveStore = <S extends object, T extends VinessUIStore<S>>(id: VinessServiceToken<T>) => {
     const store = useResolve(id)
     return useMemo(
         () => ({

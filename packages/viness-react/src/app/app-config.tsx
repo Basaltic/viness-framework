@@ -1,5 +1,5 @@
 import { VinessI18nConfig } from '../i18n/i18n'
-import { createToken } from '../decorator'
+import { createToken } from '../token'
 
 export const IVinessAppConfig = createToken<VinessAppConfig>('IVinessAppConfig')
 

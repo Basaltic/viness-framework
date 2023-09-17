@@ -1,11 +1,11 @@
 import { SyncDescriptor } from '@viness/di'
 import { ContaienrUtil } from '../app/container'
-import { VinessServiceIdentifier, createToken } from '../decorator'
+import { VinessServiceToken, createToken } from '../token'
 import { VinessRoute } from './route'
 import { IVinessRoute, IVinessRouteObject } from './route.protocol'
 
 export class RouteFactory {
-    static create<Path extends string>(token: VinessServiceIdentifier<IVinessRoute<Path>>, params: IVinessRouteObject<Path>) {
+    static create<Path extends string>(token: VinessServiceToken<IVinessRoute<Path>>, params: IVinessRouteObject<Path>) {
         const ctor = new SyncDescriptor(VinessRoute, [params])
         ContaienrUtil.register(token, ctor)
         return ContaienrUtil.get(token)
