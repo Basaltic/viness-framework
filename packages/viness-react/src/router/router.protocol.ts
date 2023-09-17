@@ -27,6 +27,6 @@ export interface IVinessRouter {
 
 export interface RouterConfig {
     type: 'hash' | 'browser' | 'memory'
-    routes: Provider<IVinessRoute<any>>[]
+    routes: IVinessRoute<any>[]
     basename?: string
 }

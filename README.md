@@ -33,9 +33,9 @@ npm install --save @viness/react
 - [x] di framework
 - [x] api management
 - [ ] data fetch hooks
-- [ ] route management
-- [ ] state store management
-- [ ] i18n
+- [x] route management
+- [x] state store management
+- [x] i18n
 - [ ] form state management
 - [ ] document
     - [x] setup site
@@ -51,5 +51,6 @@ npm install --save @viness/react
 - [ ] expose more customizable abilities
 - [ ] cli
     - [ ] template creation
+- [ ] consider use inversify as di framework???
 
 

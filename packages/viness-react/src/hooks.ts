@@ -1,5 +1,5 @@
 import { ServiceIdentifier } from '@viness/di'
-import { container } from './app/container'
+import { ContaienrUtil } from './app/container'
 
 /**
  * Resolve service instance in component
@@ -8,5 +8,5 @@ import { container } from './app/container'
  * @returns
  */
 export function useResolve<T>(id: ServiceIdentifier<T>): T {
-    return container.resolve(id)
+    return ContaienrUtil.get(id)
 }

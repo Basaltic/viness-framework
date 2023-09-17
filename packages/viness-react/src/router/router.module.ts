@@ -5,11 +5,11 @@ import { VinessRouter } from './router'
 import { IVinessRouter, RouterConfig } from './router.protocol'
 
 function createRouterModule(config: RouterConfig) {
-    const descriptor = new SyncDescriptor(VinessRouter, [config])
+    const descriptor = new SyncDescriptor(VinessRouter, [config], true)
     ContaienrUtil.register(IVinessRouter, descriptor)
 
     const module = createModule({
-        providers: config.routes as any
+        providers: []
     })
     return module
 }

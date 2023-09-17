@@ -1,4 +1,3 @@
-import { ServiceIdentifier, SyncDescriptor } from '@viness/di'
 import { ContaienrUtil } from '../container'
 import { INJECTABLE_ID } from '../annotation'
 import { VinessServiceToken } from '../../token'
@@ -12,33 +11,16 @@ type ClassProvider<T> = {
     useClass: Type<T>
 }
 
-type Provider<T = any> = Type<any> | ClassProvider<T>
+type ModuleProvider<T = any> = Type<any> | ClassProvider<T>
+
+type ModuleImport = Type<any> | IVinessModule
 
 export interface ModuleMetadata {
-    imports?: IVinessModule[]
-    providers?: Provider[]
+    imports?: ModuleImport[]
+    providers?: ModuleProvider[]
 }
 
 export interface IVinessModule extends ModuleMetadata {}
-
-/**
- * A module manages a set of services and it can import other modules
- */
-// export class VinessModule implements IVinessModule {
-//     subModules: IVinessModule[] = []
-
-//     register<T>(id: ServiceIdentifier<T>, service: new (...services: any[]) => T, staticArguments?: any[]): void {
-//         if (staticArguments) {
-//             const ctor = new SyncDescriptor(service, staticArguments)
-//             ContaienrUtil.register(id, ctor)
-//         } else {
-//             ContaienrUtil.register(id, service)
-//         }
-//     }
-//     import(...modules: IVinessModule[]) {
-//         this.subModules.push(...modules)
-//     }
-// }
 
 /**
  * Create a empty module

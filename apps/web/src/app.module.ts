@@ -1,9 +1,7 @@
-import { Module, RouterModule } from '@viness/react'
-import { dashboardModule } from './features/dashboard/dashboard.module'
-
-import { dashboardRoute, rootRoute } from './routes/routes.module'
+import { Module } from '@viness/react'
+import { ExampleRouterModule } from './routes/routes.module'
 
 @Module({
-    imports: [RouterModule.forRoot({ type: 'browser', routes: [rootRoute, dashboardRoute] }), dashboardModule]
+    imports: [ExampleRouterModule]
 })
 export class AppModule {}

@@ -4,8 +4,7 @@ import {
     IndexRouteObject,
     LazyRouteFunction,
     LoaderFunction,
-    NonIndexRouteObject,
-    matchPath
+    NonIndexRouteObject
 } from 'react-router-dom'
 import { NavigateOptions } from './types'
 import { IVinessRoute, PathParam, IVinessRouteObject } from './route.protocol'

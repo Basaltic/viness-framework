@@ -23,7 +23,7 @@ export class VinessApp {
 
 export class AppFactory {
     static create(appModule: any) {
-        const module = appModule[MODULE_METADATA]
+        const module = appModule[MODULE_METADATA] || appModule
 
         return new VinessApp(module)
     }

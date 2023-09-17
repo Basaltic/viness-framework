@@ -27,24 +27,6 @@ export class VinessRouter implements IVinessRouter {
         this.reactRouter = router
     }
 
-    // configure(config: RouterConfig) {
-    //     const { type, routes, basename } = config
-
-    //     let router
-    //     switch (type) {
-    //         case 'memory':
-    //             router = createMemoryRouter(routes as any, { basename })
-    //         case 'hash':
-    //             router = createHashRouter(routes as any, { basename })
-    //         case 'browser':
-    //         default:
-    //             router = createBrowserRouter(routes as any, { basename })
-    //     }
-
-    //     this.config = config
-    //     this.reactRouter = router
-    // }
-
     get state() {
         return this.reactRouter.state
     }
