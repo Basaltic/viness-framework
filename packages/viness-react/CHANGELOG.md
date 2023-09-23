@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.7.3
+
+### Patch Changes
+
+- 5a0a1a7: refactor: reimplement module
+
 ## 0.7.2
 
 ### Patch Changes
