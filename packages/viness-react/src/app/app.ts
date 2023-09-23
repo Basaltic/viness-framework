@@ -1,8 +1,4 @@
-import { createReactApp, VinessReactAppProps } from './app-react'
 import { MODULE_METADATA_ID, registerModule, VinessModule } from './module'
-import { createRoot } from 'react-dom/client'
-
-export interface IVInessApp {}
 
 /**
  * ```
@@ -23,12 +19,6 @@ export class VinessApp {
 
     private initialize() {
         registerModule(this.appModule)
-    }
-
-    render(selector: string, props: Omit<VinessReactAppProps, 'app'>) {
-        const app = createReactApp({ ...props, app: this })
-        const container = document.getElementById(selector)
-        container && createRoot(container).render(app)
     }
 }
 

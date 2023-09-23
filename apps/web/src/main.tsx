@@ -1,6 +1,7 @@
+import { App } from './app'
 import './index.css'
 
-import { AppFactory } from '@viness/react'
-import { AppModule } from './app.module'
+import { createRoot } from 'react-dom/client'
 
-AppFactory.create(AppModule).render('root', {})
+const appContainer = document.getElementById('root')
+appContainer && createRoot(appContainer).render(<App />)

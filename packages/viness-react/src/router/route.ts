@@ -7,7 +7,7 @@ import {
     NonIndexRouteObject
 } from 'react-router-dom'
 import { NavigateOptions } from './types'
-import { IVinessRoute, PathParam, IVinessRouteObject } from './route.protocol'
+import { IVinessRoute, PathParam, VinessRouteMetadata } from './route.protocol'
 import { ContaienrUtil } from '../app/container'
 import { IVinessRouter } from './router.protocol'
 
@@ -30,21 +30,8 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
     loader?: LoaderFunction | undefined
     children?: IVinessRoute<Path>[] | undefined
 
-    constructor(params: IVinessRouteObject<Path>) {
-        const {
-            id,
-            path,
-            index,
-            element,
-            errorElement,
-            Component,
-            ErrorBoundary,
-            hasErrorBoundary,
-            caseSensitive,
-            children,
-            lazy,
-            loader
-        } = params
+    constructor(params: VinessRouteMetadata<Path>) {
+        const { id, path, index, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, lazy, loader } = params
 
         this.id = id
         this.path = path
@@ -55,7 +42,6 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
         this.ErrorBoundary = ErrorBoundary
         this.hasErrorBoundary = hasErrorBoundary
         this.caseSensitive = caseSensitive
-        this.children = children
         this.lazy = lazy
         this.loader = loader
     }

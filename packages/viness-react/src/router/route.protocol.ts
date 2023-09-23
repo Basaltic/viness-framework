@@ -36,29 +36,14 @@ export interface VinessRouteMetadata<Path extends string> {
     hasErrorBoundary?: boolean
     caseSensitive?: boolean
     ErrorBoundary?: React.ComponentType | null
+    Layout?: React.ComponentType | null
     Component?: React.ComponentType | null
     lazy?: RouteObject['lazy']
     action?: RouteObject['action']
     loader?: RouteObject['loader']
 }
 
-export interface IVinessRouteObject<Path extends string> {
-    id?: string
-    path: Path
-    index?: boolean
-    element?: React.ReactNode | null
-    errorElement?: React.ReactNode | null
-    hasErrorBoundary?: boolean
-    caseSensitive?: boolean
-    ErrorBoundary?: React.ComponentType | null
-    Component?: React.ComponentType | null
-    lazy?: RouteObject['lazy']
-    loader?: RouteObject['loader']
-    action?: RouteObject['action']
-    children?: IVinessRoute<Path>[]
-}
-
-export interface IVinessRoute<Path extends string> extends IVinessRouteObject<Path> {
+export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<Path> {
     /**
      *
      * @param option
@@ -81,3 +66,5 @@ export interface IVinessRoute<Path extends string> extends IVinessRouteObject<Pa
 
     isMatched(): boolean
 }
+
+function RouteComponent() {}
