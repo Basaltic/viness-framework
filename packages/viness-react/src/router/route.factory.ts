@@ -1,17 +1,17 @@
 import { SyncDescriptor } from '@viness/di'
 import { ContaienrUtil } from '../app/container'
-import { VinessServiceToken, createToken } from '../token'
+import { VinessInjectionToken, createToken } from '../token'
 import { VinessRoute } from './route'
-import { IVinessRoute, IVinessRouteObject } from './route.protocol'
+import { IVinessRoute, IVinessRouteObject, VinessRouteMetadata } from './route.protocol'
 
 export class RouteFactory {
-    static create<Path extends string>(token: VinessServiceToken<IVinessRoute<Path>>, params: IVinessRouteObject<Path>) {
+    static create<Path extends string>(token: VinessInjectionToken<IVinessRoute<Path>>, params: IVinessRouteObject<Path>) {
         const ctor = new SyncDescriptor(VinessRoute, [params])
         ContaienrUtil.register(token, ctor)
         return ContaienrUtil.get(token)
     }
 
-    static createToken<Path extends string>(path: Path) {
+    static createToken<Path extends string>(path: Path, metadata: VinessRouteMetadata<Path>) {
         const routeToken = createToken<IVinessRoute<Path>>(path || 'route')
         return routeToken
     }

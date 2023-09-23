@@ -1,4 +1,4 @@
-import { createToken, IVinessUIStore } from '@viness/react'
+import { createToken, IVinessUIStore, useResolve } from '@viness/react'
 
 export interface CounterState {
     count: number
@@ -14,4 +14,8 @@ export interface CounterStore extends IVinessUIStore<CounterState> {
     decrease(): void
     select(id: string): void
     deselect(id: string): void
+}
+
+export function useCounterStore() {
+    return useResolve(CounterStore)
 }

@@ -1,4 +1,12 @@
-import { BrandedService, Container, InstantiationType, ServiceIdentifier, SyncDescriptor } from '@viness/di'
+import {
+    BrandedService,
+    Container,
+    InstantiationType,
+    ServiceCollection,
+    ServiceIdentifier,
+    ServiceRegistry,
+    SyncDescriptor
+} from '@viness/di'
 
 export const container: Container = new Container()
 

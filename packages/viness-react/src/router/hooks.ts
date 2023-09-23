@@ -1,5 +1,5 @@
 import { ContaienrUtil } from '../app/container'
-import { VinessRouteIdentifer } from './route.protocol'
+import { VinessRouteInjectionToken } from './route.protocol'
 import { IVinessRouter } from './router.protocol'
 
 export function useRouter() {
@@ -7,7 +7,7 @@ export function useRouter() {
     return router
 }
 
-export function useRoute<Path extends string>(token: VinessRouteIdentifer<Path>) {
+export function useRoute<Path extends string>(token: VinessRouteInjectionToken<Path>) {
     const route = ContaienrUtil.get(token)
     return route
 }

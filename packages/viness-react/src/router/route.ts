@@ -15,6 +15,8 @@ import { IVinessRouter } from './router.protocol'
  * Route
  */
 export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
+    private static VROUTE = true
+
     id?: string
     path: Path
     element: ReactNode

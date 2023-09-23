@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.7.2
+
+### Patch Changes
+
+- refactor: route module
+
 ## 0.7.1
 
 ### Patch Changes

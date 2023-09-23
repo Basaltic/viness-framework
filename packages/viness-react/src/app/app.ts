@@ -1,6 +1,5 @@
 import { createReactApp, VinessReactAppProps } from './app-react'
-import { MODULE_METADATA } from './module'
-import { IVinessModule } from './module/module'
+import { MODULE_METADATA_ID, registerModule, VinessModule } from './module'
 import { createRoot } from 'react-dom/client'
 
 export interface IVInessApp {}
@@ -12,7 +11,19 @@ export interface IVInessApp {}
  * ```
  */
 export class VinessApp {
-    constructor(private appModule: IVinessModule) {}
+    constructor(private appModule: VinessModule) {
+        const startTime = new Date().valueOf()
+
+        this.initialize()
+
+        const endTime = new Date().valueOf()
+
+        console.log('initialization spend: ', endTime - startTime)
+    }
+
+    private initialize() {
+        registerModule(this.appModule)
+    }
 
     render(selector: string, props: Omit<VinessReactAppProps, 'app'>) {
         const app = createReactApp({ ...props, app: this })
@@ -23,7 +34,7 @@ export class VinessApp {
 
 export class AppFactory {
     static create(appModule: any) {
-        const module = appModule[MODULE_METADATA] || appModule
+        const module: VinessModule = appModule[MODULE_METADATA_ID] || appModule
 
         return new VinessApp(module)
     }

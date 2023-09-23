@@ -54,3 +54,7 @@ npm install --save @viness/react
 - [ ] consider use inversify as di framework???
 
 
+# Inspired By
+
+- Angular
+- Nestjs

@@ -1,5 +1,5 @@
-import { RouteObject, NavigateOptions, type PathMatch } from 'react-router-dom'
-import { VinessServiceToken } from '../token'
+import { RouteObject, NavigateOptions } from 'react-router-dom'
+import { VinessInjectionToken } from '../token'
 
 export declare type _PathParam<Path extends string> = Path extends `${infer L}/${infer R}`
     ? _PathParam<L> | _PathParam<R>
@@ -23,7 +23,24 @@ export declare type PathParam<Path extends string> = Path extends '*' | '/*'
     ? '*' | _PathParam<Rest>
     : _PathParam<Path>
 
-export type VinessRouteIdentifer<Path extends string> = VinessServiceToken<IVinessRoute<Path>>
+export type VinessRouteInjectionToken<Path extends string> = VinessInjectionToken<IVinessRoute<Path>> & {
+    metadata: VinessRouteMetadata<Path>
+}
+
+export interface VinessRouteMetadata<Path extends string> {
+    id?: string
+    path: Path
+    index?: boolean
+    element?: React.ReactNode | null
+    errorElement?: React.ReactNode | null
+    hasErrorBoundary?: boolean
+    caseSensitive?: boolean
+    ErrorBoundary?: React.ComponentType | null
+    Component?: React.ComponentType | null
+    lazy?: RouteObject['lazy']
+    action?: RouteObject['action']
+    loader?: RouteObject['loader']
+}
 
 export interface IVinessRouteObject<Path extends string> {
     id?: string
@@ -37,6 +54,7 @@ export interface IVinessRouteObject<Path extends string> {
     Component?: React.ComponentType | null
     lazy?: RouteObject['lazy']
     loader?: RouteObject['loader']
+    action?: RouteObject['action']
     children?: IVinessRoute<Path>[]
 }
 
