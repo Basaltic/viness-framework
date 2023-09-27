@@ -2,20 +2,7 @@ import { StoreApi, useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { devtools } from 'zustand/middleware'
 import { produce, produceWithPatches, applyPatches, Patch } from 'immer'
-
-export type StoreInstanceId = string | number
-
-export interface IVinessUIStore<S extends object> extends StoreApi<S> {
-    use: { [K in keyof S]: () => S[K] }
-    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U
-    setStateWithPatches(updater: (state: S) => S | void): [Patch[], Patch[]]
-    applyPatches(patches: Patch[]): void
-}
-
-export interface StoreOptions<S extends object> {
-    defaultState?: S
-    name?: string
-}
+import { IVinessUIStore, StoreOption } from './protocol'
 
 /**
  * extend this class to create ui store
@@ -24,7 +11,7 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     private storeApi: StoreApi<S>
     private selectors!: { [K in keyof S]: () => S[K] }
 
-    constructor(options?: StoreOptions<S>) {
+    constructor(options?: StoreOption<S>) {
         const { defaultState = {}, name = '' } = options || {}
         let store: any
 

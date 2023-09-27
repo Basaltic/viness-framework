@@ -1,24 +1,21 @@
-import { Patch, VinessUIStore, Injectable } from '@viness/react'
-import { CounterState, CounterStore } from './counter-store.protocol'
+import { Patch, Injectable, resolve } from '@viness/react'
+import { ICounterStore, ICouterActions } from './counter-store.protocol'
 
-const defaultCountareState: CounterState = {
-    count: 0,
-    selectedIds: {}
-}
-
-@Injectable(CounterStore)
-export class CounterStoreImpl extends VinessUIStore<CounterState> implements CounterStore {
+@Injectable(ICouterActions)
+export class CounterActions implements ICouterActions {
     private patchesQueue: Array<[Patch[], Patch[]]> = []
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = []
 
+    private counterStore: ICounterStore
+
     constructor() {
-        super({ defaultState: defaultCountareState })
+        this.counterStore = resolve(ICounterStore)
     }
 
     undo() {
         const patches = this.patchesQueue.pop()
         if (patches) {
-            this.applyPatches(patches[1])
+            this.counterStore.applyPatches(patches[1])
             this.redoPatchesQueue.push(patches)
         }
     }
@@ -26,13 +23,13 @@ export class CounterStoreImpl extends VinessUIStore<CounterState> implements Cou
     redo() {
         const patches = this.redoPatchesQueue.pop()
         if (patches) {
-            this.applyPatches(patches[0])
+            this.counterStore.applyPatches(patches[0])
             this.patchesQueue.push(patches)
         }
     }
 
     increase() {
-        const patches = this.setStateWithPatches((s) => {
+        const patches = this.counterStore.setStateWithPatches((s) => {
             s.count += 1
         })
 
@@ -41,7 +38,7 @@ export class CounterStoreImpl extends VinessUIStore<CounterState> implements Cou
     }
 
     decrease() {
-        const [patches, inversePatches] = this.setStateWithPatches((s) => {
+        const [patches, inversePatches] = this.counterStore.setStateWithPatches((s) => {
             s.count -= 1
         })
         this.patchesQueue.push([patches, inversePatches])
@@ -50,12 +47,12 @@ export class CounterStoreImpl extends VinessUIStore<CounterState> implements Cou
     }
 
     select = (id: string) =>
-        this.setState((s) => {
+        this.counterStore.setState((s) => {
             s.selectedIds[id] = 1
         })
 
     deselect(id: string) {
-        this.setState((s) => {
+        this.counterStore.setState((s) => {
             delete s.selectedIds[id]
         })
     }

@@ -1,8 +1,12 @@
-import { AppFactory, VinessReactApp } from '@viness/react'
-import { AppModule } from './app.module'
+import { AppFactory, VinessReactApp, VinessAppRouter } from '@viness/react'
+import { appModule } from './app.module'
 
 export const App = () => {
-    const app = AppFactory.create(AppModule)
+    const app = AppFactory.create(appModule)
 
-    return <VinessReactApp app={app}></VinessReactApp>
+    return (
+        <VinessReactApp app={app}>
+            <VinessAppRouter />
+        </VinessReactApp>
+    )
 }

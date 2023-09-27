@@ -1,7 +1,6 @@
 import { RouterProvider } from 'react-router-dom'
-import { useResolve } from '../hooks'
-import { IVinessRouter } from './router.protocol'
 import { VinessRouter } from './router'
+import { useRouter } from './hooks'
 
 export interface AppRouterProps {
     type: 'hash' | 'browser' | 'memory'
@@ -11,8 +10,8 @@ export interface AppRouterProps {
 /**
  * Router Component
  */
-export const AppRouter = () => {
-    const vinessRouter = useResolve(IVinessRouter) as VinessRouter
+export const VinessAppRouter = () => {
+    const vinessRouter = useRouter() as VinessRouter
 
     return <RouterProvider router={vinessRouter.reactRouter} />
 }

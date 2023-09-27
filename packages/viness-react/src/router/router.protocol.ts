@@ -1,7 +1,7 @@
 import { createBrowserRouter, NavigateFunction } from 'react-router-dom'
 import { createToken } from '../token'
-import { IVinessRoute, PathParam } from './route.protocol'
 import { RouteTree } from './route-tree'
+import { PathParam } from './types'
 
 export type ReactRouter = ReturnType<typeof createBrowserRouter>
 
@@ -27,10 +27,6 @@ export interface IVinessRouter {
 
 export interface RouterConfig {
     type: 'hash' | 'browser' | 'memory'
-    routes: IVinessRoute<any>[]
-    /**
-     *
-     */
-    routeTree?: RouteTree
+    routeTree: RouteTree
     basename?: string
 }

@@ -1,8 +1,7 @@
-import { Module, RouterModule } from '@viness/react'
+import { createRouterModule } from '@viness/react'
+import { DashboardPage1Route, DashboardPage2Route, DashboardPage3Route, DashboardRoute, RootRoute } from './routes.protocol'
 
-import { dashboardRoute, rootRoute } from './routes'
-
-@Module({
-    imports: [RouterModule.forRoot({ type: 'browser', routes: [rootRoute, dashboardRoute] })]
+export const routerModule = createRouterModule({
+    type: 'browser',
+    routeTree: [RootRoute, [DashboardRoute, [DashboardPage1Route, DashboardPage2Route, DashboardPage3Route]]]
 })
-export class ExampleRouterModule {}

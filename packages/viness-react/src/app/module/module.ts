@@ -1,4 +1,4 @@
-import { ContaienrUtil } from '../container'
+import { ContaienrUtil } from '../../container'
 import { INJECTABLE_ID } from '../annotation'
 import { ModuleMetadata, VinessModule, ModuleProvider, ClassProvider } from './module.protocol'
 import { MODULE_METADATA_ID } from './module.annotation'
@@ -32,11 +32,7 @@ export function registerModule(module: VinessModule) {
     }
 }
 
-/**
- *
- * @param providers
- */
-export function batchRegisterProviders(providers: ModuleProvider[]) {
+function batchRegisterProviders(providers: ModuleProvider[]) {
     if (providers && providers.length > 0) {
         if (providers) {
             for (const provider of providers) {

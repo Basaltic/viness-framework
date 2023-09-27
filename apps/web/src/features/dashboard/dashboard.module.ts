@@ -1,8 +1,7 @@
-import { Module, createModule } from '@viness/react'
-import { CounterStoreImpl } from './store/counter-store'
+import { createModule } from '@viness/react'
+import { CounterActions } from './store/counter-store'
 import { Test2Service, TestService } from './services/test.service'
 
-@Module({
-    providers: [CounterStoreImpl, TestService, Test2Service]
+export const dashboardModule = createModule({
+    providers: [CounterActions, TestService, Test2Service]
 })
-export class DashboardModule {}

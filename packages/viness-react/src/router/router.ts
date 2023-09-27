@@ -1,15 +1,20 @@
-import { NavigateFunction, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom'
-import { IVinessRouter, ReactRouter, RouterConfig } from './router.protocol'
-import { PathParam } from './route.protocol'
+import { NavigateFunction, RouteObject, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom'
+import { IVinessRouter, ReactRouter } from './router.protocol'
+import { PathParam } from './types'
+
+export type RouterParams = {
+    type: 'hash' | 'browser' | 'memory'
+    routes: RouteObject[]
+    basename?: string
+}
 
 /**
  * keep state of routes
  */
 export class VinessRouter implements IVinessRouter {
-    config: RouterConfig
     reactRouter: ReactRouter
 
-    constructor(configs: RouterConfig) {
+    constructor(configs: RouterParams) {
         const { type, routes, basename } = configs
 
         let router
@@ -23,7 +28,6 @@ export class VinessRouter implements IVinessRouter {
                 router = createBrowserRouter(routes as any, { basename })
         }
 
-        this.config = configs
         this.reactRouter = router
     }
 

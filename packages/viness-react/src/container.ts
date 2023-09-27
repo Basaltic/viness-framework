@@ -1,12 +1,4 @@
-import {
-    BrandedService,
-    Container,
-    InstantiationType,
-    ServiceCollection,
-    ServiceIdentifier,
-    ServiceRegistry,
-    SyncDescriptor
-} from '@viness/di'
+import { BrandedService, Container, InstantiationType, ServiceIdentifier, SyncDescriptor } from '@viness/di'
 
 export const container: Container = new Container()
 
@@ -19,7 +11,11 @@ export class ContaienrUtil {
         container.register(id, ctorOrDescriptor, supportsDelayedInstantiation || 1)
     }
 
-    static get<T>(identifier: ServiceIdentifier<T>) {
+    static resolve<T>(identifier: ServiceIdentifier<T>) {
         return container.resolve(identifier)
     }
+}
+
+export function resolve<T>(identifier: ServiceIdentifier<T>) {
+    return container.resolve(identifier)
 }

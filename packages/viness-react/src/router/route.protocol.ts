@@ -1,27 +1,6 @@
 import { RouteObject, NavigateOptions } from 'react-router-dom'
 import { VinessInjectionToken } from '../token'
-
-export declare type _PathParam<Path extends string> = Path extends `${infer L}/${infer R}`
-    ? _PathParam<L> | _PathParam<R>
-    : Path extends `:${infer Param}`
-    ? Param extends `${infer Optional}?`
-        ? Optional
-        : Param
-    : never
-/**
- * Examples:
- * "/a/b/*" -> "*"
- * ":a" -> "a"
- * "/a/:b" -> "b"
- * "/a/blahblahblah:b" -> "b"
- * "/:a/:b" -> "a" | "b"
- * "/:a/b/:c/*" -> "a" | "c" | "*"
- */
-export declare type PathParam<Path extends string> = Path extends '*' | '/*'
-    ? '*'
-    : Path extends `${infer Rest}/*`
-    ? '*' | _PathParam<Rest>
-    : _PathParam<Path>
+import { PathParam } from './types'
 
 export type VinessRouteInjectionToken<Path extends string> = VinessInjectionToken<IVinessRoute<Path>> & {
     metadata: VinessRouteMetadata<Path>
@@ -41,6 +20,7 @@ export interface VinessRouteMetadata<Path extends string> {
     lazy?: RouteObject['lazy']
     action?: RouteObject['action']
     loader?: RouteObject['loader']
+    children?: VinessRouteMetadata<Path>[] | undefined
 }
 
 export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<Path> {
@@ -66,5 +46,3 @@ export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<P
 
     isMatched(): boolean
 }
-
-function RouteComponent() {}

@@ -23,8 +23,8 @@ export class VinessApp {
 }
 
 export class AppFactory {
-    static create(appModule: any) {
-        const module: VinessModule = appModule[MODULE_METADATA_ID] || appModule
+    static create(appModule: VinessModule) {
+        const module: VinessModule = appModule
 
         return new VinessApp(module)
     }

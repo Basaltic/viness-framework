@@ -1,6 +1,6 @@
 {
     "name": "@viness/react",
-    "version": "0.7.3",
+    "version": "0.7.4",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -36,10 +36,8 @@
         "vitest": "^0.31.1"
     },
     "dependencies": {
-        "@swan-io/chicane": "^1.4.1",
         "@viness/di": "workspace:*",
         "axios": "^1.4.0",
-        "eventemitter3": "^5.0.1",
         "i18next": "^22.5.0",
         "immer": "^10.0.2",
         "react": "^18.2.0",
@@ -50,7 +48,6 @@
         "react-i18next": "^12.3.1",
         "react-router": "^6.11.2",
         "react-router-dom": "^6.11.2",
-        "ts-pattern": "^5.0.5",
         "zustand": "^4.3.8"
     },
     "publishConfig": {

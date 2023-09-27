@@ -6,9 +6,9 @@ import {
     LoaderFunction,
     NonIndexRouteObject
 } from 'react-router-dom'
-import { NavigateOptions } from './types'
-import { IVinessRoute, PathParam, VinessRouteMetadata } from './route.protocol'
-import { ContaienrUtil } from '../app/container'
+import { NavigateOptions, PathParam } from './types'
+import { IVinessRoute, VinessRouteMetadata } from './route.protocol'
+import { ContaienrUtil } from '../container'
 import { IVinessRouter } from './router.protocol'
 
 /**
@@ -28,10 +28,23 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
     index?: boolean | undefined
     lazy?: LazyRouteFunction<IndexRouteObject> | LazyRouteFunction<NonIndexRouteObject> | undefined
     loader?: LoaderFunction | undefined
-    children?: IVinessRoute<Path>[] | undefined
+    children?: VinessRouteMetadata<Path>[] | undefined
 
-    constructor(params: VinessRouteMetadata<Path>) {
-        const { id, path, index, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, lazy, loader } = params
+    constructor(metadata: VinessRouteMetadata<Path>) {
+        const {
+            id,
+            path,
+            index,
+            element,
+            errorElement,
+            Component,
+            ErrorBoundary,
+            hasErrorBoundary,
+            caseSensitive,
+            children,
+            lazy,
+            loader
+        } = metadata
 
         this.id = id
         this.path = path
@@ -44,16 +57,17 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
         this.caseSensitive = caseSensitive
         this.lazy = lazy
         this.loader = loader
+        this.children = children
     }
 
     navigate(params: { [key in PathParam<Path>]: string | null }, option?: NavigateOptions) {
-        const router = ContaienrUtil.get(IVinessRouter)
+        const router = ContaienrUtil.resolve(IVinessRouter)
         const toPath = this.generatePath(params)
         router.navigate(toPath, option)
     }
 
     getParams() {
-        const router = ContaienrUtil.get(IVinessRouter)
+        const router = ContaienrUtil.resolve(IVinessRouter)
         return router.getParams<Path>()
     }
 
@@ -63,7 +77,7 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
     }
 
     isMatched() {
-        const router = ContaienrUtil.get(IVinessRouter)
+        const router = ContaienrUtil.resolve(IVinessRouter)
         const match = router.state.matches[router.state.matches.length - 1]
         console.log(match)
         return match.pathname === this.path

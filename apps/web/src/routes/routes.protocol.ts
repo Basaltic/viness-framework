@@ -1,16 +1,15 @@
-import { RouteFactory } from '@viness/react'
+import { createRoute } from '@viness/react'
+import { DashboardLayout } from '../features/dashboard/dashboard'
+import { DashboardPage1 } from '../features/dashboard/pages/page1'
+import { DashboardPage2 } from '../features/dashboard/pages/page2'
+import { DashboardPage3 } from '../features/dashboard/pages/page3'
 
-export const ROOT_PATH = '/'
-export const rootRouteToken = RouteFactory.createToken(ROOT_PATH)
+export const RootRoute = createRoute('/')
 
-export const DASHBARD_PATH = '/dashboard'
-export const dashboardRouteToken = RouteFactory.createToken(DASHBARD_PATH)
+export const DashboardRoute = createRoute('/dashboard', { Component: DashboardLayout })
 
-export const DASHBOARD_PAGE_1_PATH = '/dashboard'
-export const dashboardPage1RouteToken = RouteFactory.createToken(DASHBOARD_PAGE_1_PATH)
+export const DashboardPage1Route = createRoute('/dashboard/page1', { Component: DashboardPage1 })
 
-export const DASHBOARD_PAGE_2_PATH = '/dashboard/page2'
-export const dashboardPage2RouteToken = RouteFactory.createToken(DASHBOARD_PAGE_2_PATH)
+export const DashboardPage2Route = createRoute('/dashboard/page2', { Component: DashboardPage2 })
 
-export const DASHBOARD_PAGE_3_PATH = '/dashboard/page3'
-export const dashboardPage3RouteToken = RouteFactory.createToken(DASHBOARD_PAGE_3_PATH)
+export const DashboardPage3Route = createRoute('/dashboard/page3', { Component: DashboardPage3 })

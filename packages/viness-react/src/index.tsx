@@ -3,7 +3,10 @@ export * from './token'
 
 export * from './hooks'
 
-export * from './router-neo'
+export * from './router'
+
 export * from './store'
 export * from './http'
 export * from './i18n'
+
+export { resolve } from './container'
