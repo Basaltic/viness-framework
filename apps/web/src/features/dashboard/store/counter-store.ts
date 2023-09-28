@@ -1,4 +1,4 @@
-import { Patch, Injectable, resolve } from '@viness/react'
+import { Patch, Injectable } from '@viness/react'
 import { ICounterStore, ICouterActions } from './counter-store.protocol'
 
 @Injectable(ICouterActions)
@@ -6,11 +6,7 @@ export class CounterActions implements ICouterActions {
     private patchesQueue: Array<[Patch[], Patch[]]> = []
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = []
 
-    private counterStore: ICounterStore
-
-    constructor() {
-        this.counterStore = resolve(ICounterStore)
-    }
+    constructor(@ICounterStore private counterStore: ICounterStore) {}
 
     undo() {
         const patches = this.patchesQueue.pop()

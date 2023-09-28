@@ -18,7 +18,8 @@ export default defineConfig({
                 collapsed: false,
                 items: [
                     { text: '特点', link: '/guide' },
-                    { text: '安装', link: '/guide/install' }
+                    { text: '安装', link: '/guide/install' },
+                    { text: '快速开始', link: '/guide/initialization' }
                 ]
             },
             {
@@ -26,10 +27,10 @@ export default defineConfig({
                 collapsed: false,
                 items: [
                     { text: '模块', link: '/guide/module' },
-                    { text: '代币（Token）', link: '/guide/token' },
+                    { text: '服务', link: '/guide/services' },
+                    // { text: '服务标识（Token）', link: '/guide/token' },
                     { text: '路由', link: '/guide/router' },
                     { text: '状态', link: '/guide/ui-state' },
-                    { text: '服务', link: '/guide/services' },
                     { text: '国际化', link: '/guide/i18n' }
                 ]
             }

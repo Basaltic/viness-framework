@@ -17,5 +17,5 @@ export interface StoreOption<S extends object> {
 }
 
 export type VinessUIStoreInjectableToken<S extends object> = VinessInjectionToken<IVinessUIStore<S>> & {
-    // option: StoreOption<S>
+    option: StoreOption<S>
 }

@@ -12,8 +12,6 @@ pnpm install @viness/react --save
 
 2. 引入模块
 
-引入指定模块：
-
 ```ts
 import {  } from '@viness/react'
 ```

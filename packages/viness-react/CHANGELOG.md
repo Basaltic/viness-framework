@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.7.5
+
+### Patch Changes
+
+- chore: more docs & examples
+
 ## 0.7.4
 
 ### Patch Changes

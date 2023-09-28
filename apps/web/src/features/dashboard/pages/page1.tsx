@@ -1,24 +1,25 @@
-import { useResolve } from '@viness/react'
-import { CounterStore } from '../store/counter-store.protocol'
+import { useCounterActions, useCounterStore } from '../store/counter-store.protocol'
 
 export function DashboardPage1() {
-    const counterStore = useResolve(CounterStore)
+    const counterStore = useCounterStore()
+    const counterActions = useCounterActions()
+
     const count = counterStore.use.count()
 
     const handleIncrease = () => {
-        counterStore.increase()
+        counterActions.increase()
     }
 
     const handleDecrease = () => {
-        counterStore.decrease()
+        counterActions.decrease()
     }
 
     const handleUndo = () => {
-        counterStore.undo()
+        counterActions.undo()
     }
 
     const handleRedo = () => {
-        counterStore.redo()
+        counterActions.redo()
     }
 
     return (
