@@ -1,5 +1,11 @@
 # @viness/core
 
+## 0.7.6
+
+### Patch Changes
+
+- chore: reexport Link & NavLink components
+
 ## 0.7.5
 
 ### Patch Changes

@@ -5,4 +5,4 @@ export * from './hooks'
 
 export * from './router-react'
 
-export { Navigate, Outlet, useNavigate } from 'react-router-dom'
+export { Navigate, Outlet, Link, NavLink, useNavigate } from 'react-router-dom'
