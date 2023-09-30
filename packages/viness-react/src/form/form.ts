@@ -71,4 +71,6 @@ export class VinessForm<DV extends object> {
     reset(values: Partial<DV>, option: {}) {}
 
     resetField() {}
+
+    watch() {}
 }

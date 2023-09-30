@@ -1,9 +1,7 @@
-import { RouteObject, redirect } from 'react-router'
+import { RouteObject, redirect } from 'react-router-dom'
 import { VinessRouteInjectionToken } from './route.protocol'
-import { SyncDescriptor } from '@viness/di'
 import { VinessRoute } from './route'
-import { ClassProvider, Injectable } from '../app'
-import { InjetableRoute } from './route.annotion'
+import { Injectable } from '../app'
 
 export type RouteToken<P extends string> = VinessRouteInjectionToken<P>
 

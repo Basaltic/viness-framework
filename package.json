@@ -10,7 +10,7 @@
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "changeset": "changeset",
         "version": "changeset version",
-        "release": "turbo run build --filter=docs^... && changeset publish --registry=https://registry.npmjs.org/",
+        "release": "turbo run build && changeset publish --registry=https://registry.npmjs.org/",
         "docs:dev": "turbo run docs:dev",
         "docs:build": "turbo run docs:build",
         "docs:preview": "turbo run docs:preview"

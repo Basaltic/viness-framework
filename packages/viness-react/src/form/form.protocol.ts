@@ -26,3 +26,12 @@ export type FormState<DefaultValues extends object> = {
 
     errors?: any
 }
+
+type ValidateFunction = (value: any, formValues: any) => boolean | string
+
+export type ValidationRule = {
+    required: boolean | ValidateFunction
+    validate?: ValidateFunction
+}
+
+export interface VinessFormHooks {}

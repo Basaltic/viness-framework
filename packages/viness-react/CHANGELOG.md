@@ -1,5 +1,29 @@
 # @viness/core
 
+## 0.7.10
+
+### Patch Changes
+
+- re export route hooks & functions & components
+
+## 0.7.9
+
+### Patch Changes
+
+- reexport hooks
+
+## 0.7.8
+
+### Patch Changes
+
+- adjust route types
+
+## 0.7.7
+
+### Patch Changes
+
+- chore: re export react-router-dom
+
 ## 0.7.6
 
 ### Patch Changes

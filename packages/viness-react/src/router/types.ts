@@ -1,8 +1,4 @@
-import { NavigateOptions, To } from 'react-router'
-export { type NavigateFunction } from 'react-router-dom'
-
-export { type To, type NavigateOptions }
-export type NavOption = Pick<NavigateOptions, 'state' | 'preventScrollReset'>
+export { type NavigateFunction, type NavigateOptions, type To } from 'react-router-dom'
 
 export declare type _PathParam<Path extends string> = Path extends `${infer L}/${infer R}`
     ? _PathParam<L> | _PathParam<R>
