@@ -62,3 +62,14 @@ export const generateId = (prefix?: string) => {
 
     return strId
 }
+
+/**
+ * Log development messages
+ *
+ * @param messages
+ */
+export const doLog = (...messages: any) => {
+    if (process.env.NODE_ENV === 'development') {
+        console.log(messages)
+    }
+}

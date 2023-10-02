@@ -1,3 +1,4 @@
+import { useDashboardPage2Route } from '../../../routes/routes.protocol'
 import { useCounterActions, useCounterStore } from '../store/counter-store.protocol'
 
 export function DashboardPage1() {
@@ -5,6 +6,8 @@ export function DashboardPage1() {
     const counterActions = useCounterActions()
 
     const count = counterStore.use.count()
+
+    const route = useDashboardPage2Route()
 
     const handleIncrease = () => {
         counterActions.increase()
@@ -30,6 +33,7 @@ export function DashboardPage1() {
             <button onClick={handleDecrease}>decrease</button>
             <button onClick={handleUndo}>undo</button>
             <button onClick={handleRedo}>redo</button>
+            <button onClick={() => route.navigate({})}> go</button>
         </div>
     )
 }

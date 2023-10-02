@@ -11,7 +11,6 @@ export const defaultCountareState: CounterState = {
 
 export type ICounterStore = IVinessUIStore<CounterState>
 export const ICounterStore = createToken<ICounterStore>('counter-store')
-export const CounterStore = createStore({ defaultState: defaultCountareState, name: 'counter-store' })
 
 export const useCounterStore = () => useResolve(ICounterStore)
 

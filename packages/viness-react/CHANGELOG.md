@@ -1,5 +1,23 @@
 # @viness/core
 
+## 0.7.13
+
+### Patch Changes
+
+- fix: route object does not initialize correctly
+
+## 0.7.12
+
+### Patch Changes
+
+- fix: route id is not unique cause the metadata override
+
+## 0.7.11
+
+### Patch Changes
+
+- fix: routes generation error
+
 ## 0.7.10
 
 ### Patch Changes

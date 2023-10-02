@@ -14,7 +14,7 @@ export class VinessApp {
 
         const endTime = new Date().valueOf()
 
-        console.log('initialization spend: ', endTime - startTime)
+        console.log('app started in : ', endTime - startTime)
     }
 
     private initialize() {
@@ -29,8 +29,6 @@ export function createVinessApp(appModule: any) {
 
 export class AppFactory {
     static create(appModule: any) {
-        const module: VinessModule = appModule[MODULE_METADATA_ID] || appModule
-
-        return new VinessApp(module)
+        return createVinessApp(appModule)
     }
 }

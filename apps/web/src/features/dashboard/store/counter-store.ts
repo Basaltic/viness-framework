@@ -1,5 +1,12 @@
-import { Patch, Injectable } from '@viness/react'
-import { ICounterStore, ICouterActions } from './counter-store.protocol'
+import { Patch, Injectable, VinessUIStore } from '@viness/react'
+import { CounterState, ICounterStore, ICouterActions, defaultCountareState } from './counter-store.protocol'
+
+@Injectable(ICounterStore)
+export class CounterStore extends VinessUIStore<CounterState> {
+    constructor() {
+        super({ defaultState: defaultCountareState })
+    }
+}
 
 @Injectable(ICouterActions)
 export class CounterActions implements ICouterActions {

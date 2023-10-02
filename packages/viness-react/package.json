@@ -1,6 +1,6 @@
 {
     "name": "@viness/react",
-    "version": "0.7.10",
+    "version": "0.7.13",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -36,6 +36,7 @@
         "vitest": "^0.31.1"
     },
     "dependencies": {
+        "@abraham/reflection": "0.12.0",
         "@viness/di": "workspace:*",
         "axios": "^1.4.0",
         "i18next": "^22.5.0",
