@@ -1,4 +1,4 @@
-import { createDecorator as createDecoratorInner, ServiceIdentifier } from '@viness/di'
+import { createDecorator, ServiceIdentifier } from '@viness/di'
 
 export enum TokenType {
     /**
@@ -22,8 +22,8 @@ export type VinessInjectionToken<T = any> = ServiceIdentifier<T> & {
  * @param serviceId
  * @returns
  */
-export function createToken<T>(serviceName: string): VinessInjectionToken<T> {
-    const token = createDecoratorInner(serviceName) as VinessInjectionToken<T>
+export function createToken<T>(serviceId: string | Symbol): VinessInjectionToken<T> {
+    const token = createDecorator(serviceId) as VinessInjectionToken<T>
 
     token.tokenType = TokenType.Normal
 

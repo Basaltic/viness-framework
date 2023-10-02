@@ -1,5 +1,11 @@
 # @viness/di
 
+## 0.2.1
+
+### Patch Changes
+
+- feat: createDecorator support Symbol type
+
 ## 0.2.0
 
 ### Minor Changes

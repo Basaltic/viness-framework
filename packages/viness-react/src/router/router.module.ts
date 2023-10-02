@@ -14,7 +14,7 @@ export function createRouterModule(config: RouterConfig) {
 
     const routerParams: RouterParams = { type, routes, basename }
 
-    doLog(routes)
+    doLog(routes, routeProviders)
 
     const descriptor = new SyncDescriptor(VinessRouter, [routerParams], true)
     ContaienrUtil.register(IVinessRouter, descriptor)

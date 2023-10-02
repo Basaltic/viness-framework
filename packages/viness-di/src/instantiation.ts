@@ -75,7 +75,7 @@ function storeServiceDependency(id: Function, target: Function, index: number): 
 /**
  * The *only* valid way to create a {{ServiceIdentifier}}.
  */
-export function createDecorator<T>(serviceId: string): ServiceIdentifier<T> {
+export function createDecorator<T>(serviceId: any): ServiceIdentifier<T> {
     if (_util.serviceIds.has(serviceId)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return _util.serviceIds.get(serviceId)!
@@ -89,14 +89,8 @@ export function createDecorator<T>(serviceId: string): ServiceIdentifier<T> {
         storeServiceDependency(id, target, index)
     }
 
-    id.toString = () => serviceId
+    // id.toString = () => serviceId
 
     _util.serviceIds.set(serviceId, id)
     return id
-}
-
-export function refineServiceDecorator<T1, T extends T1>(
-    serviceIdentifier: ServiceIdentifier<T1>
-): ServiceIdentifier<T> {
-    return <ServiceIdentifier<T>>serviceIdentifier
 }

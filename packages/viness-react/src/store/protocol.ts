@@ -9,6 +9,7 @@ export interface IVinessUIStore<S extends object> {
     useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U
     setStateWithPatches(updater: (state: S) => S | void): [Patch[], Patch[]]
     applyPatches(patches: Patch[]): void
+    subscribe(listener: (state: S, prevState: S) => void): () => void
 }
 
 export interface StoreOption<S extends object> {

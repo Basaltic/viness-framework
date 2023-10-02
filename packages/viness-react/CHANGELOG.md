@@ -1,5 +1,13 @@
 # @viness/core
 
+## 0.7.14
+
+### Patch Changes
+
+- fix: route issue
+- Updated dependencies
+  - @viness/di@0.2.1
+
 ## 0.7.13
 
 ### Patch Changes

@@ -55,6 +55,13 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     }
 
     /**
+     * get the actually state object in the store without subscribtion
+     */
+    getState() {
+        return this.storeApi.getState()
+    }
+
+    /**
      * change the state
      */
     setState(updater: S | Partial<S> | ((state: S) => S | Partial<S> | void), replace?: boolean | undefined) {
@@ -63,20 +70,6 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
         } else {
             this.storeApi.setState(updater as any, replace)
         }
-    }
-
-    /**
-     * get the actually state object in the store without subscribtion
-     */
-    getState() {
-        return this.storeApi.getState()
-    }
-
-    /**
-     * subscribe the modification of the state in this store
-     */
-    subscribe(listener: (state: S, prevState: S) => void): () => void {
-        return this.storeApi.subscribe(listener)
     }
 
     /**
@@ -101,6 +94,13 @@ export class VinessUIStore<S extends object> implements IVinessUIStore<S> {
     applyPatches(patches: Patch[]) {
         const updater = (s: S) => applyPatches(s, patches)
         this.storeApi.setState(updater)
+    }
+
+    /**
+     * subscribe the modification of the state in this store
+     */
+    subscribe(listener: (state: S, prevState: S) => void): () => void {
+        return this.storeApi.subscribe(listener)
     }
 
     /**
