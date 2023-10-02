@@ -89,7 +89,7 @@ export function createDecorator<T>(serviceId: any): ServiceIdentifier<T> {
         storeServiceDependency(id, target, index)
     }
 
-    // id.toString = () => serviceId
+    id.toString = () => serviceId
 
     _util.serviceIds.set(serviceId, id)
     return id

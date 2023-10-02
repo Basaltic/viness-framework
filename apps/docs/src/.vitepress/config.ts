@@ -28,7 +28,7 @@ export default defineConfig({
                 items: [
                     { text: '模块', link: '/guide/module' },
                     { text: '服务', link: '/guide/services' },
-                    // { text: '服务标识（Token）', link: '/guide/token' },
+                    { text: '服务标识（Token）', link: '/guide/token' },
                     { text: '路由', link: '/guide/router' },
                     { text: '状态', link: '/guide/ui-state' },
                     { text: '国际化', link: '/guide/i18n' }
