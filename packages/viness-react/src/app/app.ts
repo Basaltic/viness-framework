@@ -1,4 +1,4 @@
-import { MODULE_METADATA_ID, registerModule, VinessModule } from './module'
+import { MODULE_METADATA, importModule, VinessModule } from './module';
 
 /**
  * ```
@@ -7,28 +7,27 @@ import { MODULE_METADATA_ID, registerModule, VinessModule } from './module'
  * ```
  */
 export class VinessApp {
-    constructor(private appModule: VinessModule) {
-        const startTime = new Date().valueOf()
+    constructor(private appModule: any) {
+        const startTime = new Date().valueOf();
 
-        this.initialize()
+        this.initialize();
 
-        const endTime = new Date().valueOf()
+        const endTime = new Date().valueOf();
 
-        console.log('app started in : ', endTime - startTime)
+        console.log('app started in : ', endTime - startTime);
     }
 
     private initialize() {
-        registerModule(this.appModule)
+        importModule(this.appModule);
     }
 }
 
 export function createVinessApp(appModule: any) {
-    const module: VinessModule = appModule[MODULE_METADATA_ID] || appModule
-    return new VinessApp(module)
+    return new VinessApp(appModule);
 }
 
 export class AppFactory {
     static create(appModule: any) {
-        return createVinessApp(appModule)
+        return createVinessApp(appModule);
     }
 }

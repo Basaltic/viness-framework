@@ -6,7 +6,7 @@ import { DashboardPage3 } from '../features/dashboard/pages/page3'
 
 export const RootRoute = createRoute('/')
 
-export const DashboardRoute = createRoute('/d', { Component: DashboardLayout })
+export const DashboardRoute = createRoute('/d/:pid', { Component: DashboardLayout })
 
 export const DashboardPage1Route = createRoute('', { Component: DashboardPage1 })
 

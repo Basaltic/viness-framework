@@ -1,5 +1,19 @@
 # @viness/core
 
+## 0.7.17
+
+### Patch Changes
+
+- feat: add action handler & use reflect to re-impl
+- Updated dependencies
+  - @viness/di@0.2.3
+
+## 0.7.16
+
+### Patch Changes
+
+- fix: route path was not generated correctly
+
 ## 0.7.15
 
 ### Patch Changes

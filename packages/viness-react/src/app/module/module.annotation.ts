@@ -1,11 +1,11 @@
-import { createModule } from '../module/module'
-import { ModuleMetadata } from './module.protocol'
+import { ModuleMetadata } from './module.protocol';
 
-export const MODULE_METADATA_ID = '$viness:module_metadata'
+export const MODULE_METADATA = '$viness:module_metadata';
 
-export function Module(option: ModuleMetadata): ClassDecorator {
+export function Module(metadata: ModuleMetadata): ClassDecorator {
     return (target) => {
-        const module = createModule(option)
-        Object.defineProperty(target, MODULE_METADATA_ID, { value: module })
-    }
+        if (!Reflect.getOwnMetadata(MODULE_METADATA, target)) {
+            Reflect.defineMetadata(MODULE_METADATA, metadata, target);
+        }
+    };
 }

@@ -1,7 +1,8 @@
-import { ContaienrUtil } from '../../container'
-import { INJECTABLE_ID } from '../annotation'
-import { ModuleMetadata, VinessModule, ModuleProvider, ClassProvider } from './module.protocol'
-import { MODULE_METADATA_ID } from './module.annotation'
+import { ContaienrUtil } from '../../container';
+import { INJECTABLE_METADATA, InjectableMetadata } from '../annotation';
+import { ModuleMetadata, VinessModule, ModuleProvider, ClassProvider, ModuleImport } from './module.protocol';
+import { MODULE_METADATA } from './module.annotation';
+import { createToken } from '../../token';
 
 /**
  * Create a empty module
@@ -9,51 +10,66 @@ import { MODULE_METADATA_ID } from './module.annotation'
  * @returns {IVinessModule}
  */
 export function createModule(metadata?: ModuleMetadata): VinessModule {
-    return new VinessModule(metadata || { imports: [], providers: [] })
+    return new VinessModule(metadata || { imports: [], providers: [] });
 }
 
-export function registerModule(module: VinessModule) {
+export function importModule(module: ModuleImport) {
     if (module) {
-        const { imports = [], providers = [] } = module
+        let imports: ModuleImport[] = [];
+        let providers: ModuleProvider[] = [];
+        if (module instanceof VinessModule) {
+            imports = module.imports || [];
+            providers = module.providers || [];
+        } else {
+            const metadata = Reflect.getOwnMetadata(MODULE_METADATA, module) as ModuleMetadata;
 
-        batchRegisterProviders(providers)
+            imports = metadata.imports || [];
+            providers = metadata.providers || [];
+        }
+
+        registerProviders(providers);
 
         if (imports && imports.length > 0) {
             for (const moduleImport of imports) {
-                if (moduleImport instanceof VinessModule) {
-                    registerModule(moduleImport)
-                } else {
-                    const i = moduleImport as any
-                    const importedModule = i[MODULE_METADATA_ID]
-                    registerModule(importedModule)
-                }
+                importModule(moduleImport);
             }
         }
     }
 }
 
-function batchRegisterProviders(providers: ModuleProvider[]) {
+function registerProviders(providers: ModuleProvider[]) {
     if (providers && providers.length > 0) {
         if (providers) {
             for (const provider of providers) {
-                registerProvider(provider)
+                registerProvider(provider);
             }
         }
     }
 }
 
 function registerProvider(provider: ModuleProvider) {
-    if (typeof provider === 'function') {
-        const service = provider as any
-        const id = service[INJECTABLE_ID]
+    console.log(typeof provider);
 
-        if (id) {
-            ContaienrUtil.register(id, service)
+    if (typeof provider === 'function') {
+        const metadata = Reflect.getOwnMetadata(INJECTABLE_METADATA, provider) as InjectableMetadata;
+        const { id, token } = metadata;
+
+        if (token) {
+            ContaienrUtil.register(token, provider);
+        } else if (id) {
+            const token = createToken(id);
+            ContaienrUtil.register(token, provider);
         } else {
-            console.warn(`Following Class is not injectable: `, service)
+            console.warn(`Following Class is not injectable: `, provider);
         }
     } else {
-        const { provide, useClass } = provider as ClassProvider<any>
-        ContaienrUtil.register(provide, useClass)
+        const { provide, useClass } = provider as ClassProvider<any>;
+        const provideType = typeof provide;
+        if (provideType === 'string' || provideType === 'symbol') {
+            const token = createToken(provide as any);
+            ContaienrUtil.register(token, useClass);
+        } else {
+            ContaienrUtil.register(provide as any, useClass);
+        }
     }
 }

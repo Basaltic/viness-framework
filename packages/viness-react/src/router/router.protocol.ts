@@ -2,6 +2,7 @@ import { createBrowserRouter, NavigateFunction } from 'react-router-dom'
 import { createToken } from '../token'
 import { RouteTree } from './route-tree'
 import { PathParam } from './types'
+import { IVinessRoute } from './route.protocol'
 
 export type ReactRouter = ReturnType<typeof createBrowserRouter>
 
@@ -23,6 +24,11 @@ export interface IVinessRouter {
      * get current matched path params
      */
     getParams<Path extends string>(): { [key in PathParam<Path>]: string | null }
+
+    /**
+     * get current matched route instance
+     */
+    getRoute<Path extends string = any>(): IVinessRoute<Path>
 }
 
 export interface RouterConfig {

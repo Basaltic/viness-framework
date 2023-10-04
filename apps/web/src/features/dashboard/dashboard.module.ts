@@ -1,8 +1,8 @@
-import { Module } from '@viness/react'
-import { CounterActions, CounterStore } from './store/counter-store'
-import { Test2Service, TestService } from './services/test.service'
+import { Module } from '@viness/react';
+import { CounterActions, CounterStore } from './store/counter-store';
+import { counterHandlers } from './store';
 
 @Module({
-    providers: [CounterStore, CounterActions, TestService, Test2Service]
+    providers: [CounterStore, CounterActions, ...counterHandlers]
 })
 export class DashboardModule {}

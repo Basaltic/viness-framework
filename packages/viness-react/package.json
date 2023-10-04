@@ -1,6 +1,6 @@
 {
     "name": "@viness/react",
-    "version": "0.7.15",
+    "version": "0.7.17",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",

@@ -1,29 +1,40 @@
-import { useDashboardPage2Route } from '../../../routes/routes.protocol'
-import { useCounterActions, useCounterStore } from '../store/counter-store.protocol'
+import { IActionBus, createToken, useResolve } from '@viness/react';
+import { useDashboardPage2Route } from '../../../routes/routes.protocol';
+import { useCounterActions, useCounterStore } from '../store/counter-store.protocol';
+import { IncreaseAction } from '../store/counter-store.action';
 
 export function DashboardPage1() {
-    const counterStore = useCounterStore()
-    const counterActions = useCounterActions()
+    const counterStore = useCounterStore();
+    const counterActions = useCounterActions();
 
-    const count = counterStore.use.count()
+    const count = counterStore.use.count();
 
-    const route = useDashboardPage2Route()
+    const route = useDashboardPage2Route();
+
+    const actionBus = useResolve(IActionBus);
 
     const handleIncrease = () => {
-        counterActions.increase()
-    }
+        actionBus.dispatch(new IncreaseAction());
+    };
 
     const handleDecrease = () => {
-        counterActions.decrease()
-    }
+        counterActions.decrease();
+    };
 
     const handleUndo = () => {
-        counterActions.undo()
-    }
+        counterActions.undo();
+    };
 
     const handleRedo = () => {
-        counterActions.redo()
-    }
+        counterActions.redo();
+    };
+
+    const id = Symbol('test');
+
+    const token = createToken(id);
+    const token2 = createToken(id);
+
+    console.log(token === token2);
 
     return (
         <div>
@@ -35,5 +46,5 @@ export function DashboardPage1() {
             <button onClick={handleRedo}>redo</button>
             <button onClick={() => route.navigate({})}> go</button>
         </div>
-    )
+    );
 }

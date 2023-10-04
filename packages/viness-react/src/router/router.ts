@@ -1,48 +1,70 @@
-import { NavigateFunction, RouteObject, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom'
-import { IVinessRouter, ReactRouter } from './router.protocol'
-import { PathParam } from './types'
+import { NavigateFunction, RouteObject, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom';
+import { IVinessRouter, ReactRouter } from './router.protocol';
+import { PathParam } from './types';
+import { ContaienrUtil } from '../container';
+import { IVinessRoute } from './route.protocol';
+import { Injectable } from '../app';
 
 export type RouterParams = {
-    type: 'hash' | 'browser' | 'memory'
-    routes: RouteObject[]
-    basename?: string
-}
+    type: 'hash' | 'browser' | 'memory';
+    routes: RouteObject[];
+    basename?: string;
+};
 
 /**
  * keep state of routes
  */
+@Injectable({ token: IVinessRouter })
 export class VinessRouter implements IVinessRouter {
-    reactRouter: ReactRouter
+    readonly reactRouter!: ReactRouter;
 
     constructor(configs: RouterParams) {
-        const { type, routes, basename } = configs
+        const { type, routes, basename } = configs;
 
-        let router
+        let router;
         switch (type) {
             case 'memory':
-                router = createMemoryRouter(routes as any, { basename })
+                router = createMemoryRouter(routes as any, { basename });
             case 'hash':
-                router = createHashRouter(routes as any, { basename })
+                router = createHashRouter(routes as any, { basename });
             case 'browser':
             default:
-                router = createBrowserRouter(routes as any, { basename })
+                router = createBrowserRouter(routes as any, { basename });
         }
 
-        this.reactRouter = router
+        this.reactRouter = router;
+    }
+
+    get basename() {
+        return this.reactRouter.basename;
     }
 
     get state() {
-        return this.reactRouter.state
+        return this.reactRouter.state;
     }
 
     get navigate(): NavigateFunction {
-        return this.reactRouter.navigate
+        return this.reactRouter.navigate;
     }
 
     getParams<Path extends string>() {
-        const router = this.reactRouter
-        const matchesLength = router.state.matches.length
-        const match = router.state.matches[matchesLength - 1]
-        return match.params as { [key in PathParam<Path>]: string | null }
+        const router = this.reactRouter;
+        const matchesLength = router.state.matches.length;
+        const match = router.state.matches[matchesLength - 1];
+
+        console.log(match);
+
+        return match.params as { [key in PathParam<Path>]: string | null };
+    }
+
+    getRoute<Path extends string = any>() {
+        const router = this.reactRouter;
+        const matchesLength = router.state.matches.length;
+        const match = router.state.matches[matchesLength - 1];
+
+        const routeObject = match.route as any;
+        const vinessRoute = ContaienrUtil.resolve(routeObject.token) as IVinessRoute<Path>;
+
+        return vinessRoute;
     }
 }

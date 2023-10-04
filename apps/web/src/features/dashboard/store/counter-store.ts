@@ -1,62 +1,62 @@
-import { Patch, Injectable, VinessUIStore } from '@viness/react'
-import { CounterState, ICounterStore, ICouterActions, defaultCountareState } from './counter-store.protocol'
+import { Patch, Injectable, VinessUIStore } from '@viness/react';
+import { CounterState, ICounterStore, ICouterActions, defaultCountareState } from './counter-store.protocol';
 
-@Injectable(ICounterStore)
+@Injectable({ token: ICounterStore })
 export class CounterStore extends VinessUIStore<CounterState> {
     constructor() {
-        super({ defaultState: defaultCountareState })
+        super({ defaultState: defaultCountareState });
     }
 }
 
-@Injectable(ICouterActions)
+@Injectable({ token: ICouterActions })
 export class CounterActions implements ICouterActions {
-    private patchesQueue: Array<[Patch[], Patch[]]> = []
-    private redoPatchesQueue: Array<[Patch[], Patch[]]> = []
+    private patchesQueue: Array<[Patch[], Patch[]]> = [];
+    private redoPatchesQueue: Array<[Patch[], Patch[]]> = [];
 
     constructor(@ICounterStore private counterStore: ICounterStore) {}
 
     undo() {
-        const patches = this.patchesQueue.pop()
+        const patches = this.patchesQueue.pop();
         if (patches) {
-            this.counterStore.applyPatches(patches[1])
-            this.redoPatchesQueue.push(patches)
+            this.counterStore.applyPatches(patches[1]);
+            this.redoPatchesQueue.push(patches);
         }
     }
 
     redo() {
-        const patches = this.redoPatchesQueue.pop()
+        const patches = this.redoPatchesQueue.pop();
         if (patches) {
-            this.counterStore.applyPatches(patches[0])
-            this.patchesQueue.push(patches)
+            this.counterStore.applyPatches(patches[0]);
+            this.patchesQueue.push(patches);
         }
     }
 
     increase() {
         const patches = this.counterStore.setStateWithPatches((s) => {
-            s.count += 1
-        })
+            s.count += 1;
+        });
 
-        this.patchesQueue.push(patches)
-        this.redoPatchesQueue = []
+        this.patchesQueue.push(patches);
+        this.redoPatchesQueue = [];
     }
 
     decrease() {
         const [patches, inversePatches] = this.counterStore.setStateWithPatches((s) => {
-            s.count -= 1
-        })
-        this.patchesQueue.push([patches, inversePatches])
+            s.count -= 1;
+        });
+        this.patchesQueue.push([patches, inversePatches]);
 
-        this.redoPatchesQueue = []
+        this.redoPatchesQueue = [];
     }
 
     select = (id: string) =>
         this.counterStore.setState((s) => {
-            s.selectedIds[id] = 1
-        })
+            s.selectedIds[id] = 1;
+        });
 
     deselect(id: string) {
         this.counterStore.setState((s) => {
-            delete s.selectedIds[id]
-        })
+            delete s.selectedIds[id];
+        });
     }
 }

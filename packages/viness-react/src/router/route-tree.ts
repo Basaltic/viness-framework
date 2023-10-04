@@ -1,52 +1,51 @@
-import { RouteObject, redirect } from 'react-router-dom'
-import { VinessRouteInjectionToken } from './route.protocol'
-import { VinessRoute } from './route'
-import { Injectable } from '../app'
-import { SyncDescriptor } from '@viness/di'
+import { RouteObject, redirect } from 'react-router-dom';
+import { VinessRouteInjectionToken } from './route.protocol';
+import { VinessRoute } from './route';
+import { SyncDescriptor } from '@viness/di';
 
-export type RouteToken<P extends string> = VinessRouteInjectionToken<P>
+export type RouteToken<P extends string> = VinessRouteInjectionToken<P>;
 
 export type RouteNode<P extends string> =
     | RouteToken<P>
     | { route: RouteToken<P>; index?: boolean; children: (RouteNode<P> | RouteToken<P>)[] }
-    | [RouteToken<P>, RouteToken<P>[]]
+    | [RouteToken<P>, RouteToken<P>[]];
 
-export type RouteTree = RouteNode<any>[]
+export type RouteTree = RouteNode<any>[];
 
 function toVinessRouteProvider(token: VinessRouteInjectionToken<any>, path?: string): any {
-    const args = path ? { ...token.metadata, path } : token.metadata
+    const args = path ? { ...token.metadata, path } : token.metadata;
 
-    return { provide: token, useClass: new SyncDescriptor(VinessRoute, [args]) }
+    return { provide: token, useClass: new SyncDescriptor(VinessRoute, [args]) };
 }
 
 export function convertToVinessRouteProviders(tree: RouteTree, parentPath: string[] = []) {
-    const routes: any[] = []
+    const routes: any[] = [];
     tree.forEach((node) => {
         if (typeof node === 'function') {
-            node as RouteToken<any>
+            node as RouteToken<any>;
 
-            const metadata = node.metadata
-            const path = metadata.path as string
+            const metadata = node.metadata;
+            const path = metadata.path as string;
             if (path.startsWith('/')) {
-                const route = toVinessRouteProvider(node)
-                routes.push(route)
+                const route = toVinessRouteProvider(node);
+                routes.push(route);
             } else {
-                const newPath = [...parentPath, path].join('/')
-                const route = toVinessRouteProvider(node, newPath)
-                routes.push(route)
+                const newPath = [...parentPath, path].filter(Boolean).join('/');
+                const route = toVinessRouteProvider(node, newPath);
+                routes.push(route);
             }
         } else if (Array.isArray(node)) {
-            const [parent, children] = node
-            const newRoutes = convertToVinessRouteProviders(children, [...parentPath, parent.metadata.path])
-            routes.push(...newRoutes)
+            const [parent, children] = node;
+            const newRoutes = convertToVinessRouteProviders(children, [...parentPath, parent.metadata.path]);
+            routes.push(...newRoutes);
         } else {
-            const { children } = node
-            const newRoutes = convertToVinessRouteProviders(children, [...parentPath, node.route.metadata.path])
-            routes.push(...newRoutes)
+            const { children } = node;
+            const newRoutes = convertToVinessRouteProviders(children, [...parentPath, node.route.metadata.path]);
+            routes.push(...newRoutes);
         }
-    })
+    });
 
-    return routes
+    return routes;
 }
 
 /**
@@ -58,25 +57,26 @@ export function convertToVinessRouteProviders(tree: RouteTree, parentPath: strin
 export function convertToReactRoutes(tree: RouteTree): RouteObject[] {
     const routeObjects = tree.map((node) => {
         if (typeof node === 'function') {
-            node as RouteToken<any>
+            node as RouteToken<any>;
 
-            const routeObject = node.metadata
+            const routeObject = node.metadata;
 
-            return routeObject
+            // ref the token in route object to make finding viness route instance easier
+            return { ...routeObject, token: node };
         } else if (Array.isArray(node)) {
-            const [route, children] = node
-            const newChildren = convertToReactRoutes(children)
+            const [route, children] = node;
+            const newChildren = convertToReactRoutes(children);
             const defaultChildRoute = {
                 index: true,
                 loader: () => redirect(newChildren?.[0].path || '')
-            }
-            return { ...route.metadata, children: [defaultChildRoute, ...newChildren] }
+            };
+            return { ...route.metadata, children: [defaultChildRoute, ...newChildren] };
         } else {
-            const { route, index, children } = node
-            const newChildren = convertToReactRoutes(children)
-            return { ...route.metadata, index, children: newChildren }
+            const { route, index, children } = node;
+            const newChildren = convertToReactRoutes(children);
+            return { ...route.metadata, index, children: newChildren };
         }
-    })
+    });
 
-    return routeObjects as RouteObject[]
+    return routeObjects as RouteObject[];
 }

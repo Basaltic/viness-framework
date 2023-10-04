@@ -1,20 +1,11 @@
-import { createDecorator, ServiceIdentifier } from '@viness/di'
+import { createDecorator, ServiceIdentifier } from '@viness/di';
 
-export enum TokenType {
-    /**
-     *
-     */
-    Normal = 1,
-    Route = 2,
-    Store = 3
-}
+export type InjectableServiceId = string | Symbol;
 
 /**
  *
  */
-export type VinessInjectionToken<T = any> = ServiceIdentifier<T> & {
-    tokenType: TokenType
-}
+export type VinessInjectionToken<T = any> = ServiceIdentifier<T> & {};
 
 /**
  * create service token
@@ -23,9 +14,7 @@ export type VinessInjectionToken<T = any> = ServiceIdentifier<T> & {
  * @returns
  */
 export function createToken<T>(serviceId: string | Symbol): VinessInjectionToken<T> {
-    const token = createDecorator(serviceId) as VinessInjectionToken<T>
+    const token = createDecorator(serviceId) as VinessInjectionToken<T>;
 
-    token.tokenType = TokenType.Normal
-
-    return token
+    return token;
 }

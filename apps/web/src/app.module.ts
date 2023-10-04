@@ -1,7 +1,8 @@
-import { createModule } from '@viness/react'
-import { AppRouteModule } from './routes/routes.module'
-import { DashboardModule } from './features/dashboard/dashboard.module'
+import { Module, StoreModule, createModule } from '@viness/react';
+import { AppRouteModule } from './routes/routes.module';
+import { DashboardModule } from './features/dashboard/dashboard.module';
 
-export const appModule = createModule({
-    imports: [AppRouteModule, DashboardModule]
+@Module({
+    imports: [AppRouteModule, StoreModule, DashboardModule]
 })
+export class AppModule {}
