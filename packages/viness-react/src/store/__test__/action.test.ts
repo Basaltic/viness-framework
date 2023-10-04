@@ -1,4 +1,4 @@
-import { ActionBus } from '../action-bus';
+import { ActionDispatcher } from '../action-dispatcher';
 import { IActionHandler } from '../action.protocol';
 
 class TestAction {
@@ -12,4 +12,4 @@ class ActionHandler implements IActionHandler<TestAction> {
     }
 }
 
-const actionBus = new ActionBus();
+const actionBus = new ActionDispatcher();

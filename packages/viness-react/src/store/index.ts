@@ -11,4 +11,6 @@ export * from './protocol';
 export * from './store-module';
 export * from './action.annotation';
 export * from './action.protocol';
-export * from './action-bus';
+export * from './action-dispatcher';
+
+export * from './hooks';

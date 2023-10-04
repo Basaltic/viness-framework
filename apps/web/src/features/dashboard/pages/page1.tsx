@@ -1,4 +1,4 @@
-import { IActionBus, createToken, useResolve } from '@viness/react';
+import { createToken, useActionDispatcher } from '@viness/react';
 import { useDashboardPage2Route } from '../../../routes/routes.protocol';
 import { useCounterActions, useCounterStore } from '../store/counter-store.protocol';
 import { IncreaseAction } from '../store/counter-store.action';
@@ -11,10 +11,10 @@ export function DashboardPage1() {
 
     const route = useDashboardPage2Route();
 
-    const actionBus = useResolve(IActionBus);
+    const actionDispatcher = useActionDispatcher();
 
     const handleIncrease = () => {
-        actionBus.dispatch(new IncreaseAction());
+        actionDispatcher.dispatch(new IncreaseAction());
     };
 
     const handleDecrease = () => {

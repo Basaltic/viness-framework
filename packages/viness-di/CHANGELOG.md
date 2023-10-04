@@ -1,5 +1,11 @@
 # @viness/di
 
+## 0.2.4
+
+### Patch Changes
+
+- feat: ActionBus to ActionDispatcher
+
 ## 0.2.3
 
 ### Patch Changes

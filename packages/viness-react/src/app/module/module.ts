@@ -48,8 +48,6 @@ function registerProviders(providers: ModuleProvider[]) {
 }
 
 function registerProvider(provider: ModuleProvider) {
-    console.log(typeof provider);
-
     if (typeof provider === 'function') {
         const metadata = Reflect.getOwnMetadata(INJECTABLE_METADATA, provider) as InjectableMetadata;
         const { id, token } = metadata;

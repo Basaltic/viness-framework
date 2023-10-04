@@ -1,29 +1,29 @@
-import { IVinessUIStore, useResolve, createToken } from '@viness/react'
+import { IVinessUIStore, useResolve, createToken } from '@viness/react';
 
 export interface CounterState {
-    count: number
-    selectedIds: Record<string, any>
+    count: number;
+    selectedIds: Record<string, any>;
 }
 export const defaultCountareState: CounterState = {
     count: 0,
     selectedIds: {}
-}
+};
 
-export type ICounterStore = IVinessUIStore<CounterState>
-export const ICounterStore = createToken<ICounterStore>('counter-store')
+export type ICounterStore = IVinessUIStore<CounterState>;
+export const ICounterStore = createToken<ICounterStore>('counter-store');
 
-export const useCounterStore = () => useResolve(ICounterStore)
+export const useCounterStore = () => useResolve<ICounterStore>(ICounterStore);
 
 //// --- Actions
 
 export interface ICouterActions {
-    undo(): void
-    redo(): void
-    increase(): void
-    decrease(): void
-    select(id: string): void
-    deselect(id: string): void
+    undo(): void;
+    redo(): void;
+    increase(): void;
+    decrease(): void;
+    select(id: string): void;
+    deselect(id: string): void;
 }
 
-export const ICouterActions = createToken<ICouterActions>('ICouterActions')
-export const useCounterActions = () => useResolve(ICouterActions)
+export const ICouterActions = createToken<ICouterActions>('ICouterActions');
+export const useCounterActions = () => useResolve<ICouterActions>(ICouterActions);

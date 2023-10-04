@@ -13,6 +13,8 @@ export class CounterActions implements ICouterActions {
     private patchesQueue: Array<[Patch[], Patch[]]> = [];
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = [];
 
+    test: any;
+
     constructor(@ICounterStore private counterStore: ICounterStore) {}
 
     undo() {

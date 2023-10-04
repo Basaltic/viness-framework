@@ -1,7 +1,7 @@
 import { Module } from '../app';
-import { ActionBus } from './action-bus';
+import { ActionDispatcher } from './action-dispatcher';
 
 @Module({
-    providers: [ActionBus]
+    providers: [ActionDispatcher]
 })
 export class StoreModule {}

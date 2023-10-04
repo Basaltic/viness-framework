@@ -1,14 +1,14 @@
-import '@abraham/reflection'
+import '@abraham/reflection';
 
-export * from './app'
-export * from './token'
+export * from './app';
+export * from './token';
 
-export * from './hooks'
+export * from './hooks';
 
-export * from './router'
+export * from './router';
 
-export * from './store'
-export * from './http'
-export * from './i18n'
+export * from './store';
+export * from './http';
+export * from './i18n';
 
-export { resolve } from './container'
+export { resolve } from './container';

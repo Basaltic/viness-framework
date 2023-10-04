@@ -1,5 +1,13 @@
 # @viness/core
 
+## 0.7.18
+
+### Patch Changes
+
+- feat: ActionBus to ActionDispatcher
+- Updated dependencies
+  - @viness/di@0.2.4
+
 ## 0.7.17
 
 ### Patch Changes

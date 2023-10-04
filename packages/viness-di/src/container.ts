@@ -1,5 +1,5 @@
 import { SyncDescriptor } from './descriptors';
-import { BrandedService, createDecorator, IInstantiationService, ServiceIdentifier, ServiceInstanceIdentifier } from './instantiation';
+import { BrandedService, IInstantiationService, ServiceIdentifier, ServiceInstanceIdentifier } from './instantiation';
 import { InstantiationService } from './instantiation-service';
 import { InstantiationType, ServiceRegistry } from './service-registry';
 
@@ -54,28 +54,6 @@ export class Container {
      * @returns
      */
     resolve<T>(id: ServiceIdentifier<T>, instanceId?: ServiceInstanceIdentifier): T {
-        // construct a new service identifier
-        // if (instanceId) {
-        //     let serviceIdToInstanceIds = this.serviceIdToInstanceIdMap.get(id)
-        //     if (!serviceIdToInstanceIds) {
-        //         serviceIdToInstanceIds = new Map()
-        //         this.serviceIdToInstanceIdMap.set(id, serviceIdToInstanceIds)
-        //     }
-
-        //     const serviceInstanceIdentifier = serviceIdToInstanceIds.get(instanceId)
-        //     if (serviceInstanceIdentifier) {
-        //         return this.instantiationService.invokeFunction((accessor) => accessor.get(serviceInstanceIdentifier))
-        //     } else {
-        //         const serviceDesc = this.registory.getServiceCollection().get(id) as SyncDescriptor<any>
-        //         const serviceInstanceIdentifier = createDecorator<T>(`${id.toString()}_${instanceId}`)
-
-        //         serviceIdToInstanceIds.set(instanceId, serviceInstanceIdentifier)
-
-        //         this.register(serviceInstanceIdentifier, serviceDesc.ctor, serviceDesc.supportsDelayedInstantiation ? 1 : 0)
-        //         return this.instantiationService.invokeFunction((accessor) => accessor.get(serviceInstanceIdentifier))
-        //     }
-        // }
-
         return this.instantiationService.invokeFunction((accessor) => accessor.get(id));
     }
 
