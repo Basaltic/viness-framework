@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
-import { createToken } from '../token'
+import { createInjectDecorator } from '@viness/core';
+import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 
 export interface HttpRequestConfig<D = any> extends AxiosRequestConfig<D> {}
 
@@ -12,7 +12,7 @@ export interface ICancelablePromise<T, Response extends HttpResponse<T>> extends
     /**
      * cancel the request
      */
-    cancel: () => void
+    cancel: () => void;
 }
 
 export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
@@ -22,7 +22,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param url
      * @param config
      */
-    get<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
+    get<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>;
 
     /**
      * Post
@@ -31,7 +31,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    post<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
+    post<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>;
 
     /**
      * Patch
@@ -40,7 +40,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    patch<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
+    patch<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>;
 
     /**
      * Delete
@@ -49,7 +49,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    delete<T = any>(url: string, config: HttpRequestConfig): ICancelablePromise<T, Response>
+    delete<T = any>(url: string, config: HttpRequestConfig): ICancelablePromise<T, Response>;
 
     /**
      * Head
@@ -58,7 +58,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    head<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
+    head<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>;
 
     /**
      * Options
@@ -67,19 +67,19 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
      * @param data
      * @param config
      */
-    options<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>
+    options<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>;
 }
 
-export const IHttpClient = createToken<IHttpClient>('IHttpClient')
+export const IHttpClient = createInjectDecorator<IHttpClient>('IHttpClient');
 
 /**
  * Http Client based in axios
  */
 export class HttpClient<Response extends HttpResponse = HttpResponse> implements IHttpClient<Response> {
-    protected instance: AxiosInstance
+    protected instance: AxiosInstance;
 
     constructor(config?: HttpRequestConfig) {
-        this.instance = axios.create(config)
+        this.instance = axios.create(config);
     }
 
     /**
@@ -89,8 +89,8 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param config
      */
     get<T = any>(url: string, config: HttpRequestConfig = {}) {
-        config.method = 'GET'
-        return this.request<T>(url, config)
+        config.method = 'GET';
+        return this.request<T>(url, config);
     }
 
     /**
@@ -100,8 +100,8 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param config
      */
     post<T = any>(url: string, config: HttpRequestConfig = {}) {
-        config.method = 'POST'
-        return this.request<T>(url, config)
+        config.method = 'POST';
+        return this.request<T>(url, config);
     }
 
     /**
@@ -111,8 +111,8 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param config
      */
     patch<T = any>(url: string, config: AxiosRequestConfig = {}) {
-        config.method = 'PATCH'
-        return this.request<T>(url, config)
+        config.method = 'PATCH';
+        return this.request<T>(url, config);
     }
 
     /**
@@ -122,8 +122,8 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param config
      */
     delete<T = any>(url: string, config: HttpRequestConfig = {}) {
-        config.method = 'DELETE'
-        return this.request<T>(url, config)
+        config.method = 'DELETE';
+        return this.request<T>(url, config);
     }
 
     /**
@@ -133,8 +133,8 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param config
      */
     head<T = any>(url: string, config: HttpRequestConfig = {}) {
-        config.method = 'HEAD'
-        return this.request<T>(url, config)
+        config.method = 'HEAD';
+        return this.request<T>(url, config);
     }
 
     /**
@@ -144,17 +144,17 @@ export class HttpClient<Response extends HttpResponse = HttpResponse> implements
      * @param config
      */
     options<T = any>(url: string, config: HttpRequestConfig = {}) {
-        config.method = 'OPTIONS'
-        return this.request<T>(url, config)
+        config.method = 'OPTIONS';
+        return this.request<T>(url, config);
     }
 
     protected request<T = any>(url: string, config: HttpRequestConfig = {}) {
-        const source = axios.CancelToken.source()
-        config.cancelToken = source.token
+        const source = axios.CancelToken.source();
+        config.cancelToken = source.token;
 
-        const promise = this.instance(url, config) as ICancelablePromise<T, Response>
-        promise.cancel = () => source.cancel()
+        const promise = this.instance(url, config) as ICancelablePromise<T, Response>;
+        promise.cancel = () => source.cancel();
 
-        return promise
+        return promise;
     }
 }

@@ -1,2 +1,2 @@
-export const DefaultErrorFallbackComponent = () => <div></div>
-export const DefaultSuspenseFallbackComponent = () => <div></div>
+export const DefaultErrorFallbackComponent = () => <div></div>;
+export const DefaultSuspenseFallbackComponent = () => <div></div>;

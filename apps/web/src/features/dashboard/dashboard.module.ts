@@ -1,4 +1,4 @@
-import { Module } from '@viness/react';
+import { Module } from '@viness/core';
 import { CounterActions, CounterStore } from './store/counter-store';
 import { counterHandlers } from './store';
 

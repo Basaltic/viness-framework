@@ -1,5 +1,24 @@
 # @viness/core
 
+## 1.0.1
+
+### Patch Changes
+
+- feat: change version
+- Updated dependencies
+  - @viness/core@1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@0.8.0
+
+## 0.7.19
+
+### Patch Changes
+
+- fix: useResolve hook ts type issue
+
 ## 0.7.18
 
 ### Patch Changes

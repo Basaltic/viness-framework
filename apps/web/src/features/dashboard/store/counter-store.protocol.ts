@@ -1,4 +1,5 @@
-import { IVinessUIStore, useResolve, createToken } from '@viness/react';
+import { createInjectDecorator } from '@viness/core';
+import { IVinessUIStore, useResolve } from '@viness/react';
 
 export interface CounterState {
     count: number;
@@ -10,7 +11,7 @@ export const defaultCountareState: CounterState = {
 };
 
 export type ICounterStore = IVinessUIStore<CounterState>;
-export const ICounterStore = createToken<ICounterStore>('counter-store');
+export const ICounterStore = createInjectDecorator<ICounterStore>('counter-store');
 
 export const useCounterStore = () => useResolve<ICounterStore>(ICounterStore);
 
@@ -25,5 +26,5 @@ export interface ICouterActions {
     deselect(id: string): void;
 }
 
-export const ICouterActions = createToken<ICouterActions>('ICouterActions');
+export const ICouterActions = createInjectDecorator<ICouterActions>('ICouterActions');
 export const useCounterActions = () => useResolve<ICouterActions>(ICouterActions);

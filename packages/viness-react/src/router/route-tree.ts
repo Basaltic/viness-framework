@@ -1,7 +1,7 @@
 import { RouteObject, redirect } from 'react-router-dom';
 import { VinessRouteInjectionToken } from './route.protocol';
 import { VinessRoute } from './route';
-import { SyncDescriptor } from '@viness/di';
+import { SyncDescriptor } from '@viness/core';
 
 export type RouteToken<P extends string> = VinessRouteInjectionToken<P>;
 

@@ -1,13 +1,14 @@
-import { ContaienrUtil } from '../container'
-import { VinessRouteInjectionToken } from './route.protocol'
-import { IVinessRouter } from './router.protocol'
+import { useAppContext } from '../app/app-react-context';
+import { useResolve } from '../hooks';
+import { IVinessRoute } from './route.protocol';
+import { IVinessRouter } from './router.protocol';
 
 export function useRouter() {
-    const router = ContaienrUtil.resolve(IVinessRouter)
-    return router
+    const app = useAppContext();
+    const router = app.resolve(IVinessRouter);
+    return router;
 }
 
-export function useRoute<Path extends string>(token: VinessRouteInjectionToken<Path>) {
-    const route = ContaienrUtil.resolve(token)
-    return route
+export function useRoute<Path extends string>(id: any) {
+    return useResolve(id) as IVinessRoute<Path>;
 }

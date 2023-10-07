@@ -1,4 +1,4 @@
-import { Injectable } from '../app';
+import { Injectable } from '@viness/core';
 import { Newable } from '../types';
 import { IAction } from './action.protocol';
 import { ACTION_METADATA } from './constants';

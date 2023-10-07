@@ -1,5 +1,6 @@
-import { createVinessApp, VinessReactApp, VinessAppRouter } from '@viness/react';
+import { VinessReactApp, VinessAppRouter } from '@viness/react';
 import { AppModule } from './app.module';
+import { createVinessApp } from '@viness/core';
 
 const app = createVinessApp(AppModule);
 

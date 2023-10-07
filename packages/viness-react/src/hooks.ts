@@ -1,6 +1,5 @@
-import { ContaienrUtil } from './container';
-import { createToken } from './token';
-import { INJECTABLE_METADATA, InjectableMetadata } from './app';
+import { useAppContext } from './app/app-react-context';
+import { ServiceId, ServiceIdentifier } from '@viness/core';
 
 /**
  * Resolve service instance in component
@@ -8,22 +7,7 @@ import { INJECTABLE_METADATA, InjectableMetadata } from './app';
  * @param id
  * @returns
  */
-export function useResolve<T>(id: any): T {
-    const idType = typeof id;
-
-    let token: any;
-    if (idType === 'string' || idType === 'symbol') {
-        token = createToken(id);
-    } else if (idType === 'function') {
-        token = id;
-    } else {
-        const metadata = Reflect.getOwnMetadata<InjectableMetadata>(INJECTABLE_METADATA, id);
-        if (metadata?.id) {
-            token = createToken(id);
-        } else if (metadata?.token) {
-            token = metadata.token;
-        }
-    }
-
-    return ContaienrUtil.resolve(token) as T;
+export function useResolve<T>(id: ServiceId | ServiceIdentifier<T>): T {
+    const app = useAppContext();
+    return app.resolve(id) as T;
 }

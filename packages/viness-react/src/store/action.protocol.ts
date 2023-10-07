@@ -1,4 +1,4 @@
-import { InjectableServiceId } from '../token';
+import { ServiceId, ServiceIdentifier } from '@viness/core';
 
 export interface IAction {}
 
@@ -7,6 +7,5 @@ export interface IActionHandler<A extends IAction, R = any> {
 }
 
 export interface IActionMetadata {
-    id: InjectableServiceId;
-    token?: any;
+    id: ServiceId | ServiceIdentifier<any>;
 }

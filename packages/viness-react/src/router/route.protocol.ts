@@ -1,26 +1,26 @@
-import { RouteObject, NavigateOptions } from 'react-router-dom'
-import { VinessInjectionToken } from '../token'
-import { PathParam } from './types'
+import { RouteObject, NavigateOptions } from 'react-router-dom';
+import { PathParam } from './types';
+import { ServiceIdentifier } from '@viness/core';
 
-export type VinessRouteInjectionToken<Path extends string> = VinessInjectionToken<IVinessRoute<Path>> & {
-    metadata: VinessRouteMetadata<Path>
-}
+export type VinessRouteInjectionToken<Path extends string> = ServiceIdentifier<IVinessRoute<Path>> & {
+    metadata: VinessRouteMetadata<Path>;
+};
 
 export interface VinessRouteMetadata<Path extends string> {
-    id?: string
-    path: Path
-    index?: boolean
-    element?: React.ReactNode | null
-    errorElement?: React.ReactNode | null
-    hasErrorBoundary?: boolean
-    caseSensitive?: boolean
-    ErrorBoundary?: React.ComponentType | null
-    Layout?: React.ComponentType | null
-    Component?: React.ComponentType | null
-    lazy?: RouteObject['lazy']
-    action?: RouteObject['action']
-    loader?: RouteObject['loader']
-    children?: VinessRouteMetadata<Path>[] | undefined
+    id?: string;
+    path: Path;
+    index?: boolean;
+    element?: React.ReactNode | null;
+    errorElement?: React.ReactNode | null;
+    hasErrorBoundary?: boolean;
+    caseSensitive?: boolean;
+    ErrorBoundary?: React.ComponentType | null;
+    Layout?: React.ComponentType | null;
+    Component?: React.ComponentType | null;
+    lazy?: RouteObject['lazy'];
+    action?: RouteObject['action'];
+    loader?: RouteObject['loader'];
+    children?: VinessRouteMetadata<Path>[] | undefined;
 }
 
 export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<Path> {
@@ -29,20 +29,20 @@ export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<P
      * @param option
      * @returns
      */
-    navigate: (params: { [key in PathParam<Path>]: string | null }, option?: NavigateOptions) => void
+    navigate: (params: { [key in PathParam<Path>]: string | null }, option?: NavigateOptions) => void;
 
     /**
      *
      * @param params
      * @returns
      */
-    generatePath: (params: { [key in PathParam<Path>]: string | null }) => string
+    generatePath: (params: { [key in PathParam<Path>]: string | null }) => string;
 
     /**
      *
      * @returns
      */
-    getParams: () => { [key in PathParam<Path>]: string | null }
+    getParams: () => { [key in PathParam<Path>]: string | null };
 
-    isMatched(): boolean
+    isMatched(): boolean;
 }

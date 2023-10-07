@@ -1,4 +1,4 @@
-import { Module } from '../app';
+import { Module } from '@viness/core';
 import { ActionDispatcher } from './action-dispatcher';
 
 @Module({

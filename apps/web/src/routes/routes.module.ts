@@ -1,4 +1,4 @@
-import { Module, RouterModule } from '@viness/react'
+import { RouterModule } from '@viness/react';
 import {
     DashboardPage1Route,
     DashboardPage2Route,
@@ -8,7 +8,8 @@ import {
     ProjectPage3Route,
     ProjectRoute,
     RootRoute
-} from './routes.protocol'
+} from './routes.protocol';
+import { Module } from '@viness/core';
 
 const routeTree: any = [
     {
@@ -18,7 +19,7 @@ const routeTree: any = [
             { route: ProjectRoute, children: [ProjectPage2Route, ProjectPage3Route] }
         ]
     }
-]
+];
 
 @Module({
     imports: [RouterModule.forRoot({ type: 'browser', routeTree })]

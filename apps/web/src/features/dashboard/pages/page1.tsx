@@ -1,4 +1,4 @@
-import { createToken, useActionDispatcher } from '@viness/react';
+import { useActionDispatcher } from '@viness/react';
 import { useDashboardPage2Route } from '../../../routes/routes.protocol';
 import { useCounterActions, useCounterStore } from '../store/counter-store.protocol';
 import { IncreaseAction } from '../store/counter-store.action';
@@ -28,13 +28,6 @@ export function DashboardPage1() {
     const handleRedo = () => {
         counterActions.redo();
     };
-
-    const id = Symbol('test');
-
-    const token = createToken(id);
-    const token2 = createToken(id);
-
-    console.log(token === token2);
 
     return (
         <div>

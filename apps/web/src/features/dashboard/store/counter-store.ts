@@ -1,14 +1,15 @@
-import { Patch, Injectable, VinessUIStore } from '@viness/react';
+import { Patch, VinessUIStore } from '@viness/react';
 import { CounterState, ICounterStore, ICouterActions, defaultCountareState } from './counter-store.protocol';
+import { Injectable } from '@viness/core';
 
-@Injectable({ token: ICounterStore })
+@Injectable({ id: ICounterStore })
 export class CounterStore extends VinessUIStore<CounterState> {
     constructor() {
         super({ defaultState: defaultCountareState });
     }
 }
 
-@Injectable({ token: ICouterActions })
+@Injectable({ id: ICouterActions })
 export class CounterActions implements ICouterActions {
     private patchesQueue: Array<[Patch[], Patch[]]> = [];
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = [];

@@ -1,9 +1,8 @@
 import { NavigateFunction, RouteObject, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom';
 import { IVinessRouter, ReactRouter } from './router.protocol';
 import { PathParam } from './types';
-import { ContaienrUtil } from '../container';
 import { IVinessRoute } from './route.protocol';
-import { Injectable } from '../app';
+import { Injectable, IVinessApp, VinessApp } from '@viness/core';
 
 export type RouterParams = {
     type: 'hash' | 'browser' | 'memory';
@@ -14,11 +13,11 @@ export type RouterParams = {
 /**
  * keep state of routes
  */
-@Injectable({ token: IVinessRouter })
+@Injectable({ id: IVinessRouter })
 export class VinessRouter implements IVinessRouter {
     readonly reactRouter!: ReactRouter;
 
-    constructor(configs: RouterParams) {
+    constructor(configs: RouterParams, @IVinessApp private context: VinessApp) {
         const { type, routes, basename } = configs;
 
         let router;
@@ -63,7 +62,7 @@ export class VinessRouter implements IVinessRouter {
         const match = router.state.matches[matchesLength - 1];
 
         const routeObject = match.route as any;
-        const vinessRoute = ContaienrUtil.resolve(routeObject.token) as IVinessRoute<Path>;
+        const vinessRoute = this.context.resolve(routeObject.token) as IVinessRoute<Path>;
 
         return vinessRoute;
     }
