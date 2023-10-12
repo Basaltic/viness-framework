@@ -1,4 +1,4 @@
-import { createInjectDecorator } from '../../decorator';
+import { Injectable, createInjectDecorator } from '../../decorator';
 import { IApple } from './apple';
 
 export interface IAlice {

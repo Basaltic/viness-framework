@@ -5,7 +5,7 @@ export interface InjectableMetadata {
     id?: ServiceId | ServiceIdentifier<any>;
 }
 
-export const classToId = new Map();
+export const serviceIdToId = new Map();
 
 /**
  * Make a class to be an injectable service
@@ -16,10 +16,10 @@ export function Injectable(metadata?: InjectableMetadata): ClassDecorator {
             if (metadata?.id) {
                 Reflect.defineMetadata(INJECTABLE_METADATA, metadata, target);
             } else {
-                let id = classToId.get(target);
+                let id = serviceIdToId.get(target);
                 if (!id) {
                     id = Symbol(target.name);
-                    classToId.set(target, id);
+                    serviceIdToId.set(target, id);
                 }
 
                 Reflect.defineMetadata(INJECTABLE_METADATA, { ...metadata, id }, target);

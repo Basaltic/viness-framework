@@ -1,9 +1,6 @@
 import { SyncDescriptor } from '../instantiation/descriptors';
 import { ServiceId, ServiceIdentifier } from '../instantiation/service-identifier';
-
-export interface Type<T = any> extends Function {
-    new (...args: any[]): T;
-}
+import { Type } from '../types';
 
 export type ClassProvider<T> = {
     provide: ServiceIdentifier<T> | ServiceId;

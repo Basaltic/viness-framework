@@ -12,3 +12,5 @@ export class IncreaseActionHandler implements IActionHandler<IncreaseAction> {
         });
     }
 }
+
+class XXActionHandler {}

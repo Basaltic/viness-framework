@@ -46,12 +46,8 @@ export class DepsScanner {
             const metadata = Reflect.getOwnMetadata(INJECTABLE_METADATA, provider) as InjectableMetadata;
             const { id } = metadata;
 
-            if (id) {
-                const token = createInjectDecorator(id);
-                this.container.register(token, provider);
-            } else {
-                console.warn(`Following Class is not injectable: `, provider);
-            }
+            const token = createInjectDecorator(id || provider);
+            this.container.register(token, provider);
         } else {
             const { provide, useClass } = provider as ClassProvider<any>;
             const provideType = typeof provide;

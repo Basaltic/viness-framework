@@ -4,6 +4,7 @@ import { InstantiationService } from './instantiation-service';
 import { InstantiationType, ServiceRegistry } from './service-registry';
 import { ServiceId, ServiceIdentifier } from './service-identifier';
 import { createInjectDecorator } from '../decorator';
+import { Type } from '../types';
 
 export class Container {
     private registory: ServiceRegistry;
@@ -52,13 +53,9 @@ export class Container {
      * @param instanceId
      * @returns
      */
-    resolve<T>(serviceId: ServiceIdentifier<T> | ServiceId): T {
-        if (typeof serviceId === 'function') {
-            return this.instantiationService.invokeFunction((accessor) => accessor.get(serviceId));
-        } else {
-            const id = createInjectDecorator<T>(serviceId);
-            return this.instantiationService.invokeFunction((accessor) => accessor.get(id));
-        }
+    resolve<T>(serviceId: ServiceIdentifier<T> | ServiceId | Type<T>): T {
+        const id = createInjectDecorator<T>(serviceId);
+        return this.instantiationService.invokeFunction((accessor) => accessor.get(id));
     }
 
     /**

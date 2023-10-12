@@ -4,7 +4,7 @@ import { Graph } from './graph';
 import type { ServicesAccessor } from './instantiation.interface';
 import { IInstantiationService } from './instantiation.interface';
 import { ServiceCollection } from './service-collection';
-import * as _util from './util';
+import { getServiceDependencies } from './util';
 import { Trace } from './trace';
 import { ServiceIdentifier } from './service-identifier';
 
@@ -79,7 +79,7 @@ export class InstantiationService implements IInstantiationService {
 
     private _createInstance<T>(ctor: any, args: any[] = [], _trace: Trace): T {
         // arguments defined by service decorators
-        const serviceDependencies = _util.getServiceDependencies(ctor).sort((a, b) => a.index - b.index);
+        const serviceDependencies = getServiceDependencies(ctor).sort((a, b) => a.index - b.index);
         const serviceArgs: any[] = [];
         for (const dependency of serviceDependencies) {
             const service = this._getOrCreateServiceInstance(dependency.id, _trace);
@@ -173,7 +173,7 @@ export class InstantiationService implements IInstantiationService {
             }
 
             // check all dependencies for existence and if they need to be created first
-            for (const dependency of _util.getServiceDependencies(item.desc.ctor)) {
+            for (const dependency of getServiceDependencies(item.desc.ctor)) {
                 const instanceOrDesc = this._getServiceInstanceOrDescriptor(dependency.id);
                 if (!instanceOrDesc) {
                     this._throwIfStrict(`[createInstance] ${id} depends on ${dependency.id} which is NOT registered.`, true);

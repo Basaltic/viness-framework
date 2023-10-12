@@ -40,8 +40,8 @@ describe('Container', () => {
         container.register(IPerson, Person);
         container.register(IAlice, Alice);
 
-        // const anne = container.resolve(Anne);
+        const anne = container.resolve(Anne);
 
-        // anne.eatApple
+        anne.eatApple();
     });
 });
