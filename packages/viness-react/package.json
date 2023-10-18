@@ -1,6 +1,6 @@
 {
     "name": "@viness/react",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -19,7 +19,7 @@
     "peerDependencies": {
         "react": "^18.x",
         "react-dom": "^18.x",
-        "@viness/core": "^1.0.1"
+        "@viness/core": "^1.0.2"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.5",

@@ -1,3 +1,5 @@
+import { Type } from '../types';
+
 /**
  * Identifies a service of type `T`.
  */
@@ -6,6 +8,4 @@ export interface ServiceIdentifier<T> {
     type: T;
 }
 
-export type ServiceInstanceIdentifier = string | number;
-
-export type ServiceId = string | Symbol;
+export type InjectionToken<T = any> = string | Symbol | Type<T>;

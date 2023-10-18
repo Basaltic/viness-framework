@@ -1,5 +1,5 @@
 import { SELF_PARAM_DI_DEPs } from '../instantiation/constants';
-import { ServiceId, ServiceIdentifier } from '../instantiation/service-identifier';
+import { InjectionToken, ServiceIdentifier } from '../instantiation/service-identifier';
 import { serviceIds } from '../instantiation/util';
 import { Type } from '../types';
 import { serviceIdToId } from './injectable';
@@ -10,9 +10,9 @@ import { serviceIdToId } from './injectable';
  * @param id
  * @returns
  */
-export function Inject<T>(serviceId: ServiceId): ServiceIdentifier<T> {
-    if (serviceIds.has(serviceId)) {
-        return serviceIds.get(serviceId)!;
+export function Inject<T>(token: InjectionToken): ServiceIdentifier<T> {
+    if (serviceIds.has(token)) {
+        return serviceIds.get(token)!;
     }
 
     const id: any = function (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) {
@@ -23,7 +23,7 @@ export function Inject<T>(serviceId: ServiceId): ServiceIdentifier<T> {
         const type = Reflect.getMetadata('design:type', target);
         const deps = (Reflect.getOwnMetadata(SELF_PARAM_DI_DEPs, target) as Array<{ id: any; index: number }>) || [];
 
-        if (serviceId) {
+        if (token) {
             deps.push({ id, index: parameterIndex });
         } else {
             const typeId = serviceIdToId.get(type);
@@ -33,9 +33,9 @@ export function Inject<T>(serviceId: ServiceId): ServiceIdentifier<T> {
         Reflect.defineMetadata(SELF_PARAM_DI_DEPs, deps, target);
     };
 
-    id.toString = () => serviceId;
+    id.toString = () => token;
 
-    serviceIds.set(serviceId, id);
+    serviceIds.set(token, id);
 
     return id as any;
 }
@@ -43,7 +43,7 @@ export function Inject<T>(serviceId: ServiceId): ServiceIdentifier<T> {
 /**
  * The *only* valid way to create a {{ServiceIdentifier}}.
  */
-export function createInjectDecorator<T>(serviceId: ServiceId | ServiceIdentifier<T> | Type<T>): ServiceIdentifier<T> {
+export function createInjectDecorator<T>(serviceId: InjectionToken | ServiceIdentifier<T> | Type<T>): ServiceIdentifier<T> {
     if (typeof serviceId === 'function') {
         const id = serviceIdToId.get(serviceId);
         if (id) {

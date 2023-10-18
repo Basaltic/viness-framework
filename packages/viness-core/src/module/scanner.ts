@@ -44,7 +44,7 @@ export class DepsScanner {
     scanProvider(provider: ModuleProvider) {
         if (typeof provider === 'function') {
             const metadata = Reflect.getOwnMetadata(INJECTABLE_METADATA, provider) as InjectableMetadata;
-            const { id } = metadata;
+            const { token: id } = metadata;
 
             const token = createInjectDecorator(id || provider);
             this.container.register(token, provider);

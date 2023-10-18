@@ -1,4 +1,4 @@
 import { useResolve } from '../hooks';
-import { ActionDispatcher, IActionDispatcher } from './action-dispatcher';
+import { CommandDispatcher, commandDispatcherToken } from './command-dispatcher';
 
-export const useActionDispatcher = () => useResolve<ActionDispatcher>(IActionDispatcher);
+export const useCommandDispatcher = () => useResolve<CommandDispatcher>(commandDispatcherToken);

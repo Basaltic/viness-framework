@@ -13,6 +13,8 @@ export function getParamInfo(target: constructor<any>): ParamInfo[] {
         params[+key] = injectionTokens[key];
     });
 
+    console.log('params =>> ', params, injectionTokens);
+
     return params;
 }
 

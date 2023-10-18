@@ -10,13 +10,20 @@ afterEach(() => {
 });
 
 test('@autoInjectable allows for injection to be performed without using .resolve()', () => {
+    @injectable()
     class Bar {}
+
+    globalContainer.register<Bar>('Bar', { useClass: Bar });
+
     @autoInjectable()
     class Foo {
         constructor(public myBar?: Bar) {}
     }
 
     const myFoo = new Foo();
+
+    console.log('======>', myFoo.myBar);
+    console.log('======>', myFoo.myBar instanceof Bar);
 
     expect(myFoo.myBar instanceof Bar).toBeTruthy();
 });

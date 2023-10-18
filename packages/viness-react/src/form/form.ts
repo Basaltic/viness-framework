@@ -1,17 +1,17 @@
-import { IVinessUIStore, VinessUIStore } from '../store'
-import { FormState } from './form.protocol'
+import { IVinessUIStore, UIState } from '../store';
+import { FormState } from './form.protocol';
 
 export type VinessFormOption<DV extends object> = {
-    defaultValues: DV
-}
+    defaultValues: DV;
+};
 
 export class VinessForm<DV extends object> {
-    private formStateStore: VinessUIStore<FormState<DV>>
-    private formValuesStore: VinessUIStore<DV>
-    private formValuesValidationRules: any
+    private formStateStore: UIState<FormState<DV>>;
+    private formValuesStore: UIState<DV>;
+    private formValuesValidationRules: any;
 
     constructor(option: VinessFormOption<DV>) {
-        const { defaultValues } = option
+        const { defaultValues } = option;
         const defaultFormState: FormState<DV> = {
             isDirty: false,
             isValid: true,
@@ -22,10 +22,10 @@ export class VinessForm<DV extends object> {
             submitCount: 0,
             defaultValues,
             errors: undefined
-        }
-        this.formStateStore = new VinessUIStore({ defaultState: defaultFormState })
+        };
+        this.formStateStore = new UIState({ defaultState: defaultFormState });
 
-        this.formValuesStore = new VinessUIStore({ defaultState: defaultValues })
+        this.formValuesStore = new UIState({ defaultState: defaultValues });
     }
 
     register() {}
@@ -37,7 +37,7 @@ export class VinessForm<DV extends object> {
     setValue(path: string, value: any, option?: {}) {
         this.formStateStore.setState((s) => {
             // _.set(path, s)
-        })
+        });
     }
 
     getValues(path?: string) {
@@ -45,21 +45,21 @@ export class VinessForm<DV extends object> {
             // _.get(path)
         }
 
-        const values = this.formValuesStore.getState()
+        const values = this.formValuesStore.getState();
 
-        return values
+        return values;
     }
 
     setError() {}
 
     clearErrors(name?: string) {
         if (name) {
-            return
+            return;
         }
 
         this.formStateStore.setState((s) => {
-            s.errors = undefined
-        })
+            s.errors = undefined;
+        });
     }
 
     /**

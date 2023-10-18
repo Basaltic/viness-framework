@@ -1,8 +1,8 @@
 import { INJECTABLE_METADATA } from '../instantiation/constants';
-import { ServiceId, ServiceIdentifier } from '../instantiation/service-identifier';
+import { InjectionToken, ServiceIdentifier } from '../instantiation/service-identifier';
 
 export interface InjectableMetadata {
-    id?: ServiceId | ServiceIdentifier<any>;
+    token?: InjectionToken | ServiceIdentifier<any>;
 }
 
 export const serviceIdToId = new Map();
@@ -13,7 +13,7 @@ export const serviceIdToId = new Map();
 export function Injectable(metadata?: InjectableMetadata): ClassDecorator {
     return (target: any) => {
         if (!Reflect.hasOwnMetadata(INJECTABLE_METADATA, target)) {
-            if (metadata?.id) {
+            if (metadata?.token) {
                 Reflect.defineMetadata(INJECTABLE_METADATA, metadata, target);
             } else {
                 let id = serviceIdToId.get(target);

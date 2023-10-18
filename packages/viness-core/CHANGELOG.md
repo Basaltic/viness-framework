@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.0.2
+
+### Patch Changes
+
+- feat: adjust core decorator logic
+
 ## 1.0.1
 
 ### Patch Changes

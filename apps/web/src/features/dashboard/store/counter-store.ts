@@ -1,27 +1,20 @@
-import { Patch, VinessUIStore } from '@viness/react';
-import { CounterState, ICounterStore, ICouterActions, defaultCountareState } from './counter-store.protocol';
+import { Patch, UIStore } from '@viness/react';
+import { CounterState, ICounterStore, ICouterEffects, defaultCountareState } from './counter-store.protocol';
 import { Injectable } from '@viness/core';
 
-@Injectable({ id: ICounterStore })
-export class CounterStore extends VinessUIStore<CounterState> {
-    constructor() {
-        super({ defaultState: defaultCountareState });
-    }
-}
-
-@Injectable({ id: ICouterActions })
-export class CounterActions implements ICouterActions {
+@Injectable({ token: ICounterStore })
+export class CounterStore extends UIStore<CounterState> {
     private patchesQueue: Array<[Patch[], Patch[]]> = [];
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = [];
 
-    test: any;
-
-    constructor(@ICounterStore private counterStore: ICounterStore) {}
+    constructor() {
+        super({ defaultState: defaultCountareState });
+    }
 
     undo() {
         const patches = this.patchesQueue.pop();
         if (patches) {
-            this.counterStore.applyPatches(patches[1]);
+            this.applyPatches(patches[1]);
             this.redoPatchesQueue.push(patches);
         }
     }
@@ -29,13 +22,13 @@ export class CounterActions implements ICouterActions {
     redo() {
         const patches = this.redoPatchesQueue.pop();
         if (patches) {
-            this.counterStore.applyPatches(patches[0]);
+            this.applyPatches(patches[0]);
             this.patchesQueue.push(patches);
         }
     }
 
     increase() {
-        const patches = this.counterStore.setStateWithPatches((s) => {
+        const patches = this.setStateWithPatches((s) => {
             s.count += 1;
         });
 
@@ -44,7 +37,7 @@ export class CounterActions implements ICouterActions {
     }
 
     decrease() {
-        const [patches, inversePatches] = this.counterStore.setStateWithPatches((s) => {
+        const [patches, inversePatches] = this.setStateWithPatches((s) => {
             s.count -= 1;
         });
         this.patchesQueue.push([patches, inversePatches]);
@@ -53,13 +46,17 @@ export class CounterActions implements ICouterActions {
     }
 
     select = (id: string) =>
-        this.counterStore.setState((s) => {
+        this.setState((s) => {
             s.selectedIds[id] = 1;
         });
 
-    deselect(id: string) {
-        this.counterStore.setState((s) => {
+    deselect = (id: string) =>
+        this.setState((s) => {
             delete s.selectedIds[id];
         });
-    }
+}
+
+@Injectable({ token: ICouterEffects })
+export class CounterEffects implements ICouterEffects {
+    constructor(@ICounterStore private counterStore: ICounterStore) {}
 }

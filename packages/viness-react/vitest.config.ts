@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config';
 
 const config = defineConfig({
     test: {
@@ -14,8 +14,10 @@ const config = defineConfig({
         testTimeout: 30_000,
         hookTimeout: 30_000,
 
-        environment: 'jsdom'
-    }
-})
+        environment: 'jsdom',
 
-export default config
+        globals: true
+    }
+});
+
+export default config;

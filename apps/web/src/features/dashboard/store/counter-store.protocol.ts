@@ -10,21 +10,21 @@ export const defaultCountareState: CounterState = {
     selectedIds: {}
 };
 
-export type ICounterStore = IVinessUIStore<CounterState>;
-export const ICounterStore = createInjectDecorator<ICounterStore>('counter-store');
-
-export const useCounterStore = () => useResolve<ICounterStore>(ICounterStore);
-
-//// --- Actions
-
-export interface ICouterActions {
+export type ICounterStore = IVinessUIStore<CounterState> & {
     undo(): void;
     redo(): void;
     increase(): void;
     decrease(): void;
     select(id: string): void;
     deselect(id: string): void;
-}
+};
+export const ICounterStore = createInjectDecorator<ICounterStore>('counter-store');
 
-export const ICouterActions = createInjectDecorator<ICouterActions>('ICouterActions');
-export const useCounterActions = () => useResolve<ICouterActions>(ICouterActions);
+export const useCounterStore = () => useResolve<ICounterStore>(ICounterStore);
+
+//// --- Effects
+
+export interface ICouterEffects {}
+
+export const ICouterEffects = createInjectDecorator<ICouterEffects>('ICouterEffects');
+export const useCounterEffects = () => useResolve<ICouterEffects>(ICouterEffects);

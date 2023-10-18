@@ -1,33 +1,19 @@
-import { useActionDispatcher } from '@viness/react';
 import { useDashboardPage2Route } from '../../../routes/routes.protocol';
-import { useCounterActions, useCounterStore } from '../store/counter-store.protocol';
-import { IncreaseAction } from '../store/counter-store.action';
+import { useCounterEffects, useCounterStore } from '../store/counter-store.protocol';
 
 export function DashboardPage1() {
-    const counterStore = useCounterStore();
-    const counterActions = useCounterActions();
-
-    const count = counterStore.use.count();
-
     const route = useDashboardPage2Route();
 
-    const actionDispatcher = useActionDispatcher();
+    const counterStore = useCounterStore();
+    const count = counterStore.use.count();
 
-    const handleIncrease = () => {
-        actionDispatcher.dispatch(new IncreaseAction());
-    };
+    const handleIncrease = () => {};
 
-    const handleDecrease = () => {
-        counterActions.decrease();
-    };
+    const handleDecrease = () => {};
 
-    const handleUndo = () => {
-        counterActions.undo();
-    };
+    const handleUndo = () => {};
 
-    const handleRedo = () => {
-        counterActions.redo();
-    };
+    const handleRedo = () => {};
 
     return (
         <div>
