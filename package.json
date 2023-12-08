@@ -20,7 +20,7 @@
         "@viness/eslint-config": "workspace:*",
         "eslint": "^8.49.0",
         "prettier": "^2.8.8",
-        "turbo": "^1.10.13"
+        "turbo": "^1.11.0"
     },
     "publishConfig": {
         "access": "public",

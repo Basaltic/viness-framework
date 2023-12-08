@@ -1,27 +1,18 @@
 import { RouterModule } from '@viness/react';
-import {
-    DashboardPage1Route,
-    DashboardPage2Route,
-    DashboardPage3Route,
-    DashboardRoute,
-    ProjectPage2Route,
-    ProjectPage3Route,
-    ProjectRoute,
-    RootRoute
-} from './routes.protocol';
+import { routes } from './routes.protocol';
 import { Module } from '@viness/core';
 
-const routeTree: any = [
-    {
-        route: RootRoute,
-        children: [
-            { route: DashboardRoute, children: [DashboardPage1Route, DashboardPage2Route, DashboardPage3Route] },
-            { route: ProjectRoute, children: [ProjectPage2Route, ProjectPage3Route] }
-        ]
-    }
-];
+// const routeTree: any = [
+//     {
+//         route: RootRoute,
+//         children: [
+//             { route: DashboardRoute, children: [DashboardPage1Route, DashboardPage2Route, DashboardPage3Route] },
+//             { route: ProjectRoute, children: [ProjectPage2Route, ProjectPage3Route] }
+//         ]
+//     }
+// ];
 
 @Module({
-    imports: [RouterModule.forRoot({ type: 'browser', routeTree })]
+    imports: [RouterModule.forRoot({ type: 'browser', routes: routes })]
 })
 export class AppRouteModule {}

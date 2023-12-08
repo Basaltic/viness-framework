@@ -1,4 +1,4 @@
-import { createInjectDecorator } from '@viness/core';
+import { Injectable, Inject } from '@viness/core';
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 
 export interface HttpRequestConfig<D = any> extends AxiosRequestConfig<D> {}
@@ -70,7 +70,7 @@ export interface IHttpClient<Response extends HttpResponse = HttpResponse> {
     options<T = any>(url: string, config?: HttpRequestConfig): ICancelablePromise<T, Response>;
 }
 
-export const IHttpClient = createInjectDecorator<IHttpClient>('IHttpClient');
+export const IHttpClient = Inject('IHttpClient');
 
 /**
  * Http Client based in axios

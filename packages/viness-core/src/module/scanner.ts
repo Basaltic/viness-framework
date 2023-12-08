@@ -1,10 +1,12 @@
-import { InjectableMetadata, createInjectDecorator } from '../decorator';
-import { INJECTABLE_METADATA, MODULE_METADATA } from '../instantiation/constants';
-import { Container } from '../instantiation';
-import { ClassProvider, ModuleImport, ModuleMetadata, ModuleProvider, DynamicModule } from './module.protocol';
+import { MODULE_METADATA } from '../constants';
+import { ModuleImport, ModuleMetadata, ModuleProvider, DynamicModule } from './module.protocol';
+import { DependencyContainer, Lifecycle, isClassProvider, isFactoryProvider, isTokenProvider, isValueProvider } from '@viness/di';
 
-export class DepsScanner {
-    constructor(private container: Container) {}
+/**
+ * Scan the module &
+ */
+export class ModulesScanner {
+    constructor(private container: DependencyContainer) {}
 
     scan(module: ModuleImport) {
         if (module) {
@@ -43,20 +45,16 @@ export class DepsScanner {
 
     scanProvider(provider: ModuleProvider) {
         if (typeof provider === 'function') {
-            const metadata = Reflect.getOwnMetadata(INJECTABLE_METADATA, provider) as InjectableMetadata;
-            const { token: id } = metadata;
-
-            const token = createInjectDecorator(id || provider);
-            this.container.register(token, provider);
-        } else {
-            const { provide, useClass } = provider as ClassProvider<any>;
-            const provideType = typeof provide;
-            if (provideType === 'string' || provideType === 'symbol') {
-                const token = createInjectDecorator(provide as any);
-                this.container.register(token, useClass);
-            } else {
-                this.container.register(provide as any, useClass);
-            }
+            // TODO: 可以扩展一下Injectable，可以把token放入Injectable中配置
+            this.container.register(provider, provider, { lifecycle: Lifecycle.ContainerScoped });
+        } else if (isClassProvider(provider)) {
+            this.container.register(provider.token, provider, { lifecycle: Lifecycle.ContainerScoped });
+        } else if (isValueProvider(provider)) {
+            this.container.register(provider.token, provider);
+        } else if (isFactoryProvider(provider)) {
+            this.container.register(provider.token, provider);
+        } else if (isTokenProvider(provider)) {
+            this.container.register(provider.useToken, provider, { lifecycle: Lifecycle.ContainerScoped });
         }
     }
 }

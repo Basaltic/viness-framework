@@ -13,7 +13,7 @@ const config = defineConfig({
          */
         testTimeout: 30_000,
         hookTimeout: 30_000,
-        setupFiles: 'src/__tests__/test-setup.ts'
+        setupFiles: 'src/__test__/test-setup.ts'
     }
 });
 

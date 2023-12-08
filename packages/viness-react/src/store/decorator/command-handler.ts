@@ -16,6 +16,6 @@ export function CommandHandler<T>(action: ICommand | Newable<ICommand>): ClassDe
             Reflect.defineMetadata(COMMAND_METADATA, { token }, action);
         }
 
-        return Injectable({ token })(target);
+        return Injectable()(target);
     };
 }

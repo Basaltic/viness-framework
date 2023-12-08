@@ -9,7 +9,9 @@ import {
 import { NavigateOptions, PathParam } from './types';
 import { IVinessRoute } from './route.protocol';
 import type { VinessRouteMetadata } from './route.protocol';
-import { IVinessRouter } from './router.protocol';
+import type { IVinessRouter } from './router.protocol';
+import { Inject } from '@viness/core';
+import { VinessRouter } from './router';
 
 /**
  * Route
@@ -30,7 +32,7 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
     loader?: LoaderFunction | undefined;
     children?: VinessRouteMetadata<Path>[] | undefined;
 
-    constructor(metadata: VinessRouteMetadata<Path>, @IVinessRouter private router: IVinessRouter) {
+    constructor(metadata: VinessRouteMetadata<Path>, @Inject(VinessRouter) private router: IVinessRouter) {
         const {
             id,
             path,

@@ -1,4 +1,4 @@
-import { InjectionToken, ServiceIdentifier } from '@viness/core';
+import { InjectionToken } from '@viness/core';
 
 export interface ICommand {}
 
@@ -7,5 +7,5 @@ export interface ICommandHandler<A extends ICommand, R = any> {
 }
 
 export interface ICommandMetadata {
-    id: InjectionToken | ServiceIdentifier<any>;
+    id: InjectionToken<any>;
 }

@@ -1,11 +1,12 @@
-import { Injectable } from '../../decorator';
-import { IApple } from './apple';
+import { Inject, Injectable } from '../../decorator';
+import { Apple } from './apple';
+import type { IApple } from './apple';
 
 @Injectable()
 export class Anne {
     private random: number;
 
-    constructor(@IApple private apple: IApple) {
+    constructor(@Inject(Apple) private apple: IApple) {
         this.random = Math.random() * 100;
     }
 

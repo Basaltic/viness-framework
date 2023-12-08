@@ -1,6 +1,11 @@
-import constructor from "../types/constructor";
-import {getParamInfo} from "../reflection-helpers";
-import {typeInfo} from "../dependency-container";
+import constructor from '../types/constructor';
+import { getParamInfo } from '../reflection-helpers';
+import { typeInfo } from '../dependency-container';
+import { InjectionToken } from '../providers';
+
+export type InjectableMetadata = {
+    token: InjectionToken;
+};
 
 /**
  * Class decorator factory that allows the class' dependencies to be injected
@@ -9,9 +14,9 @@ import {typeInfo} from "../dependency-container";
  * @return {Function} The class decorator
  */
 function injectable<T>(): (target: constructor<T>) => void {
-  return function(target: constructor<T>): void {
-    typeInfo.set(target, getParamInfo(target));
-  };
+    return function (target: constructor<T>): void {
+        typeInfo.set(target, getParamInfo(target));
+    };
 }
 
 export default injectable;

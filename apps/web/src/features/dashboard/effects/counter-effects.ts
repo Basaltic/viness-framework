@@ -1,9 +1,10 @@
-import { CounterStore } from '../store/counter-store.protocol'
+import { Inject } from '@viness/core';
+import { CounterStore } from '../store/counter-store';
 
 export class CounterEffects {
-    constructor(@CounterStore private counterStore: CounterStore) {}
+    constructor(@Inject(CounterStore) private counterStore: CounterStore) {}
 
     async increase() {
-        this.counterStore.increase()
+        this.counterStore.increase();
     }
 }

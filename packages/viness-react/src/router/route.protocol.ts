@@ -1,10 +1,5 @@
 import { RouteObject, NavigateOptions } from 'react-router-dom';
 import { PathParam } from './types';
-import { ServiceIdentifier } from '@viness/core';
-
-export type VinessRouteInjectionToken<Path extends string> = ServiceIdentifier<IVinessRoute<Path>> & {
-    metadata: VinessRouteMetadata<Path>;
-};
 
 export interface VinessRouteMetadata<Path extends string> {
     id?: string;

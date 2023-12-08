@@ -1,16 +1,15 @@
-import { Inject, createInjectDecorator } from '../../decorator';
-import { IApple } from './apple';
-
+import { Inject, Injectable } from '../../decorator';
+import { Apple } from './apple';
+import type { IApple } from './apple';
 export interface IPerson {
     eatApple(): void;
 }
 
-export const IPerson = createInjectDecorator<Person>('IPerson');
-
+@Injectable()
 export class Person implements IPerson {
     private count: number = 0;
 
-    constructor(@Inject('IApple') private apple: IApple) {}
+    constructor(@Inject(Apple) private apple: IApple) {}
 
     eatApple(): void {
         console.log('I am jam -- ');

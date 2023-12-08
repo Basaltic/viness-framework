@@ -1,26 +1,31 @@
-import { SyncDescriptor, Module, DynamicModule } from '@viness/core';
-import { RouterParams, VinessRouter } from './router';
-import { IVinessRouter, RouterConfig } from './router.protocol';
-import { convertToReactRoutes, convertToVinessRouteProviders } from './route-tree';
-import { doLog } from '../utils';
+import { Module, DynamicModule, ModuleProvider } from '@viness/core';
+import { VinessRouter } from './router';
+import { IRouterConfig, RouterConfigToken } from './router-config';
+import { RouteObject } from 'react-router';
+
+export interface RouterModuleConfig {
+    type: 'hash' | 'browser' | 'memory';
+    routes: RouteObject[];
+    basename?: string;
+}
 
 @Module({})
 export class RouterModule {
-    static forRoot(config: RouterConfig): DynamicModule {
-        const { type, basename, routeTree } = config;
+    static forRoot(config: RouterModuleConfig): DynamicModule {
+        const { type, basename, routes } = config;
+        const providers: ModuleProvider[] = [];
 
-        const routes = convertToReactRoutes(routeTree);
-        const routeProviders = convertToVinessRouteProviders(routeTree);
+        const routerConfig: IRouterConfig = {
+            type,
+            routes,
+            basename
+        };
 
-        const routerParams: RouterParams = { type, routes, basename };
-
-        doLog(routes, routeProviders);
-
-        const descriptor = new SyncDescriptor(VinessRouter, [routerParams], true);
-        routeProviders.push({ provide: IVinessRouter, useClass: descriptor });
+        providers.push({ token: RouterConfigToken, useValue: routerConfig });
+        providers.push({ token: VinessRouter, useClass: VinessRouter });
 
         return {
-            providers: routeProviders,
+            providers,
             module: RouterModule
         };
     }

@@ -1,5 +1,5 @@
-import { MODULE_METADATA } from '../instantiation/constants';
-import { ModuleMetadata } from '../module/module.protocol';
+import { MODULE_METADATA } from '../constants';
+import { ModuleMetadata } from './module.protocol';
 
 export function Module(metadata: ModuleMetadata): ClassDecorator {
     return (target) => {

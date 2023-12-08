@@ -1,12 +1,8 @@
 import { createBrowserRouter, NavigateFunction } from 'react-router-dom';
-import { RouteTree } from './route-tree';
 import { PathParam } from './types';
 import { IVinessRoute } from './route.protocol';
-import { createInjectDecorator } from '@viness/core';
 
 export type ReactRouter = ReturnType<typeof createBrowserRouter>;
-
-export const IVinessRouter = createInjectDecorator<IVinessRouter>('IVinessRouter');
 
 export interface IVinessRouter {
     state: ReactRouter['state'];
@@ -29,10 +25,4 @@ export interface IVinessRouter {
      * get current matched route instance
      */
     getRoute<Path extends string = any>(): IVinessRoute<Path>;
-}
-
-export interface RouterConfig {
-    type: 'hash' | 'browser' | 'memory';
-    routeTree: RouteTree;
-    basename?: string;
 }

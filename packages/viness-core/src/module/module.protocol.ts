@@ -1,23 +1,22 @@
-import { SyncDescriptor } from '../instantiation/descriptors';
-import { InjectionToken, ServiceIdentifier } from '../instantiation/service-identifier';
-import { Type } from '../types';
+import { Newable } from '../types';
+import * as di from '@viness/di';
 
-export type ClassProvider<T> = {
-    provide: ServiceIdentifier<T> | InjectionToken;
-    useClass: Type<T> | SyncDescriptor<T>;
-};
+export type InjectionToken<T> = di.InjectionToken<T>;
 
-export type ModuleProvider<T = any> = Type<any> | ClassProvider<T>;
+export type ClassProvider<T> = di.ClassProvider<T> & { token: di.InjectionToken<T> };
+export type ValueProvider<T> = di.ValueProvider<T> & { token: di.InjectionToken };
+export type TokenProvider<T> = di.TokenProvider<T>;
+export type FactoryProvider<T> = di.FactoryProvider<T> & { token: di.InjectionToken };
 
-export type ModuleImport = Type<any> | DynamicModule<any>;
+export type ModuleProvider<T = any> = ClassProvider<T> | ValueProvider<T> | TokenProvider<T> | FactoryProvider<T> | Newable<T>;
+
+export type ModuleImport = Newable<any> | DynamicModule<any>;
 
 export interface ModuleMetadata {
     imports?: ModuleImport[];
     providers?: ModuleProvider[];
-    stores?: any[];
-    handlers?: any[];
 }
 
 export interface DynamicModule<T = any> extends ModuleMetadata {
-    module: Type<T>;
+    module: Newable<T>;
 }

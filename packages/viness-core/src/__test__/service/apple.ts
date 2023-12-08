@@ -1,11 +1,10 @@
-import { createInjectDecorator } from '../../decorator';
+import { Injectable } from '../../decorator';
 
 export interface IApple {
     eat(): void;
 }
 
-export const IApple = createInjectDecorator<IApple>('IApple');
-
+@Injectable()
 export class Apple implements IApple {
     eat() {
         console.log('eat apple');

@@ -1,5 +1,12 @@
-import { ServiceIdentifier } from '@viness/core';
 import { Patch } from 'immer';
+
+export interface Type<T = any> extends Function {
+    new (...args: any[]): T;
+}
+
+export type DropFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never;
+
+export type TAction<S> = (state: S, ...args: any) => void;
 
 export type StoreInstanceId = string | number;
 
@@ -16,7 +23,3 @@ export interface StoreOption<S extends object> {
     defaultState: S;
     name?: string;
 }
-
-export type VinessUIStoreInjectableToken<S extends object> = ServiceIdentifier<IVinessUIStore<S>> & {
-    option: StoreOption<S>;
-};

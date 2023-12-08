@@ -1,18 +1,16 @@
-import { Injectable, createInjectDecorator } from '../../decorator';
-import { IApple } from './apple';
+import { Inject, Injectable } from '../../decorator';
+import { Apple } from './apple';
+import type { IApple } from './apple';
 
 export interface IAlice {
-    _serviceBrand: undefined;
     eatApple(): void;
 }
 
-export const IAlice = createInjectDecorator<IAlice>('IAlice');
-
+@Injectable()
 export class Alice implements IAlice {
-    _serviceBrand: undefined;
     private random: number;
 
-    constructor(@IApple private apple: IApple) {
+    constructor(@Inject(Apple) private apple: IApple) {
         this.random = Math.random() * 100;
     }
 

@@ -1,5 +1,5 @@
-import { createInjectDecorator } from '@viness/core';
 import { IVinessUIStore, useResolve } from '@viness/react';
+import { CounterStore } from './counter-store';
 
 export interface CounterState {
     count: number;
@@ -18,13 +18,3 @@ export type ICounterStore = IVinessUIStore<CounterState> & {
     select(id: string): void;
     deselect(id: string): void;
 };
-export const ICounterStore = createInjectDecorator<ICounterStore>('counter-store');
-
-export const useCounterStore = () => useResolve<ICounterStore>(ICounterStore);
-
-//// --- Effects
-
-export interface ICouterEffects {}
-
-export const ICouterEffects = createInjectDecorator<ICouterEffects>('ICouterEffects');
-export const useCounterEffects = () => useResolve<ICouterEffects>(ICouterEffects);
