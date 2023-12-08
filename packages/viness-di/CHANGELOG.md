@@ -1,5 +1,17 @@
 # @viness/di
 
+## 1.2.0
+
+### Minor Changes
+
+- refactor
+
+## 1.1.0
+
+### Minor Changes
+
+- acbe432: refactor the core implement
+
 ## 1.0.2
 
 ### Patch Changes

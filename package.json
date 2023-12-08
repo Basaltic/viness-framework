@@ -25,5 +25,9 @@
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
+    },
+    "packageManager": "pnpm@8.6.2",
+    "resolutions": {
+        "@types/react": "^18.2.7"
     }
 }

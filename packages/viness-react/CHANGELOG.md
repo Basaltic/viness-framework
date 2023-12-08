@@ -1,5 +1,27 @@
 # @viness/core
 
+## 1.2.0
+
+### Minor Changes
+
+- refactor
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@1.2.0
+
+## 1.1.0
+
+### Minor Changes
+
+- acbe432: refactor the core implement
+
+### Patch Changes
+
+- Updated dependencies [acbe432]
+  - @viness/core@1.1.0
+
 ## 1.0.2
 
 ### Patch Changes
