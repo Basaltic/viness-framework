@@ -1,2 +1,2 @@
-import { useResolve } from '../hooks';
+import { useInject } from '../hooks';
 import { CommandDispatcher } from './command-dispatcher';

@@ -1,5 +1,16 @@
 # @viness/core
 
+## 1.4.0
+
+### Minor Changes
+
+- refactor: use inversify as the di framework
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@1.4.0
+
 ## 1.2.0
 
 ### Minor Changes

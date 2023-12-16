@@ -7,7 +7,7 @@ import { InjectionToken } from '@viness/core';
  * @param id
  * @returns
  */
-export function useResolve<T>(token: InjectionToken<T>): T {
+export function useInject<T>(token: InjectionToken<T>): T {
     const app = useAppContext();
-    return app.container.resolve(token);
+    return app.container.get(token);
 }

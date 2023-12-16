@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.4.0
+
+### Minor Changes
+
+- refactor: use inversify as the di framework
+
 ## 1.2.0
 
 ### Minor Changes

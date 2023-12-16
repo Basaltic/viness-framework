@@ -1,12 +1,20 @@
+import { Container, ContainerModule, interfaces } from 'inversify';
 import { MODULE_METADATA } from '../constants';
-import { ModuleImport, ModuleMetadata, ModuleProvider, DynamicModule } from './module.protocol';
-import { DependencyContainer, Lifecycle, isClassProvider, isFactoryProvider, isTokenProvider, isValueProvider } from '@viness/di';
+import {
+    ModuleImport,
+    ModuleMetadata,
+    ModuleProvider,
+    DynamicModule,
+    isClassProvider,
+    isValueProvider,
+    isFactoryProvider
+} from './module.protocol';
 
 /**
  * Scan the module &
  */
 export class ModulesScanner {
-    constructor(private container: DependencyContainer) {}
+    constructor(private container: Container) {}
 
     scan(module: ModuleImport) {
         if (module) {
@@ -23,7 +31,10 @@ export class ModulesScanner {
                 providers = metadata.providers || [];
             }
 
-            this.scanProviders(providers);
+            const containerModule = new ContainerModule(this.registerProviders(providers));
+            this.container.load(containerModule);
+
+            // this.registerProvidersInContainer(providers);
 
             if (imports && imports.length > 0) {
                 for (const moduleImport of imports) {
@@ -32,29 +43,48 @@ export class ModulesScanner {
             }
         }
     }
+    // registerProvidersInContainer(providers: ModuleProvider[]) {
+    //     if (providers && providers.length > 0) {
+    //         for (const provider of providers) {
+    //             if (typeof provider === 'function') {
+    //                 this.container.bind(provider).toSelf();
+    //             } else if (isClassProvider(provider)) {
+    //                 console.log('class binding');
+    //                 this.container.bind(provider.provide || provider.useClass).to(provider.useClass);
+    //             } else if (isValueProvider(provider)) {
+    //                 console.log('value binding');
+    //                 if (typeof provider.useValue === 'function') {
+    //                     this.container.bind(provider.provide).toDynamicValue(provider.useValue);
+    //                 } else {
+    //                     this.container.bind(provider.provide).toConstantValue(provider.useValue);
+    //                 }
+    //             } else if (isFactoryProvider(provider)) {
+    //                 console.log('factory binding');
+    //                 this.container.bind(provider.provide).toFactory(provider.useFactory);
+    //             }
+    //         }
+    //     }
+    // }
 
-    scanProviders(providers: ModuleProvider[]) {
-        if (providers && providers.length > 0) {
-            if (providers) {
+    registerProviders(providers: ModuleProvider[]): interfaces.ContainerModuleCallBack {
+        return (bind: interfaces.Bind) => {
+            if (providers && providers.length > 0) {
                 for (const provider of providers) {
-                    this.scanProvider(provider);
+                    if (typeof provider === 'function') {
+                        bind(provider).toSelf();
+                    } else if (isClassProvider(provider)) {
+                        bind(provider.provide || provider.useClass).to(provider.useClass);
+                    } else if (isValueProvider(provider)) {
+                        if (typeof provider.useValue === 'function') {
+                            bind(provider.provide).toDynamicValue(provider.useValue);
+                        } else {
+                            bind(provider.provide).toConstantValue(provider.useValue);
+                        }
+                    } else if (isFactoryProvider(provider)) {
+                        bind(provider.provide).toFactory(provider.useFactory);
+                    }
                 }
             }
-        }
-    }
-
-    scanProvider(provider: ModuleProvider) {
-        if (typeof provider === 'function') {
-            // TODO: 可以扩展一下Injectable，可以把token放入Injectable中配置
-            this.container.register(provider, provider, { lifecycle: Lifecycle.ContainerScoped });
-        } else if (isClassProvider(provider)) {
-            this.container.register(provider.token, provider, { lifecycle: Lifecycle.ContainerScoped });
-        } else if (isValueProvider(provider)) {
-            this.container.register(provider.token, provider);
-        } else if (isFactoryProvider(provider)) {
-            this.container.register(provider.token, provider);
-        } else if (isTokenProvider(provider)) {
-            this.container.register(provider.useToken, provider, { lifecycle: Lifecycle.ContainerScoped });
-        }
+        };
     }
 }

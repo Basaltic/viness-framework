@@ -3,7 +3,7 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["node", "@abraham/reflection"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }
