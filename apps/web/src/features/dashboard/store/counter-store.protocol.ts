@@ -1,4 +1,5 @@
-import { IVinessUIStore } from '@viness/react';
+import { IVinessUIStore, useResolve } from '@viness/react';
+import { CounterStore } from './counter-store';
 
 export interface CounterState {
     count: number;

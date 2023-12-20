@@ -1,4 +1,4 @@
-import { Injectable } from '../../di/decorator';
+import { Injectable } from '../../decorator';
 
 export interface IApple {
     eat(): void;

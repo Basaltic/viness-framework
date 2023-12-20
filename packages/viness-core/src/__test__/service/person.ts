@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '../../di/decorator';
+import { Inject, Injectable } from '../../decorator';
 import { Apple } from './apple';
 import type { IApple } from './apple';
 export interface IPerson {

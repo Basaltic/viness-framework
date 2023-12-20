@@ -1,13 +1,16 @@
 import { Newable } from '../types';
-import { interfaces } from 'inversify';
+import * as di from '@viness/di';
 
-export type InjectionToken<T = any> = interfaces.ServiceIdentifier<T>;
+export type InjectionToken<T> = di.InjectionToken<T>;
 
-export type ClassProvider<T> = { provide?: InjectionToken; useClass: Newable<T> };
-export type ValueProvider<T> = { provide: InjectionToken; useValue: T };
-export type FactoryProvider<T> = { provide: InjectionToken; useFactory: interfaces.FactoryCreator<any, any, any> };
+export type ClassProvider<T> = di.ClassProvider<T> & { token: di.InjectionToken<T> };
+export type ValueProvider<T> = di.ValueProvider<T> & { token: di.InjectionToken };
+export type TokenProvider<T> = di.TokenProvider<T>;
+export type FactoryProvider<T> = di.FactoryProvider<T> & { token: di.InjectionToken };
 
-export type ModuleProvider<T = any> = ClassProvider<T> | ValueProvider<T> | FactoryProvider<T> | Newable<T>;
+export type ModuleProvider<T = any> = ClassProvider<T> | ValueProvider<T> | TokenProvider<T> | FactoryProvider<T> | Newable<T>;
+
+export type ModuleImport = Newable<any> | DynamicModule<any>;
 
 export interface ModuleMetadata {
     imports?: ModuleImport[];
@@ -16,18 +19,4 @@ export interface ModuleMetadata {
 
 export interface DynamicModule<T = any> extends ModuleMetadata {
     module: Newable<T>;
-}
-
-export type ModuleImport = Newable<any> | DynamicModule<any>;
-
-export function isClassProvider<T>(provider: ModuleProvider<T>): provider is ClassProvider<any> {
-    return !!(provider as ClassProvider<T>).useClass;
-}
-
-export function isValueProvider<T>(provider: ModuleProvider<T>): provider is ValueProvider<any> {
-    return !!(provider as ValueProvider<T>).useValue;
-}
-
-export function isFactoryProvider<T>(provider: ModuleProvider<T>): provider is FactoryProvider<any> {
-    return !!(provider as FactoryProvider<T>).useFactory;
 }

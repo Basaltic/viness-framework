@@ -21,8 +21,8 @@ export class RouterModule {
             basename
         };
 
-        providers.push({ provide: RouterConfigToken, useValue: routerConfig });
-        providers.push({ provide: VinessRouter, useClass: VinessRouter });
+        providers.push({ token: RouterConfigToken, useValue: routerConfig });
+        providers.push({ token: VinessRouter, useClass: VinessRouter });
 
         return {
             providers,

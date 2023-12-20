@@ -1,5 +1,5 @@
-import '@abraham/reflection';
+import '@abraham/reflection'
 
-export * from './di/decorator';
+export * from './decorator';
 export * from './module';
 export * from './app';

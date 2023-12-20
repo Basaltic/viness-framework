@@ -1,4 +1,4 @@
-import { useInject } from '@viness/react';
+import { useResolve } from '@viness/react';
 import { CounterStore } from './counter-store';
 
-export const useCounterStore = () => useInject<CounterStore>(CounterStore);
+export const useCounterStore = () => useResolve<CounterStore>(CounterStore);

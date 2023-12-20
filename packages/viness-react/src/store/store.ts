@@ -2,14 +2,11 @@ import { StoreApi, useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
 import { devtools } from 'zustand/middleware';
 import { produce, produceWithPatches, applyPatches, Patch } from 'immer';
-import { IVinessUIStore as IUIStore } from './store.protocol';
-import type { StoreOption } from './store.protocol';
-import { Injectable } from '@viness/core';
+import { IVinessUIStore as IUIStore, StoreOption } from './store.protocol';
 
 /**
  * extend this class to create ui store
  */
-@Injectable()
 export class UIStore<S extends object> implements IUIStore<S> {
     readonly name: string;
     readonly defaultState: S | {};

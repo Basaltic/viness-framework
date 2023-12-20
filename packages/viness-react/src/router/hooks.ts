@@ -1,5 +1,5 @@
 import { useAppContext } from '../app/app-react-context';
-import { useInject } from '../hooks';
+import { useResolve } from '../hooks';
 import { IVinessRoute } from './route.protocol';
 import { VinessRouter } from './router';
 
@@ -10,5 +10,5 @@ export function useRouter() {
 }
 
 export function useRoute<Path extends string>(id: any) {
-    return useInject(id) as IVinessRoute<Path>;
+    return useResolve(id) as IVinessRoute<Path>;
 }
