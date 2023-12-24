@@ -1,5 +1,6 @@
 import { RouteObject, NavigateOptions } from 'react-router-dom';
 import { PathParam } from './types';
+import { InjectionToken } from '@viness/core';
 
 export interface VinessRouteMetadata<Path extends string> {
     id?: string;
@@ -15,7 +16,7 @@ export interface VinessRouteMetadata<Path extends string> {
     lazy?: RouteObject['lazy'];
     action?: RouteObject['action'];
     loader?: RouteObject['loader'];
-    children?: VinessRouteMetadata<Path>[] | undefined;
+    parent?: InjectionToken<any>;
 }
 
 export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<Path> {
@@ -31,7 +32,7 @@ export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<P
      * @param params
      * @returns
      */
-    generatePath: (params: { [key in PathParam<Path>]: string | null }) => string;
+    generateFullPath: (params: { [key in PathParam<Path>]: string | null }) => string;
 
     /**
      *

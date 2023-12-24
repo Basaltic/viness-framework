@@ -1,5 +1,12 @@
 # @viness/di
 
+## 1.5.0
+
+### Minor Changes
+
+- chore: add more docs
+- feat: redesign the route api in react binding
+
 ## 1.2.0
 
 ### Minor Changes

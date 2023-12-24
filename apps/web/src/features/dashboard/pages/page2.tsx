@@ -1,4 +1,3 @@
-import { useRoute } from '@viness/react';
 import { useCounterStore } from '../store/counter-store.hook';
 
 const ids = ['1', '2', '3', '4', '5', '6'];
@@ -15,10 +14,6 @@ export function DashboardPage2() {
 
 function Item(props: { id: string }) {
     const { id } = props;
-
-    const route = useRoute(DashboardPage2);
-
-    route.getParams();
 
     const store = useCounterStore();
     const selectedId = store.useState((s) => s.selectedIds[id]);

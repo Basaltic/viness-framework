@@ -1,9 +1,6 @@
 import { NavigateFunction, RouteObject, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom';
 import { IVinessRouter, ReactRouter } from './router.protocol';
 import { PathParam } from './types';
-import { IVinessRoute } from './route.protocol';
-import { Inject, Injectable, VinessApp } from '@viness/core';
-import { RouterConfigToken } from './router-config';
 
 export type RouterParams = {
     type: 'hash' | 'browser' | 'memory';
@@ -14,11 +11,10 @@ export type RouterParams = {
 /**
  * keep state of routes
  */
-@Injectable()
 export class VinessRouter implements IVinessRouter {
     readonly reactRouter!: ReactRouter;
 
-    constructor(@Inject(RouterConfigToken) configs: RouterParams, @Inject(VinessApp) private app: VinessApp) {
+    constructor(configs: RouterParams) {
         const { type, routes, basename } = configs;
 
         let router;
@@ -52,19 +48,17 @@ export class VinessRouter implements IVinessRouter {
         const matchesLength = router.state.matches.length;
         const match = router.state.matches[matchesLength - 1];
 
-        console.log(match);
-
         return match.params as { [key in PathParam<Path>]: string | null };
     }
 
-    getRoute<Path extends string = any>() {
-        const router = this.reactRouter;
-        const matchesLength = router.state.matches.length;
-        const match = router.state.matches[matchesLength - 1];
+    // getRoute<Path extends string = any>() {
+    //     const router = this.reactRouter;
+    //     const matchesLength = router.state.matches.length;
+    //     const match = router.state.matches[matchesLength - 1];
 
-        const routeObject = match.route as any;
-        const vinessRoute = this.app.container.resolve(routeObject.token) as IVinessRoute<Path>;
+    //     const routeObject = match.route as any;
+    //     const vinessRoute = this.app.container.resolve(routeObject.token) as IVinessRoute<Path>;
 
-        return vinessRoute;
-    }
+    //     return vinessRoute;
+    // }
 }

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from 'vitepress';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -28,10 +28,16 @@ export default defineConfig({
                 items: [
                     { text: '模块', link: '/guide/module' },
                     { text: '服务', link: '/guide/services' },
-                    { text: '服务标识（Token）', link: '/guide/token' },
-                    { text: '路由', link: '/guide/router' },
-                    { text: '状态', link: '/guide/ui-state' },
-                    { text: '国际化', link: '/guide/i18n' }
+                    { text: '服务标识（Token）', link: '/guide/token' }
+                ]
+            },
+            {
+                text: 'React使用',
+                collapsed: false,
+                items: [
+                    { text: '路由', link: '/guide/react-router' },
+                    { text: '状态', link: '/guide/react-ui-state' },
+                    { text: '国际化', link: '/guide/react-i18n' }
                 ]
             }
         ],
@@ -44,4 +50,4 @@ export default defineConfig({
             lang: 'zh'
         }
     }
-})
+});

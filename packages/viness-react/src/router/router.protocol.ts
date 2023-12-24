@@ -21,8 +21,8 @@ export interface IVinessRouter {
      */
     getParams<Path extends string>(): { [key in PathParam<Path>]: string | null };
 
-    /**
-     * get current matched route instance
-     */
-    getRoute<Path extends string = any>(): IVinessRoute<Path>;
+    // /**
+    //  * get current matched route instance
+    //  */
+    // getRoute<Path extends string = any>(): IVinessRoute<Path>;
 }

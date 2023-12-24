@@ -1,86 +1,54 @@
-// import { VinessRouteInjectionToken } from './route.protocol';
+import { InjectionToken } from '@viness/core';
+import { IVinessRoute, VinessRouteMetadata } from './route.protocol';
+import { RouteObject } from 'react-router-dom';
 
-// export type RouteToken<P extends string> = VinessRouteInjectionToken<P>;
+export const TOKEN_TO_ROUTE_META = new Map<InjectionToken<IVinessRoute<any>>, VinessRouteMetadata<any> | undefined>();
+export const ROOT_ROUTES: InjectionToken<IVinessRoute<any>>[] = [];
+export const PARENT_ROUTE_TO_CHILD_ROUTES = new Map<InjectionToken<IVinessRoute<any>>, InjectionToken<IVinessRoute<any>>[]>();
 
-// export type RouteNode<P extends string> =
-//     | RouteToken<P>
-//     | { route: RouteToken<P>; index?: boolean; children: (RouteNode<P> | RouteToken<P>)[] }
-//     | [RouteToken<P>, RouteToken<P>[]];
+export function toRouteObjects(routeTokens?: InjectionToken<IVinessRoute<any>>[]): RouteObject[] {
+    if (!routeTokens) {
+        routeTokens = ROOT_ROUTES;
+    }
 
-// export type RouteTree = RouteNode<any>[];
+    return routeTokens.map((token) => {
+        const routeMeta = TOKEN_TO_ROUTE_META.get(token);
+        const childRouteTokens = PARENT_ROUTE_TO_CHILD_ROUTES.get(token);
 
-// const r = {
-//     Home: {
-//         path: '',
-//         children: []
-//     }
-// };
+        let childRouteObjects: RouteObject[] = [];
+        if (childRouteTokens) {
+            childRouteObjects = toRouteObjects(childRouteTokens);
+        }
 
-// function toVinessRouteProvider(token: VinessRouteInjectionToken<any>, path?: string): any {
-//     const args = path ? { ...token.metadata, path } : token.metadata;
+        return {
+            ...(routeMeta as any),
+            path: toFullPath(token),
+            children: childRouteObjects
+        };
+    });
+}
 
-//     return { provide: token, useClass: new SyncDescriptor(VinessRoute, [args]) };
-// }
+export function toFullPath(routeToken: InjectionToken<IVinessRoute<any>>) {
+    const separatedPaths: string[] = [];
+    while (routeToken) {
+        const route = TOKEN_TO_ROUTE_META.get(routeToken);
+        const parentRouteToken = route?.parent;
 
-// export function convertToVinessRouteProviders(tree: RouteTree, parentPath: string[] = []) {
-//     const routes: any[] = [];
-//     tree.forEach((node) => {
-//         if (typeof node === 'function') {
-//             node as RouteToken<any>;
+        let path: string = route?.path || '';
+        if (!path.startsWith('/')) {
+            path = `/${path}`;
+        }
 
-//             const metadata = node.metadata;
-//             const path = metadata.path as string;
-//             if (path.startsWith('/')) {
-//                 const route = toVinessRouteProvider(node);
-//                 routes.push(route);
-//             } else {
-//                 const newPath = [...parentPath, path].filter(Boolean).join('/');
-//                 const route = toVinessRouteProvider(node, newPath);
-//                 routes.push(route);
-//             }
-//         } else if (Array.isArray(node)) {
-//             const [parent, children] = node;
-//             const newRoutes = convertToVinessRouteProviders(children, [...parentPath, parent.metadata.path]);
-//             routes.push(...newRoutes);
-//         } else {
-//             const { children } = node;
-//             const newRoutes = convertToVinessRouteProviders(children, [...parentPath, node.route.metadata.path]);
-//             routes.push(...newRoutes);
-//         }
-//     });
+        separatedPaths.unshift(path);
 
-//     return routes;
-// }
+        if (parentRouteToken) {
+            routeToken = parentRouteToken;
+        } else {
+            break;
+        }
+    }
 
-// /**
-//  * Convert to React-Router RouterObject & Viness Route Instance
-//  *
-//  * @param tree
-//  * @returns
-//  */
-// export function convertToReactRoutes(tree: RouteTree): RouteObject[] {
-//     const routeObjects = tree.map((node) => {
-//         if (typeof node === 'function') {
-//             node as RouteToken<any>;
+    const fullPath = separatedPaths.join('');
 
-//             const routeObject = node.metadata;
-
-//             // ref the token in route object to make finding viness route instance easier
-//             return { ...routeObject, token: node };
-//         } else if (Array.isArray(node)) {
-//             const [route, children] = node;
-//             const newChildren = convertToReactRoutes(children);
-//             const defaultChildRoute = {
-//                 index: true,
-//                 loader: () => redirect(newChildren?.[0].path || '')
-//             };
-//             return { ...route.metadata, children: [defaultChildRoute, ...newChildren] };
-//         } else {
-//             const { route, index, children } = node;
-//             const newChildren = convertToReactRoutes(children);
-//             return { ...route.metadata, index, children: newChildren };
-//         }
-//     });
-
-//     return routeObjects as RouteObject[];
-// }
+    return fullPath;
+}
