@@ -1,7 +1,5 @@
-import { defineConfig } from 'vitepress';
-
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default {
     title: 'Viness',
     description: 'Viness Framework Documents',
     themeConfig: {
@@ -50,4 +48,4 @@ export default defineConfig({
             lang: 'zh'
         }
     }
-});
+};
