@@ -7,7 +7,7 @@ export default {
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'Home', link: '/' },
-            { text: 'Guide', link: '/install' }
+            { text: 'Guide', link: '/guide' }
         ],
 
         sidebar: [

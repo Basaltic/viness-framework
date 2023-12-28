@@ -1,20 +1,19 @@
-import { Patch, UIStore } from '@viness/react';
-import { CounterState, defaultCountareState } from './counter-store.protocol';
-import { Injectable } from '@viness/core';
+import { Patch } from '@viness/react';
+import { Inject, Injectable } from '@viness/core';
+import { counterStateToken } from './counter-store.protocol';
+import type { CounterState } from './counter-store.protocol';
 
 @Injectable()
-export class CounterStore extends UIStore<CounterState> {
+export class CounterActions {
     private patchesQueue: Array<[Patch[], Patch[]]> = [];
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = [];
 
-    constructor() {
-        super({ defaultState: defaultCountareState });
-    }
+    constructor(@Inject(counterStateToken) private counterState: CounterState) {}
 
     undo() {
         const patches = this.patchesQueue.pop();
         if (patches) {
-            this.applyPatches(patches[1]);
+            this.counterState.applyPatches(patches[1]);
             this.redoPatchesQueue.push(patches);
         }
     }
@@ -22,13 +21,13 @@ export class CounterStore extends UIStore<CounterState> {
     redo() {
         const patches = this.redoPatchesQueue.pop();
         if (patches) {
-            this.applyPatches(patches[0]);
+            this.counterState.applyPatches(patches[0]);
             this.patchesQueue.push(patches);
         }
     }
 
     increase() {
-        const patches = this.setStateWithPatches((s) => {
+        const patches = this.counterState.setStateWithPatches((s) => {
             s.count += 1;
         });
 
@@ -37,7 +36,7 @@ export class CounterStore extends UIStore<CounterState> {
     }
 
     decrease() {
-        const [patches, inversePatches] = this.setStateWithPatches((s) => {
+        const [patches, inversePatches] = this.counterState.setStateWithPatches((s) => {
             s.count -= 1;
         });
         this.patchesQueue.push([patches, inversePatches]);
@@ -46,15 +45,12 @@ export class CounterStore extends UIStore<CounterState> {
     }
 
     select = (id: string) =>
-        this.setState((s) => {
+        this.counterState.setState((s) => {
             s.selectedIds[id] = 1;
         });
 
     deselect = (id: string) =>
-        this.setState((s) => {
+        this.counterState.setState((s) => {
             delete s.selectedIds[id];
         });
 }
-
-@Injectable()
-export class CounterEffects {}

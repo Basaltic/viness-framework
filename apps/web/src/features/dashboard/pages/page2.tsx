@@ -1,4 +1,4 @@
-import { useCounterStore } from '../store/counter-store.hook';
+import { useCounterState } from '../store/counter-store.protocol';
 
 const ids = ['1', '2', '3', '4', '5', '6'];
 
@@ -15,7 +15,7 @@ export function DashboardPage2() {
 function Item(props: { id: string }) {
     const { id } = props;
 
-    const store = useCounterStore();
+    const store = useCounterState();
     const selectedId = store.useState((s) => s.selectedIds[id]);
     const isSelected = 1 === selectedId;
 

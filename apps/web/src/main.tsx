@@ -1,7 +1,9 @@
-import { App } from './app'
-import './index.css'
+import '@abraham/reflection';
 
-import { createRoot } from 'react-dom/client'
+import { App } from './app';
+import './index.css';
 
-const appContainer = document.getElementById('root')
-appContainer && createRoot(appContainer).render(<App />)
+import { createRoot } from 'react-dom/client';
+
+const appContainer = document.getElementById('root');
+appContainer && createRoot(appContainer).render(<App />);

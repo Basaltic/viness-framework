@@ -1,7 +1,8 @@
 import { Module } from '@viness/core';
-import { CounterEffects, CounterStore } from './store/counter-store';
+import { CounterActions } from './store/counter-store';
+import { couterStateProvider } from './store/counter-store.protocol';
 
 @Module({
-    providers: [CounterStore, CounterEffects]
+    providers: [couterStateProvider, CounterActions]
 })
 export class DashboardModule {}

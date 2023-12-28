@@ -4,7 +4,7 @@ import * as di from '@viness/di';
 export type InjectionToken<T> = di.InjectionToken<T>;
 
 export type ClassProvider<T> = di.ClassProvider<T> & { token: di.InjectionToken<T> };
-export type ValueProvider<T> = di.ValueProvider<T> & { token: di.InjectionToken };
+export type ValueProvider<T> = di.ValueProvider<T> & { token: di.InjectionToken<T> };
 export type TokenProvider<T> = di.TokenProvider<T>;
 export type FactoryProvider<T> = di.FactoryProvider<T> & { token: di.InjectionToken };
 

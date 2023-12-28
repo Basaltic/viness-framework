@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.5.1
+
+### Patch Changes
+
+- feat: change store to state & simplify the use of ui state
+
 ## 1.5.0
 
 ### Minor Changes

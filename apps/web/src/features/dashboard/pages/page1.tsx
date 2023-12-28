@@ -1,15 +1,18 @@
+import { useResolve } from '@viness/react';
 import { useDashboardPage2Route } from '../../../routes/routes.protocol';
-import { useCounterStore } from '../store/counter-store.hook';
+import { useCounterState } from '../store/counter-store.protocol';
+import { CounterActions } from '../store/counter-store';
 
 export function DashboardPage1() {
-    const counterStore = useCounterStore();
-    const count = counterStore.use.count();
+    const counterState = useCounterState();
+    const count = counterState.use.count();
+    const counterActions = useResolve(CounterActions);
 
     const page2Route = useDashboardPage2Route();
 
-    const handleIncrease = () => {};
+    const handleIncrease = () => counterActions.increase();
 
-    const handleDecrease = () => {};
+    const handleDecrease = () => counterActions.decrease();
 
     const handleUndo = () => {};
 

@@ -16,8 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "composite": true,
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
 }

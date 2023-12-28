@@ -1,4 +1,4 @@
-import { IVinessUIStore, UIState } from '../store';
+import { IUIState, UIState } from '../store';
 import { FormState } from './form.protocol';
 
 export type VinessFormOption<DV extends object> = {
@@ -23,9 +23,9 @@ export class VinessForm<DV extends object> {
             defaultValues,
             errors: undefined
         };
-        this.formStateStore = new UIState({ defaultState: defaultFormState });
+        this.formStateStore = new UIState({ default: defaultFormState });
 
-        this.formValuesStore = new UIState({ defaultState: defaultValues });
+        this.formValuesStore = new UIState({ default: defaultValues });
     }
 
     register() {}

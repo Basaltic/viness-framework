@@ -1,20 +1,16 @@
-import { IVinessUIStore, useResolve } from '@viness/react';
-import { CounterStore } from './counter-store';
+import { UIState, createUIState, useResolve } from '@viness/react';
 
-export interface CounterState {
+export interface ICounterStateValue {
     count: number;
     selectedIds: Record<string, any>;
 }
-export const defaultCountareState: CounterState = {
+export const defaultCounterState: ICounterStateValue = {
     count: 0,
     selectedIds: {}
 };
 
-export type ICounterStore = IVinessUIStore<CounterState> & {
-    undo(): void;
-    redo(): void;
-    increase(): void;
-    decrease(): void;
-    select(id: string): void;
-    deselect(id: string): void;
-};
+export type CounterState = UIState<ICounterStateValue>;
+
+export const couterStateProvider = createUIState<ICounterStateValue>({ default: defaultCounterState });
+export const counterStateToken = couterStateProvider.token;
+export const useCounterState = () => useResolve(counterStateToken);

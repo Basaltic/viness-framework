@@ -1,10 +1,10 @@
 interface FormValues {
-    name: string
+    name: string;
 }
 
 const defaultFormValues: FormValues = {
     name: ''
-}
+};
 
 export function DashboardPage3() {
     return (
@@ -13,5 +13,5 @@ export function DashboardPage3() {
 
             <div>{/* <button onClick={handleSubmit}>submit</button> */}</div>
         </div>
-    )
+    );
 }

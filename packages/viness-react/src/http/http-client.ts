@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@viness/core';
+import { Inject } from '@viness/core';
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 
 export interface HttpRequestConfig<D = any> extends AxiosRequestConfig<D> {}

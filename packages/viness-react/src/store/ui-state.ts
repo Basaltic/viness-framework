@@ -2,19 +2,21 @@ import { StoreApi, useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
 import { devtools } from 'zustand/middleware';
 import { produce, produceWithPatches, applyPatches, Patch } from 'immer';
-import { IVinessUIStore as IUIStore, StoreOption } from './store.protocol';
+import { IUIState } from './ui-state.protocol';
+import type { StateOption } from './ui-state.protocol';
+// import { Injectable } from '@viness/core';
 
 /**
  * extend this class to create ui store
  */
-export class UIStore<S extends object> implements IUIStore<S> {
+export class UIState<StateValue extends object> implements IUIState<StateValue> {
     readonly name: string;
-    readonly defaultState: S | {};
-    private storeApi: StoreApi<S>;
-    private selectors!: { [K in keyof S]: () => S[K] };
+    readonly defaultState: StateValue | {};
+    private storeApi: StoreApi<StateValue>;
+    private selectors!: { [K in keyof StateValue]: () => StateValue[K] };
 
-    constructor(options?: StoreOption<S>) {
-        const { defaultState = {}, name = '' } = options || {};
+    constructor(options?: StateOption<StateValue>) {
+        const { default: defaultState = {}, name = '' } = options || {};
         let storeApi: any;
         if (process.env.NODE_ENV === 'development') {
             storeApi = createStore(devtools(() => defaultState, { name }));
@@ -53,7 +55,7 @@ export class UIStore<S extends object> implements IUIStore<S> {
      * @param equals
      * @returns
      */
-    useState<U>(selector: (state: S) => U, equals?: (a: U, b: U) => boolean): U {
+    useState<U>(selector: (state: StateValue) => U, equals?: (a: U, b: U) => boolean): U {
         return useStore(this.storeApi, selector as any, equals);
     }
 
@@ -67,7 +69,10 @@ export class UIStore<S extends object> implements IUIStore<S> {
     /**
      * change the state
      */
-    setState(updater: S | Partial<S> | ((state: S) => S | Partial<S> | void), replace?: boolean | undefined) {
+    setState(
+        updater: StateValue | Partial<StateValue> | ((state: StateValue) => StateValue | Partial<StateValue> | void),
+        replace?: boolean | undefined
+    ) {
         if (typeof updater === 'function') {
             this.storeApi.setState(produce(updater) as any, replace);
         } else {
@@ -82,7 +87,7 @@ export class UIStore<S extends object> implements IUIStore<S> {
      * @param replace
      * @returns [patches, inverse patches]
      */
-    setStateWithPatches(updater: (state: S) => S | void): [Patch[], Patch[]] {
+    setStateWithPatches(updater: (state: StateValue) => StateValue | void): [Patch[], Patch[]] {
         const state = this.getState();
         const [nextState, patches, inversePatches] = produceWithPatches(state, updater);
         this.storeApi.setState(nextState);
@@ -95,14 +100,14 @@ export class UIStore<S extends object> implements IUIStore<S> {
      * @param patches
      */
     applyPatches(patches: Patch[]) {
-        const updater = (s: S) => applyPatches(s, patches);
+        const updater = (s: StateValue) => applyPatches(s, patches);
         this.storeApi.setState(updater);
     }
 
     /**
      * subscribe the modification of the state in this store
      */
-    subscribe(listener: (state: S, prevState: S) => void): () => void {
+    subscribe(listener: (state: StateValue, prevState: StateValue) => void): () => void {
         return this.storeApi.subscribe(listener);
     }
 
