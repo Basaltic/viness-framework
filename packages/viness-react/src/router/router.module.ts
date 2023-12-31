@@ -1,6 +1,6 @@
 import { Module, DynamicModule, ModuleProvider, InjectionToken } from '@viness/core';
 import { VinessRouter } from './router';
-import { IRouterConfig, RouterConfigToken } from './router-config';
+import { IRouterConfig } from './router-config';
 import { TOKEN_TO_ROUTE_META, toRouteObjects } from './route-tree';
 import { VinessRoute } from './route';
 
@@ -10,6 +10,7 @@ export interface RouterModuleConfig {
     basename?: string;
 }
 
+// TODO: 可以支持 route 分散定义，router自动收集route，然后合并
 @Module({})
 export class RouterModule {
     static forRoot(config: RouterModuleConfig): DynamicModule {

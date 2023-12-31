@@ -1,4 +1,4 @@
-import { IUIState, UIState } from '../store';
+import { IUIStore, UIStore } from '../store';
 import { FormState } from './form.protocol';
 
 export type VinessFormOption<DV extends object> = {
@@ -6,8 +6,8 @@ export type VinessFormOption<DV extends object> = {
 };
 
 export class VinessForm<DV extends object> {
-    private formStateStore: UIState<FormState<DV>>;
-    private formValuesStore: UIState<DV>;
+    private formStateStore: UIStore<FormState<DV>>;
+    private formValuesStore: UIStore<DV>;
     private formValuesValidationRules: any;
 
     constructor(option: VinessFormOption<DV>) {
@@ -23,9 +23,9 @@ export class VinessForm<DV extends object> {
             defaultValues,
             errors: undefined
         };
-        this.formStateStore = new UIState({ default: defaultFormState });
+        this.formStateStore = new UIStore({ default: defaultFormState });
 
-        this.formValuesStore = new UIState({ default: defaultValues });
+        this.formValuesStore = new UIStore({ default: defaultValues });
     }
 
     register() {}

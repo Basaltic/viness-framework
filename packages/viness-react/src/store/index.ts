@@ -5,6 +5,6 @@ enablePatches();
 
 export { type Patch, applyPatches, produceWithPatches } from 'immer';
 
-export * from './ui-state';
-export * from './ui-state.protocol';
-export * from './ui-state.factory';
+export * from './ui-store';
+export * from './ui-store.protocol';
+export * from './ui-store.factory';

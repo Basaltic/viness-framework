@@ -35,7 +35,10 @@ export function toFullPath(routeToken: InjectionToken<IVinessRoute<any>>) {
         const parentRouteToken = route?.parent;
 
         let path: string = route?.path || '';
-        if (!path.startsWith('/')) {
+        if (path.startsWith('/')) {
+            separatedPaths.unshift(path);
+            break;
+        } else {
             path = `/${path}`;
         }
 

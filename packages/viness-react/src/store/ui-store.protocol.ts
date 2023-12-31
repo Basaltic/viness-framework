@@ -6,8 +6,9 @@ export interface Type<T = any> extends Function {
 
 export type DropFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never;
 
-export interface IUIState<StateValue extends object> {
+export interface IUIStore<StateValue extends object> {
     use: { [K in keyof StateValue]: () => StateValue[K] };
+    getState(): StateValue;
     setState(
         updater: StateValue | Partial<StateValue> | ((state: StateValue) => StateValue | Partial<StateValue> | void),
         replace?: boolean | undefined

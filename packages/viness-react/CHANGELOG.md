@@ -1,5 +1,15 @@
 # @viness/core
 
+## 1.5.2
+
+### Patch Changes
+
+- refactor: rename UIState to UIStore
+- fix: route path genation error
+- Updated dependencies
+- Updated dependencies
+  - @viness/core@1.5.2
+
 ## 1.5.1
 
 ### Patch Changes
