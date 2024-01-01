@@ -1,5 +1,13 @@
 # @viness/core
 
+## 1.5.3
+
+### Patch Changes
+
+- 8d2d674: feat: optimize the router import way
+- Updated dependencies [8d2d674]
+  - @viness/core@1.5.3
+
 ## 1.5.2
 
 ### Patch Changes

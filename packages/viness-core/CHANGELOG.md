@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.5.3
+
+### Patch Changes
+
+- 8d2d674: feat: optimize the router import way
+
 ## 1.5.2
 
 ### Patch Changes
