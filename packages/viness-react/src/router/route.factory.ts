@@ -1,6 +1,8 @@
-import { InjectionToken } from '@viness/core';
-import { VinessRouteMetadata, IVinessRoute } from './route.protocol';
-import { TOKEN_TO_ROUTE_META, ROOT_ROUTES, PARENT_ROUTE_TO_CHILD_ROUTES } from './route-tree';
+import { ClassProvider, Inject, Injectable, InjectionToken } from '@viness/core';
+import { VinessRouteMetadata } from './route.protocol';
+import { TOKEN_TO_ROUTE_META, ROOT_ROUTE_TOKENS, PARENT_ROUTE_TO_CHILD_ROUTES } from './route-tree';
+import { VinessRoute } from './route';
+import { VinessRouter } from './router';
 
 /**
  * Create Route Token with extra metadata
@@ -9,13 +11,9 @@ import { TOKEN_TO_ROUTE_META, ROOT_ROUTES, PARENT_ROUTE_TO_CHILD_ROUTES } from '
  * @param metadata
  * @returns
  */
-export function createRouteToken<Path extends string>(
-    path: Path,
-    metadata?: Omit<VinessRouteMetadata<Path>, 'path'>
-): InjectionToken<IVinessRoute<Path>> {
+export function createRouteProvider<Path extends string>(path: Path, metadata?: Omit<VinessRouteMetadata<Path>, 'path'>) {
     // generate an id to make sure the service id unique
-    const id = Symbol(path);
-    const token: InjectionToken<IVinessRoute<Path>> = id;
+    const token = Symbol(path) as InjectionToken<VinessRoute<Path>>;
 
     const fullMetadata = { ...(metadata || {}), path };
 
@@ -31,8 +29,15 @@ export function createRouteToken<Path extends string>(
             PARENT_ROUTE_TO_CHILD_ROUTES.set(metadata.parent, [token]);
         }
     } else {
-        ROOT_ROUTES.push(token);
+        ROOT_ROUTE_TOKENS.push(token);
     }
 
-    return token;
+    @Injectable()
+    class CustomVinessRoute<Path extends string> extends VinessRoute<Path> {
+        constructor(@Inject(VinessRouter) router: VinessRouter) {
+            super(token, metadata as any, router);
+        }
+    }
+
+    return { token, useClass: CustomVinessRoute } as ClassProvider<VinessRoute<Path>>;
 }

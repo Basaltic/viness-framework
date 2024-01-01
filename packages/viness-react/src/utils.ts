@@ -5,12 +5,12 @@
  * @returns {string} formated params string
  */
 export function toQueryString(obj: Record<string, string | number | boolean>) {
-    const str: string[] = []
+    const str: string[] = [];
     Object.keys(obj).forEach((p) => {
-        str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`)
-    })
+        str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);
+    });
 
-    return str.join('&')
+    return str.join('&');
 }
 
 /**
@@ -23,30 +23,30 @@ export function joinPath(...segments: string[]) {
     const parts = segments.reduce((parts: string[], segment: string) => {
         // Remove leading slashes from non-first part.
         if (parts.length > 0) {
-            segment = segment.replace(/^\//, '')
+            segment = segment.replace(/^\//, '');
         }
         // Remove trailing slashes.
-        segment = segment.replace(/\/$/, '')
-        return parts.concat(segment.split('/'))
-    }, [])
+        segment = segment.replace(/\/$/, '');
+        return parts.concat(segment.split('/'));
+    }, []);
 
-    const resultParts = []
+    const resultParts = [];
 
     for (const part of parts) {
         if (part === '.') {
-            continue
+            continue;
         }
         if (part === '..') {
-            resultParts.pop()
-            continue
+            resultParts.pop();
+            continue;
         }
-        resultParts.push(part)
+        resultParts.push(part);
     }
 
-    return resultParts.join('/')
+    return resultParts.join('/');
 }
 
-let id = 1
+let id = 1;
 /**
  * Generate a auto-increment id
  *
@@ -54,14 +54,14 @@ let id = 1
  * @returns
  */
 export const generateId = (prefix?: string) => {
-    const strId = String(id++)
+    const strId = String(id++);
 
     if (prefix) {
-        return `prefix_${strId}`
+        return `prefix_${strId}`;
     }
 
-    return strId
-}
+    return strId;
+};
 
 /**
  * Log development messages
@@ -70,6 +70,6 @@ export const generateId = (prefix?: string) => {
  */
 export const doLog = (...messages: any) => {
     if (process.env.NODE_ENV === 'development') {
-        console.log(messages)
+        console.log(messages);
     }
-}
+};

@@ -1,22 +1,23 @@
 import { NavigateFunction, RouteObject, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom';
-import { IVinessRouter, ReactRouter } from './router.protocol';
+import { ReactRouter } from './router.protocol';
 import { PathParam } from './types';
+import { toRouteObjects } from './route-tree';
+import { InjectionToken, ValueProvider } from '@viness/core';
 
-export type RouterParams = {
+export type RouterConfig = {
     type: 'hash' | 'browser' | 'memory';
-    routes: RouteObject[];
     basename?: string;
 };
 
 /**
  * keep state of routes
  */
-export class VinessRouter implements IVinessRouter {
+export class VinessRouter {
     readonly reactRouter!: ReactRouter;
 
-    constructor(configs: RouterParams) {
-        const { type, routes, basename } = configs;
-
+    constructor(configs: RouterConfig) {
+        const { type, basename } = configs;
+        const routes = toRouteObjects();
         let router;
         switch (type) {
             case 'memory':
@@ -39,9 +40,9 @@ export class VinessRouter implements IVinessRouter {
         return this.reactRouter.state;
     }
 
-    get navigate(): NavigateFunction {
-        return this.reactRouter.navigate;
-    }
+    navigate: NavigateFunction = (to: any, option?: any) => {
+        return this.reactRouter.navigate(to, option);
+    };
 
     getParams<Path extends string>() {
         const router = this.reactRouter;
@@ -50,15 +51,13 @@ export class VinessRouter implements IVinessRouter {
 
         return match.params as { [key in PathParam<Path>]: string | null };
     }
+}
 
-    // getRoute<Path extends string = any>() {
-    //     const router = this.reactRouter;
-    //     const matchesLength = router.state.matches.length;
-    //     const match = router.state.matches[matchesLength - 1];
+export const Router_Token = Symbol('RouterConfigToken') as InjectionToken<VinessRouter>;
 
-    //     const routeObject = match.route as any;
-    //     const vinessRoute = this.app.container.resolve(routeObject.token) as IVinessRoute<Path>;
-
-    //     return vinessRoute;
-    // }
+export function createRouterProvider(config: RouterConfig): ValueProvider<VinessRouter> {
+    return {
+        token: VinessRouter,
+        useValue: new VinessRouter(config)
+    };
 }

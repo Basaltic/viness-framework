@@ -1,20 +1,15 @@
 import { ReactNode } from 'react';
-import {
-    generatePath as innerGeneratePath,
-    IndexRouteObject,
-    LazyRouteFunction,
-    LoaderFunction,
-    NonIndexRouteObject
-} from 'react-router-dom';
+import { generatePath as innerGeneratePath, LoaderFunction, RouteObject } from 'react-router-dom';
 import { NavigateOptions, PathParam } from './types';
-import { IVinessRoute } from './route.protocol';
 import type { VinessRouteMetadata } from './route.protocol';
-import type { IVinessRouter } from './router.protocol';
+import { VinessRouter } from './router';
+import { InjectionToken } from '@viness/core';
+import { toFullPath } from './route-tree';
 
 /**
  * Route
  */
-export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
+export class VinessRoute<Path extends string> {
     id?: string;
     path: Path;
     element: ReactNode;
@@ -24,10 +19,10 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
     hasErrorBoundary?: boolean;
     caseSensitive?: boolean;
     index?: boolean | undefined;
-    lazy?: LazyRouteFunction<IndexRouteObject> | LazyRouteFunction<NonIndexRouteObject>;
+    lazy?: RouteObject['lazy'];
     loader?: LoaderFunction | undefined;
 
-    constructor(metadata: VinessRouteMetadata<Path>, public router: IVinessRouter) {
+    constructor(private token: InjectionToken<any>, metadata: VinessRouteMetadata<Path>, public router: VinessRouter) {
         const { id, path, index, element, errorElement, Component, ErrorBoundary, hasErrorBoundary, caseSensitive, lazy, loader } =
             metadata;
 
@@ -45,7 +40,7 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
     }
 
     navigate(params: { [key in PathParam<Path>]: string | null }, option?: NavigateOptions) {
-        const toPath = this.generateFullPath(params);
+        const toPath = this.generatePath(params);
         this.router.navigate(toPath, option);
     }
 
@@ -53,8 +48,9 @@ export class VinessRoute<Path extends string> implements IVinessRoute<Path> {
         return this.router.getParams<Path>();
     }
 
-    generateFullPath(params?: { [key in PathParam<Path>]: string | null }) {
-        const toPath = innerGeneratePath(this.path || '', params || ({} as any));
+    generatePath(params?: { [key in PathParam<Path>]: string | null }) {
+        const fullPath = toFullPath(this.token);
+        const toPath = innerGeneratePath(fullPath || '', params || ({} as any));
         return toPath;
     }
 

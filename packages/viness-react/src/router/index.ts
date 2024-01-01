@@ -1,8 +1,10 @@
-export * from './router.module'
-export * from './route.factory'
+export * from './router';
+export * from './router.protocol';
+export * from './route.factory';
+export * from './route.protocol';
 
-export * from './hooks'
-export * from './router-react'
+export * from './hooks';
+export * from './router-react';
 
 export {
     useLocation,
@@ -23,4 +25,4 @@ export {
     redirect,
     generatePath,
     matchPath
-} from 'react-router-dom'
+} from 'react-router-dom';

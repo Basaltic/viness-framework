@@ -1,12 +1,12 @@
 import { toRouteObjects } from '../route-tree';
-import { createRouteToken } from '../route.factory';
+import { createRouteProvider } from '../route.factory';
 
 describe('route tree', () => {
     it('[Method] toRouteObjects', () => {
-        const root = createRouteToken('/');
-        const landing = createRouteToken('landing');
-        const project = createRouteToken('/project');
-        const projectInfo = createRouteToken('info', { parent: project });
+        const root = createRouteProvider('/');
+        const landing = createRouteProvider('landing');
+        const project = createRouteProvider('/project');
+        const projectInfo = createRouteProvider('info', { parent: project });
 
         const objects = toRouteObjects();
 

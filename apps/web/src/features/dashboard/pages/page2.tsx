@@ -1,3 +1,4 @@
+import { useRouter } from '@viness/react';
 import { useCounterState } from '../store/counter-store.protocol';
 
 const ids = ['1', '2', '3', '4', '5', '6'];
@@ -19,8 +20,18 @@ function Item(props: { id: string }) {
     const selectedId = store.useState((s) => s.selectedIds[id]);
     const isSelected = 1 === selectedId;
 
+    const router = useRouter();
+
     // const handleSelect = () => store.select(id)
     // const handledeselect = () => store.deselect(id)
+
+    const goTo = () => {
+        // page2Route.navigate({});
+
+        // navigate('/d/p2');
+
+        router.navigate('/d/p1', {});
+    };
 
     return (
         <div>
@@ -29,6 +40,7 @@ function Item(props: { id: string }) {
             </div>
             {/* <button onClick={handleSelect}>select</button>
             <button onClick={handledeselect}>deselect</button> */}
+            <button onClick={() => goTo()}>go</button>
         </div>
     );
 }

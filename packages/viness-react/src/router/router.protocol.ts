@@ -1,6 +1,5 @@
 import { createBrowserRouter, NavigateFunction } from 'react-router-dom';
 import { PathParam } from './types';
-import { IVinessRoute } from './route.protocol';
 
 export type ReactRouter = ReturnType<typeof createBrowserRouter>;
 

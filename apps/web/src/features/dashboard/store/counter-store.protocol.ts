@@ -1,4 +1,4 @@
-import { UIState, createUIState, useResolve } from '@viness/react';
+import { UIStore, createStore, useResolve } from '@viness/react';
 
 export interface ICounterStateValue {
     count: number;
@@ -9,8 +9,8 @@ export const defaultCounterState: ICounterStateValue = {
     selectedIds: {}
 };
 
-export type CounterState = UIState<ICounterStateValue>;
+export type CounterState = UIStore<ICounterStateValue>;
 
-export const couterStateProvider = createUIState<ICounterStateValue>({ default: defaultCounterState });
+export const couterStateProvider = createStore<ICounterStateValue>({ default: defaultCounterState });
 export const counterStateToken = couterStateProvider.token;
 export const useCounterState = () => useResolve(counterStateToken);

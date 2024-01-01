@@ -15,7 +15,5 @@ export function Command(name?: string): MethodDecorator {
             commands = [commandMeta];
             Reflect.defineMetadata(HANDLER_COMMANDS, commands, target);
         }
-
-        console.log(commands);
     };
 }

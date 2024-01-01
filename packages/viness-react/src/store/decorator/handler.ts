@@ -7,8 +7,6 @@ export function Handler(metadata: HandlerMetadata): ClassDecorator {
     return (target: any) => {
         const commands = Reflect.getOwnMetadata(HANDLER_COMMANDS, target);
 
-        console.log(commands);
-
         return Injectable()(target);
     };
 }

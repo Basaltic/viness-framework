@@ -1,14 +1,15 @@
 import { InjectionToken } from '@viness/core';
-import { IVinessRoute, VinessRouteMetadata } from './route.protocol';
+import { VinessRouteMetadata } from './route.protocol';
 import { RouteObject } from 'react-router-dom';
+import { VinessRoute } from './route';
 
-export const TOKEN_TO_ROUTE_META = new Map<InjectionToken<IVinessRoute<any>>, VinessRouteMetadata<any> | undefined>();
-export const ROOT_ROUTES: InjectionToken<IVinessRoute<any>>[] = [];
-export const PARENT_ROUTE_TO_CHILD_ROUTES = new Map<InjectionToken<IVinessRoute<any>>, InjectionToken<IVinessRoute<any>>[]>();
+export const TOKEN_TO_ROUTE_META = new Map<InjectionToken<VinessRoute<any>>, VinessRouteMetadata<any> | undefined>();
+export const ROOT_ROUTE_TOKENS: InjectionToken<VinessRoute<any>>[] = [];
+export const PARENT_ROUTE_TO_CHILD_ROUTES = new Map<InjectionToken<VinessRoute<any>>, InjectionToken<VinessRoute<any>>[]>();
 
-export function toRouteObjects(routeTokens?: InjectionToken<IVinessRoute<any>>[]): RouteObject[] {
+export function toRouteObjects(routeTokens?: InjectionToken<VinessRoute<any>>[]): RouteObject[] {
     if (!routeTokens) {
-        routeTokens = ROOT_ROUTES;
+        routeTokens = ROOT_ROUTE_TOKENS;
     }
 
     return routeTokens.map((token) => {
@@ -22,13 +23,13 @@ export function toRouteObjects(routeTokens?: InjectionToken<IVinessRoute<any>>[]
 
         return {
             ...(routeMeta as any),
-            path: toFullPath(token),
+            // path: toFullPath(token),
             children: childRouteObjects
         };
     });
 }
 
-export function toFullPath(routeToken: InjectionToken<IVinessRoute<any>>) {
+export function toFullPath(routeToken: InjectionToken<VinessRoute<any>>) {
     const separatedPaths: string[] = [];
     while (routeToken) {
         const route = TOKEN_TO_ROUTE_META.get(routeToken);
