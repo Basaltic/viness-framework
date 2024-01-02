@@ -1,4 +1,4 @@
-import { IUIStore, UIStore } from '../store';
+import { UIStore } from '../store';
 import { FormState } from './form.protocol';
 
 export type VinessFormOption<DV extends object> = {

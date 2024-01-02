@@ -1,14 +1,13 @@
 import { Patch } from '@viness/react';
-import { Inject, Injectable } from '@viness/core';
-import { counterStateToken } from './counter-store.protocol';
-import type { CounterState } from './counter-store.protocol';
+import { Injectable } from '@viness/core';
+import { ICounterStore, type CounterStore } from './counter-store.protocol';
 
 @Injectable()
 export class CounterActions {
     private patchesQueue: Array<[Patch[], Patch[]]> = [];
     private redoPatchesQueue: Array<[Patch[], Patch[]]> = [];
 
-    constructor(@Inject(counterStateToken) private counterState: CounterState) {}
+    constructor(@ICounterStore private counterState: CounterStore) {}
 
     undo() {
         const patches = this.patchesQueue.pop();

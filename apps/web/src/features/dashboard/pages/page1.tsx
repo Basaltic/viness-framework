@@ -1,4 +1,4 @@
-import { useResolve, useNavigate, useRouter } from '@viness/react';
+import { useResolve } from '@viness/react';
 import { useDashboardPage2Route } from '../routes.protocol';
 import { useCounterState } from '../store/counter-store.protocol';
 import { CounterActions } from '../store/counter-store';
@@ -10,9 +10,6 @@ export function DashboardPage1() {
 
     const page2Route = useDashboardPage2Route();
 
-    const navigate = useNavigate();
-    const router = useRouter();
-
     const handleIncrease = () => counterActions.increase();
 
     const handleDecrease = () => counterActions.decrease();
@@ -22,11 +19,7 @@ export function DashboardPage1() {
     const handleRedo = () => {};
 
     const goToP2 = () => {
-        // page2Route.navigate({});
-
-        // navigate('/d/p2');
-
-        router.navigate('/d/p2', {});
+        page2Route.navigate({});
     };
 
     return (

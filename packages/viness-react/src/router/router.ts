@@ -3,6 +3,7 @@ import { ReactRouter } from './router.protocol';
 import { PathParam } from './types';
 import { toRouteObjects } from './route-tree';
 import { InjectionToken, ValueProvider } from '@viness/core';
+import { doLog } from '../utils';
 
 export type RouterConfig = {
     type: 'hash' | 'browser' | 'memory';
@@ -18,6 +19,9 @@ export class VinessRouter {
     constructor(configs: RouterConfig) {
         const { type, basename } = configs;
         const routes = toRouteObjects();
+
+        doLog('app routes: ', routes);
+
         let router;
         switch (type) {
             case 'memory':

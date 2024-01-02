@@ -1,11 +1,5 @@
 import { Patch } from 'immer';
 
-export interface Type<T = any> extends Function {
-    new (...args: any[]): T;
-}
-
-export type DropFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never;
-
 export interface IUIStore<StateValue extends object> {
     use: { [K in keyof StateValue]: () => StateValue[K] };
     getState(): StateValue;
@@ -19,7 +13,6 @@ export interface IUIStore<StateValue extends object> {
     subscribe(listener: (state: StateValue, prevState: StateValue) => void): () => void;
 }
 
-// TODO: Plugin system & manager
 export interface StateOption<StateValue extends object> {
     default: StateValue;
     name?: string;
