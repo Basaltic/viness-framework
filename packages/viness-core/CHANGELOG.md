@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.5.4
+
+### Patch Changes
+
+- 5b5d2b9: chore: add debug code
+
 ## 1.5.3
 
 ### Patch Changes

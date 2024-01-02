@@ -1,5 +1,13 @@
 # @viness/core
 
+## 1.5.4
+
+### Patch Changes
+
+- 5b5d2b9: chore: add debug code
+- Updated dependencies [5b5d2b9]
+  - @viness/core@1.5.4
+
 ## 1.5.3
 
 ### Patch Changes
