@@ -1,6 +1,6 @@
 # 初始化框架 & 快速开始
 
-### 创建 VinessApp 实例
+## 创建 VinessApp 实例
 
 ```ts
 // app.module.ts
@@ -13,11 +13,11 @@ export const appModule = createModule({
 
 ```
 
-### 引入 VinessReactApp 组件
+## 引入 VinessReactApp 组件
 
 - 把 VinessReactApp 组件放置在整个应用的最外层
-```tsx
 
+```tsx
 import { AppFactory, VinessReactApp } from '@viness/react'
 import { appModule } from './app.module'
 
@@ -34,9 +34,10 @@ export const App = () => {
 ```
 
 
-### 配置路由信息 & 组件
+## 配置路由信息 & 组件
 
 - 如果 Viness 框架自带的路由组件，则可以直接引入 VinessAppRouter 组件，具体配置见路由章节
+
 ```tsx
 import { AppFactory, VinessReactApp, VinessAppRouter } from '@viness/react'
 import { appModule } from './app.module'

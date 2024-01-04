@@ -23,7 +23,6 @@ export function toRouteObjects(routeTokens?: InjectionToken<VinessRoute<any>>[])
 
         return {
             ...(routeMeta as any),
-            // path: toFullPath(token),
             children: childRouteObjects
         };
     });

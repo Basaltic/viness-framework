@@ -1,6 +1,14 @@
 import { MODULE_METADATA } from '../constants';
 import { ModuleImport, ModuleMetadata, ModuleProvider, DynamicModule } from './module.protocol';
-import { DependencyContainer, Lifecycle, isClassProvider, isFactoryProvider, isTokenProvider, isValueProvider } from '@viness/di';
+import {
+    DependencyContainer,
+    Lifecycle,
+    instanceCachingFactory,
+    isClassProvider,
+    isFactoryProvider,
+    isTokenProvider,
+    isValueProvider
+} from '@viness/di';
 
 /**
  * Scan the module &
@@ -14,7 +22,10 @@ export class ModulesScanner {
             let providers: ModuleProvider[] = [];
 
             if ((module as DynamicModule).module) {
-                imports = [...((module as DynamicModule).imports || []), (module as DynamicModule).module];
+                imports = [...((module as DynamicModule).imports || [])];
+                if ((module as DynamicModule).module) {
+                    imports.push((module as DynamicModule).module as any);
+                }
                 providers = (module as DynamicModule).providers || [];
             } else {
                 const metadata = Reflect.getOwnMetadata(MODULE_METADATA, module) as ModuleMetadata;
@@ -52,7 +63,12 @@ export class ModulesScanner {
         } else if (isValueProvider(provider)) {
             this.container.register(provider.token, provider);
         } else if (isFactoryProvider(provider)) {
-            this.container.register(provider.token, provider);
+            if (provider.cache) {
+                this.container.register(provider.token, provider);
+            } else {
+                provider.useFactory = instanceCachingFactory(provider.useFactory);
+                this.container.register(provider.token, provider);
+            }
         } else if (isTokenProvider(provider)) {
             this.container.register(provider.useToken, provider, { lifecycle: Lifecycle.ContainerScoped });
         }

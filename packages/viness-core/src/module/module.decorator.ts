@@ -1,5 +1,5 @@
 import { MODULE_METADATA } from '../constants';
-import { ModuleMetadata } from './module.protocol';
+import { DynamicModule, ModuleMetadata } from './module.protocol';
 
 export function Module(metadata: ModuleMetadata): ClassDecorator {
     return (target) => {
@@ -7,4 +7,8 @@ export function Module(metadata: ModuleMetadata): ClassDecorator {
             Reflect.defineMetadata(MODULE_METADATA, metadata, target);
         }
     };
+}
+
+export function createModule(metadata: ModuleMetadata): DynamicModule {
+    return metadata;
 }

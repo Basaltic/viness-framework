@@ -32,7 +32,7 @@ export interface IVinessRoute<Path extends string> extends VinessRouteMetadata<P
      * @param params
      * @returns
      */
-    generateFullPath: (params: { [key in PathParam<Path>]: string | null }) => string;
+    generatePath: (params: { [key in PathParam<Path>]: string | null }) => string;
 
     /**
      *
