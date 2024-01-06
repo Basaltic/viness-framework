@@ -1,5 +1,12 @@
 # @viness/core
 
+## 1.5.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@1.5.5
+
 ## 1.5.4
 
 ### Patch Changes

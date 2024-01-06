@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.5.1
+
+### Patch Changes
+
+- feat: add createInjectionToken function
+
 ## 1.5.0
 
 ### Minor Changes
