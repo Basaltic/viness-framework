@@ -1,6 +1,5 @@
 import { Suspense, ComponentType, StrictMode, ReactNode } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
-import { HelmetProvider } from 'react-helmet-async';
 import { AppContextProvider } from './app-react-context';
 import { DefaultErrorFallbackComponent, DefaultSuspenseFallbackComponent } from './app-fallbacks';
 import { VinessApp } from '@viness/core';
@@ -24,9 +23,7 @@ export function VinessReactApp(props: VinessReactAppProps) {
         <StrictMode>
             <Suspense fallback={<SuspenseFallbackComponent />}>
                 <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
-                    <HelmetProvider>
-                        <AppContextProvider value={app}>{children}</AppContextProvider>
-                    </HelmetProvider>
+                    <AppContextProvider value={app}>{children}</AppContextProvider>
                 </ErrorBoundary>
             </Suspense>
         </StrictMode>
