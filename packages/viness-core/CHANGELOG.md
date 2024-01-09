@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.5.6
+
+### Patch Changes
+
+- a2b7c97: chore: reduce the features of react binding
+
 ## 1.5.5
 
 ### Patch Changes
