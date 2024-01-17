@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.6.0
+
+### Minor Changes
+
+- chore: make the framework smaller
+
 ## 1.5.6
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-import { inject, injectAll, injectable, Disposable } from '@viness/di';
+import { inject, injectable, Disposable } from '@viness/di';
 
 /**
  *
@@ -8,7 +8,5 @@ import { inject, injectAll, injectable, Disposable } from '@viness/di';
 export const Injectable = injectable;
 
 export const Inject = inject;
-
-export const InjectAll = injectAll;
 
 export type { Disposable };

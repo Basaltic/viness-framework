@@ -1,5 +1,16 @@
 # @viness/core
 
+## 1.6.0
+
+### Minor Changes
+
+- chore: make the framework smaller
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@1.6.0
+
 ## 1.5.6
 
 ### Patch Changes
