@@ -15,7 +15,7 @@ export default {
                 text: '快速入门',
                 collapsed: false,
                 items: [
-                    { text: '特点', link: '/guide' },
+                    { text: '简介', link: '/index' },
                     { text: '安装', link: '/guide/install' },
                     { text: '快速开始', link: '/guide/initialization' }
                 ]
@@ -26,16 +26,8 @@ export default {
                 items: [
                     { text: '模块', link: '/guide/module' },
                     { text: '服务', link: '/guide/services' },
-                    { text: '服务标识（Token）', link: '/guide/token' }
-                ]
-            },
-            {
-                text: 'React使用',
-                collapsed: false,
-                items: [
-                    { text: '路由', link: '/guide/react-router' },
-                    { text: '状态', link: '/guide/react-ui-state' },
-                    { text: '国际化', link: '/guide/react-i18n' }
+                    { text: '服务标识（Token）', link: '/guide/token' },
+                    { text: '在React中使用', link: '/guide/react-guide' }
                 ]
             }
         ],

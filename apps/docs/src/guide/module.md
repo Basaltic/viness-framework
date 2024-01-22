@@ -5,7 +5,7 @@ Viness框架以「模块」的方式来组织应用的逻辑代码
 
 ## 定义模块
 ```ts
-import { createModule, Module } from '@viness/react'
+import { createModule, Module } from '@viness/core'
 
 export const customModule = createModule({
     // 引入其他的模块
@@ -29,31 +29,34 @@ export class CustomModule {
 
 ## 启动模块
 
-- 每一个应用必须有一个启动「模块」以初始化应用实例
+- 每一个应用必须有一个启动「模块」以初始化应用实例，通常
+
 ```ts
 // app.module.ts
-import { createModule } from '@viness/react'
-import { routerModule } from './routes/routes.module'
-import { dashboardModule } from './features/dashboard/dashboard.module'
+import { createModule } from '@viness/core'
 
-export const appModule = createModule({
+export const AppModule = createModule({
     imports: []
+    providers: []
 })
+// 或者使用 装饰器的方式
+@Module({
+    imports: []
+    providers: []
+})
+export class AppModule {
+
+}
+
 ```
+
+- 创建一个App实例
 
 ```ts
 // app.tsx
-import { AppFactory, VinessReactApp, VinessAppRouter } from '@viness/react'
-import { appModule } from './app.module'
+import { createApp } from '@viness/core'
+import { AppModule } from './app.module'
 
-export const App = () => {
-    // 创建应用实例的时候，需要传入应用的启动模块
-    const app = AppFactory.create(appModule)
+export const app = createApp(AppModule)
 
-    return (
-        <VinessReactApp app={app}>
-            <VinessAppRouter />
-        </VinessReactApp>
-    )
-}
 ```
