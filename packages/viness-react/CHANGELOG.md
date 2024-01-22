@@ -1,5 +1,16 @@
 # @viness/core
 
+## 1.7.0
+
+### Minor Changes
+
+- feat: make the framework more lighter
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@1.7.0
+
 ## 1.6.0
 
 ### Minor Changes

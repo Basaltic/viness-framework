@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.7.0
+
+### Minor Changes
+
+- feat: make the framework more lighter
+
 ## 1.6.0
 
 ### Minor Changes
