@@ -1,5 +1,16 @@
 # @viness/core
 
+## 1.8.0
+
+### Minor Changes
+
+- feat: reimpl the ioc & make it easy to use
+
+### Patch Changes
+
+- Updated dependencies
+  - @viness/core@1.8.0
+
 ## 1.7.0
 
 ### Minor Changes

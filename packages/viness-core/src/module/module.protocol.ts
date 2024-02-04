@@ -1,20 +1,45 @@
-import { Newable } from '../types';
-import * as di from '@viness/di';
+import { Factory, NewAble, Token, Value } from '../injection';
+import { Scope } from './scope';
 
-export type ClassProvider<T> = di.ClassProvider<T> & { token: di.InjectionToken<T> };
-export type ValueProvider<T> = di.ValueProvider<T> & { token: di.InjectionToken<T> };
-export type TokenProvider<T> = di.TokenProvider<T>;
-export type FactoryProvider<T> = di.FactoryProvider<T> & { token: di.InjectionToken; cache: boolean };
+export type ClassProvider<T> = {
+    token: Token<T, any>;
+    useClass: NewAble<T, any>;
+    /**
+     * @default Scope.Singleton
+     */
+    scope?: Scope;
+};
+export type ValueProvider<T> = {
+    token: Token<T, any>;
+    useValue: Value<T>;
+    scope?: Scope;
+};
+export type FactoryProvider<T> = {
+    token: Token<T, any>;
+    useFactory: Factory<T, any>;
+    /**
+     * @default Scope.Singleton
+     */
+    scope?: Scope;
+};
 
-export type ModuleProvider<T = any> = ClassProvider<T> | ValueProvider<T> | TokenProvider<T> | FactoryProvider<T> | Newable<T>;
-
-export type ModuleImport = Newable<any> | DynamicModule<any>;
+export type Provider<T = any> = ClassProvider<T> | ValueProvider<T> | FactoryProvider<T>;
 
 export interface ModuleMetadata {
-    imports?: ModuleImport[];
-    providers?: ModuleProvider[];
+    imports?: Module[];
+    providers?: Provider[];
 }
 
-export interface DynamicModule<T = any> extends ModuleMetadata {
-    module?: Newable<T>;
+export interface Module extends ModuleMetadata {}
+
+export function isClassProvider<T>(provider: Provider<T>): provider is ClassProvider<any> {
+    return !!(provider as ClassProvider<T>).useClass;
+}
+
+export function isValueProvider<T>(provider: Provider<T>): provider is ValueProvider<any> {
+    return !!(provider as ValueProvider<T>).useValue;
+}
+
+export function isFactoryProvider<T>(provider: Provider<T>): provider is FactoryProvider<any> {
+    return !!(provider as FactoryProvider<T>).useFactory;
 }

@@ -1,40 +1,18 @@
-import { MODULE_METADATA } from '../constants';
-import { ModuleImport, ModuleMetadata, ModuleProvider, DynamicModule } from './module.protocol';
-import {
-    DependencyContainer,
-    Lifecycle,
-    instanceCachingFactory,
-    isClassProvider,
-    isFactoryProvider,
-    isTokenProvider,
-    isValueProvider
-} from '@viness/di';
+import { Container } from '../injection';
+import { Module, Provider, isClassProvider, isValueProvider, isFactoryProvider } from './module.protocol';
+import { Scope } from './scope';
 
 /**
- * Scan the module &
+ * Scan the module & register the providers
  */
 export class ModulesScanner {
-    constructor(private container: DependencyContainer) {}
+    constructor(private container: Container) {}
 
-    scan(module: ModuleImport) {
+    scan(module: Module) {
         if (module) {
-            let imports: ModuleImport[] = [];
-            let providers: ModuleProvider[] = [];
+            const { imports, providers } = module;
 
-            if ((module as DynamicModule).module) {
-                imports = [...((module as DynamicModule).imports || [])];
-                if ((module as DynamicModule).module) {
-                    imports.push((module as DynamicModule).module as any);
-                }
-                providers = (module as DynamicModule).providers || [];
-            } else {
-                const metadata = Reflect.getOwnMetadata(MODULE_METADATA, module) as ModuleMetadata;
-
-                imports = metadata.imports || [];
-                providers = metadata.providers || [];
-            }
-
-            this.scanProviders(providers);
+            this.scanProviders(providers || []);
 
             if (imports && imports.length > 0) {
                 for (const moduleImport of imports) {
@@ -44,7 +22,7 @@ export class ModulesScanner {
         }
     }
 
-    scanProviders(providers: ModuleProvider[]) {
+    scanProviders(providers: Provider[]) {
         if (providers && providers.length > 0) {
             if (providers) {
                 for (const provider of providers) {
@@ -54,23 +32,23 @@ export class ModulesScanner {
         }
     }
 
-    scanProvider(provider: ModuleProvider) {
-        if (typeof provider === 'function') {
-            // TODO: 可以扩展一下Injectable，可以把token放入Injectable中配置
-            this.container.register(provider, provider, { lifecycle: Lifecycle.ContainerScoped });
-        } else if (isClassProvider(provider)) {
-            this.container.register(provider.token, provider, { lifecycle: Lifecycle.ContainerScoped });
-        } else if (isValueProvider(provider)) {
-            this.container.register(provider.token, provider);
-        } else if (isFactoryProvider(provider)) {
-            if (provider.cache) {
-                this.container.register(provider.token, provider);
-            } else {
-                provider.useFactory = instanceCachingFactory(provider.useFactory);
-                this.container.register(provider.token, provider);
+    scanProvider(provider: Provider) {
+        if (isClassProvider(provider)) {
+            switch (provider.scope) {
+                case Scope.Transient:
+                    this.container.bind(provider.token).to(provider.useClass);
+                default:
+                    this.container.bind(provider.token).to(provider.useClass).inSingletonScope();
             }
-        } else if (isTokenProvider(provider)) {
-            this.container.register(provider.useToken, provider, { lifecycle: Lifecycle.ContainerScoped });
+        } else if (isValueProvider(provider)) {
+            this.container.bind(provider.token).toValue(provider.useValue);
+        } else if (isFactoryProvider(provider)) {
+            switch (provider.scope) {
+                case Scope.Transient:
+                    this.container.bind(provider.token).toFactory(provider.useFactory);
+                default:
+                    this.container.bind(provider.token).toFactory(provider.useFactory).inSingletonScope();
+            }
         }
     }
 }

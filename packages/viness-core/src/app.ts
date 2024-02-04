@@ -1,28 +1,26 @@
-import { singleton, container } from '@viness/di';
 import { ModulesScanner } from './module/scanner';
-import { ModuleImport } from './module';
+import { Module } from './module';
+import { globaleContainer, resolve } from './global-container';
+import { token } from './injection';
 
 /**
  * ```
  *  const app = createApp(AppModule)
  * ```
  */
-@singleton()
 export class VinessApp {
-    get container() {
-        return container;
-    }
+    doSometing() {}
 }
 
-export function createApp(appModule: ModuleImport) {
-    const startTime = new Date().valueOf();
+export const vinessAppToken = token<VinessApp>('VinessApp');
 
-    const app = container.resolve(VinessApp);
-    const scanner = new ModulesScanner(container);
+export function createApp(appModule: Module) {
+    globaleContainer.bind(vinessAppToken).to(VinessApp).inSingletonScope();
+
+    const app = resolve(vinessAppToken)();
+
+    const scanner = new ModulesScanner(globaleContainer);
     scanner.scan(appModule);
-
-    const endTime = new Date().valueOf();
-    console.log('app started in : ', endTime - startTime);
 
     return app;
 }

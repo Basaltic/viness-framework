@@ -1,11 +1,7 @@
-import { DashboardModule } from './features/dashboard/dashboard.module';
-import { Module } from '@viness/core';
-import { createRouterProvider } from '@viness/react';
+import { createModule } from '@viness/core';
+import { homeModule } from './home/home.module';
 
-const routerProvider = createRouterProvider({ type: 'browser' });
-
-@Module({
-    imports: [DashboardModule],
-    providers: [routerProvider]
-})
-export class AppModule {}
+export const appModule = createModule({
+    imports: [homeModule],
+    providers: []
+});

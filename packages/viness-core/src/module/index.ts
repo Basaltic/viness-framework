@@ -1,2 +1,3 @@
+export * from './scope';
+export * from './module';
 export * from './module.protocol';
-export * from './module.decorator';

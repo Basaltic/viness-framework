@@ -1,13 +1,14 @@
-import { VinessReactApp, VinessAppRouter } from '@viness/react';
-import { AppModule } from './app.module';
+import { VinessReactApp } from '@viness/react';
+import { appModule } from './app.module';
 import { createApp } from '@viness/core';
+import { HomePage } from './home/home.page';
 
-const app = createApp(AppModule);
+const app = createApp(appModule);
 
 export const App = () => {
     return (
         <VinessReactApp app={app}>
-            <VinessAppRouter />
+            <HomePage />
         </VinessReactApp>
     );
 };

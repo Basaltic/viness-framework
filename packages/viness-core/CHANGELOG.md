@@ -1,5 +1,11 @@
 # @viness/di
 
+## 1.8.0
+
+### Minor Changes
+
+- feat: reimpl the ioc & make it easy to use
+
 ## 1.7.0
 
 ### Minor Changes
