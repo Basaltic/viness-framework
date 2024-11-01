@@ -3,7 +3,7 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "types": ["node", "vitest/globals"],
+    "types": ["node"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }
