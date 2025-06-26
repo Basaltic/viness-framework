@@ -19,12 +19,12 @@ npm install --save @viness/react
 
 ## Packages
 
-* `apps/web`: example web app use viness framework
-* `apps/docs`: documents
-* `packages/viness-di`: di framework
-* `packages/viness-react`: viness react application framework
+-   `apps/web`: example web app use viness framework
+-   `apps/docs`: documents for viness framework
+-   `packages/core`:
+-   `packages/react`: viness react application framework
 
 ## Inspired By
 
-* Angular
-* Nestjs
+-   Angular
+-   Nestjs

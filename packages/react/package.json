@@ -21,24 +21,20 @@
         "react-dom": "^18.x"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^5.16.5",
-        "@testing-library/react": "^14.0.0",
-        "@types/node": "^20.2.3",
-        "@types/react": "18.2.42",
-        "@types/react-dom": "18.2.17",
         "@viness/eslint-config": "workspace:*",
         "@viness/tsconfig": "workspace:*",
-        "eslint": "^8.55.0",
-        "jsdom": "^22.0.0",
-        "tsup": "^8.0.1",
-        "typescript": "^5.0.4",
-        "vitest": "^1.0.2"
+        "@testing-library/jest-dom": "catalog:",
+        "@testing-library/react": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "eslint": "catalog:",
+        "tsup": "catalog:",
+        "typescript": "catalog:",
+        "vitest": "catalog:"
     },
     "dependencies": {
-        "@abraham/reflection": "0.12.0",
-        "@viness/core": "workspace:*",
-        "immer": "^10.0.2",
-        "zustand": "^4.3.8"
+        "@viness/core": "workspace:*"
     },
     "publishConfig": {
         "access": "public",
